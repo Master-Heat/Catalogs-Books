@@ -27,7 +27,7 @@ namespace CatalogsBooksAPI.Models
         public int PagesCount { get; set; }
 
 
-        // todo : for relation you musd add these properties 
+        // todo : for relation you musd add these vitual properties 
         /*
         A) for many to one relationships one nullable variable from class
             1- bookseries

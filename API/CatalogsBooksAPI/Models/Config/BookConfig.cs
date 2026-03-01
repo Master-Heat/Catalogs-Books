@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace CatalogsBooksAPI.Models.Config
 {
-    public class BooksConfig : IEntityTypeConfiguration<Book>
+    public class BookConfig : IEntityTypeConfiguration<Book>
     {
         public void Configure(EntityTypeBuilder<Book> builder)
         {

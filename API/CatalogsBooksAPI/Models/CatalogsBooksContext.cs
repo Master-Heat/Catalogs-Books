@@ -12,6 +12,7 @@ namespace CatalogsBooksAPI.Models
         }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<BookList> BookLists { get; set; }
 
 
 
