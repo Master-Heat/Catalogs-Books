@@ -15,6 +15,7 @@ namespace CatalogsBooksAPI.Models
         public DbSet<BookList> BookLists { get; set; }
         public DbSet<ListItem> ListItems { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<ViewedBook> ViewedBooks { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
