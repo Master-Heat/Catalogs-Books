@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace CatalogsBooksAPI.Models.Config
 {
-    public class AccountsConfig : IEntityTypeConfiguration<Accounts>
+    public class AccountConfig : IEntityTypeConfiguration<Account>
     {
-        public void Configure(EntityTypeBuilder<Accounts> builder)
+        public void Configure(EntityTypeBuilder<Account> builder)
         {
             builder.HasKey(a => a.AccountID);
 

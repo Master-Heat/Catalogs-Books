@@ -10,8 +10,8 @@ namespace CatalogsBooksAPI.Models
         {
 
         }
-        public DbSet<Accounts> Accounts { get; set; }
-        public DbSet<Books> Books { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Book> Books { get; set; }
 
 
 
@@ -26,8 +26,8 @@ namespace CatalogsBooksAPI.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration<Accounts>(new AccountsConfig());
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AccountsConfig).Assembly);
+            modelBuilder.ApplyConfiguration<Account>(new AccountConfig());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AccountConfig).Assembly);
 
         }
     }

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CatalogsBooksAPI.Models
 {
-    public class Accounts
+    public class Account
     {
         [Key]
         public int AccountID { get; set; }

@@ -22,7 +22,7 @@ namespace CatalogsBooksAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CatalogsBooksAPI.Models.Accounts", b =>
+            modelBuilder.Entity("CatalogsBooksAPI.Models.Account", b =>
                 {
                     b.Property<int>("AccountID")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace CatalogsBooksAPI.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("CatalogsBooksAPI.Models.Books", b =>
+            modelBuilder.Entity("CatalogsBooksAPI.Models.Book", b =>
                 {
                     b.Property<int>("BookID")
                         .ValueGeneratedOnAdd()
@@ -82,8 +82,8 @@ namespace CatalogsBooksAPI.Migrations
                     b.Property<int>("PagesCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("PublicationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("PublicationDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("SubCategory")
                         .HasColumnType("nvarchar(max)");

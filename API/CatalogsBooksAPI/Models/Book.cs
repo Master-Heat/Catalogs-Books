@@ -4,7 +4,7 @@ using Microsoft.Identity.Client;
 
 namespace CatalogsBooksAPI.Models
 {
-    public class Books
+    public class Book
     {
         [Key]
         public int BookID { get; set; }
@@ -15,7 +15,7 @@ namespace CatalogsBooksAPI.Models
         [Required]
         public string AuthorName { get; set; }
         // this is the normal case for books are from other website
-        public DateTime PublicationDate { get; set; }
+        public DateOnly PublicationDate { get; set; }
         public bool CanDownload { get; set; }
         public string? DownloadLink { get; set; }
         public string? Description { get; set; }
