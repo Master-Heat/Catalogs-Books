@@ -13,8 +13,7 @@ namespace CatalogsBooksAPI.Models
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<BookList> BookLists { get; set; }
-
-
+        public DbSet<ListItem> ListItems { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
