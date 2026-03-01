@@ -6,11 +6,11 @@ namespace CatalogsBooksAPI.Models
     {
         [Key]
         public int AccountID { get; set; }
-        public string? UserName { get; set; }
+        public string UserName { get; set; }
         [Required]
-        public string? Email { get; set; }
+        public string Email { get; set; }
         [Required]
-        public string? PermissionLevel { get; set; }
+        public string PermissionLevel { get; set; }
 
         // public string? UserPrefrences { get; set; }
 

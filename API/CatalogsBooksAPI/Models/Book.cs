@@ -17,12 +17,12 @@ namespace CatalogsBooksAPI.Models
         // this is the normal case for books are from other website
         public DateOnly PublicationDate { get; set; }
         public bool CanDownload { get; set; }
-        public string? DownloadLink { get; set; }
-        public string? Description { get; set; }
-        public string? Category { get; set; }
-        public string? SubCategory { get; set; }
-        public string? CoverImageLink { get; set; }
-        public string? CoverAlt { get; set; }
+        public string DownloadLink { get; set; }
+        public string Description { get; set; }
+        public string Category { get; set; }
+        public string SubCategory { get; set; }
+        public string CoverImageLink { get; set; }
+        public string CoverAlt { get; set; }
         // this will be used to create defualt alt in the db for cover image in image tag
         public int PagesCount { get; set; }
 
