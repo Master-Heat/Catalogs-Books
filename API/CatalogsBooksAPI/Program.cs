@@ -20,7 +20,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<CatalogsBooksContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CoonectionString"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("somee"));
 });
 
 
