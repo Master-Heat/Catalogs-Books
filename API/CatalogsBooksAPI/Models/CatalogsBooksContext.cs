@@ -18,6 +18,7 @@ namespace CatalogsBooksAPI.Models
         public DbSet<ViewedBook> ViewedBooks { get; set; }
         public DbSet<BookSeire> BookSeires { get; set; }
         public DbSet<UserPreferedAuthor> UserPreferedAuthors { get; set; }
+        public DbSet<UserPreferedCategory> UserPreferedCategories { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
