@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CatalogsBooksAPI.Models
 {
@@ -8,7 +9,7 @@ namespace CatalogsBooksAPI.Models
         [Key]
 
         public int ReviewID { get; set; }
-        
+
         public int BookID { get; set; }
         public int AccountID { get; set; }
         public string ReviewText { get; set; }
@@ -19,6 +20,12 @@ namespace CatalogsBooksAPI.Models
         2- Account
             and configure the foreign keys  [ForeignKey("BookID")], [ForeignKey("AccountID")]
         */
+        [JsonIgnore]
+        [ForeignKey("BookID")]
+        public Book Book { get; set; }
+        [JsonIgnore]
+        [ForeignKey("AccountID")]
+        public Account Account { get; set; }
     }
 
 }

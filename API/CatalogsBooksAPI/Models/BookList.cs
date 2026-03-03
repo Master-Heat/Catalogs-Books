@@ -1,19 +1,27 @@
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CatalogsBooksAPI.Models
 {
     public class BookList
     {
-        [Key]
         public int ListID { get; set; }
-        public int AccountID { get; set; }
-        public string ListName { get; set; }
+        public int BookID { get; set; }
 
+        //todo make sure to put virtual
+        /*
+        1- booklist 
+        2- book
+        and congiure them as foregin key
+        as s [ForeignKey("ListID")] and as [BookID")]
+        */
+        [JsonIgnore]
+        [ForeignKey("ListID")]
+        virtual public UserList UserList { get; set; }
+        [JsonIgnore]
 
-        // todo : for relation make 
-        /* nullable virtual list of listitems 
-            nullable virtual accont 
-                 /? notice to put this above accounts [ForeignKey("AccountID")] to make sure it's configured the foregin key
-         */
+        [ForeignKey("BookID")]
+        virtual public Book Book { get; set; }
+
     }
 }

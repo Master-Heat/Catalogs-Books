@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
 namespace CatalogsBooksAPI.Models
 {
     public class ViewedBook
@@ -11,5 +14,11 @@ namespace CatalogsBooksAPI.Models
                     make user to configure the foregin keys as the following  
                         [Foreingkey("BookID")] and [ForeignKey(AccountID)]
         */
+        [JsonIgnore]
+        [ForeignKey("BookID")]
+        virtual public Book Book { get; set; }
+        [JsonIgnore]
+        [ForeignKey("AccountID")]
+        virtual public Account Account { get; set; }
     }
 }

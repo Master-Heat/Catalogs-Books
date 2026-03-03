@@ -1,9 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
 namespace CatalogsBooksAPI.Models
 {
     public class BookSeire
     {
-        public int BookID { get; set; }
+        [Key]
+        public int SeireID { get; set; }
         public string SeireName { get; set; }
-        //todo add virtual nullable list of book to add the relationship
+
+        [JsonIgnore]
+        virtual public List<Book> Books { get; set; }
     }
 }

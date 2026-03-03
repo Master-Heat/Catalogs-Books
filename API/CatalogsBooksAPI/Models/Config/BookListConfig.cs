@@ -1,15 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CatalogsBooksAPI.Models.Config
 {
-    public class BookListCofig : IEntityTypeConfiguration<BookList>
+    public class BookListConfig : IEntityTypeConfiguration<BookList>
     {
         public void Configure(EntityTypeBuilder<BookList> builder)
         {
-
-
+            builder.HasKey(a => new { a.BookID, a.ListID });
         }
     }
 }

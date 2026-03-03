@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CatalogsBooksAPI.Models
 {
@@ -12,15 +13,18 @@ namespace CatalogsBooksAPI.Models
         [Required]
         public string PermissionLevel { get; set; }
 
-        // public string? UserPrefrences { get; set; }
-
-        //todo:add public nullable  virtual lists of
-        /*          1- books
-                    2- Reviews 
-                    3- ViewedBooks
-                    4- UserPreferedAuthors
-                    5- UserPreferedCategories
-                 */
+        [JsonIgnore]
+        virtual public List<Book> Books { get; set; }
+        [JsonIgnore]
+        virtual public List<Review> Reviews { get; set; }
+        [JsonIgnore]
+        virtual public List<ViewedBook> ViewedBooks { get; set; }
+        [JsonIgnore]
+        virtual public List<UserPreferedAuthor> UserPreferedAuthors { get; set; }
+        [JsonIgnore]
+        virtual public List<UserPreferredCategory> UserPreferedCategories { get; set; }
+        [JsonIgnore]
+        virtual public List<UserList> UserLists { get; set; }
 
     }
 }

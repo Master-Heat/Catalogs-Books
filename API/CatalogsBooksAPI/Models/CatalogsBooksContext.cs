@@ -13,12 +13,12 @@ namespace CatalogsBooksAPI.Models
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<BookList> BookLists { get; set; }
-        public DbSet<ListItem> ListItems { get; set; }
+        public DbSet<UserList> UserLists { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ViewedBook> ViewedBooks { get; set; }
         public DbSet<BookSeire> BookSeires { get; set; }
         public DbSet<UserPreferedAuthor> UserPreferedAuthors { get; set; }
-        public DbSet<UserPreferedCategory> UserPreferedCategories { get; set; }
+        public DbSet<UserPreferredCategory> UserPreferedCategories { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

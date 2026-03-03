@@ -7,7 +7,7 @@ namespace CatalogsBooksAPI.Models.Config
     {
         public void Configure(EntityTypeBuilder<BookSeire> builder)
         {
-            builder.HasKey(a => new { a.SeireName, a.BookID });
+
         }
     }
 
