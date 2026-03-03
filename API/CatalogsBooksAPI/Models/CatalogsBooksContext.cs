@@ -6,10 +6,6 @@ namespace CatalogsBooksAPI.Models
 {
     public class CatalogsBooksContext : DbContext
     {
-        public CatalogsBooksContext(DbContextOptions<CatalogsBooksContext> options) : base(options)
-        {
-
-        }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<BookList> BookLists { get; set; }
@@ -20,6 +16,10 @@ namespace CatalogsBooksAPI.Models
         public DbSet<UserPreferedAuthor> UserPreferedAuthors { get; set; }
         public DbSet<UserPreferredCategory> UserPreferedCategories { get; set; }
 
+        public CatalogsBooksContext(DbContextOptions<CatalogsBooksContext> options) : base(options)
+        {
+
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
