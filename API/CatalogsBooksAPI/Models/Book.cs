@@ -21,6 +21,8 @@ namespace CatalogsBooksAPI.Models
         public int? SeireID { get; set; }
         public DateOnly PublicationDate { get; set; }
         public bool CanDownload { get; set; }
+        // this variable just to tell if the book avilable on our website or not 
+        //todo use it to tell that download link is from external website 
         public string DownloadLink { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
@@ -31,20 +33,7 @@ namespace CatalogsBooksAPI.Models
         public int PagesCount { get; set; }
 
 
-        // todo : for relation you musd add these vitual properties 
-        /*
-        A) for many to one relationships one nullable variable from class
-            1- bookseries
-            2- accounts 
-                        /? notice to put this above accounts [ForeignKey("AuthorID")] 
-        B) for one to many attributes nullable lists of
-            1- ListItems
-            2- Reviews
-            3- booksviewed 
-            4- accounts ( authors)
-            5- UserPreferedAuthors
-            6- UserPreferedCategories
-        */
+
         [JsonIgnore]
         [ForeignKey("SeireID")]
         virtual public BookSeire BookSeire { get; set; }
