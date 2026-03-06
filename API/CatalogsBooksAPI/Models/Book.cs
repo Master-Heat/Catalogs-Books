@@ -17,7 +17,7 @@ namespace CatalogsBooksAPI.Models
         public string Title { get; set; }
 
         public int? SeireID { get; set; }
-        public DateOnly PublicationDate { get; set; }
+        public DateOnly? PublicationDate { get; set; }
         public bool CanDownload { get; set; }
         // this variable just to tell if the book avilable on our website or not 
         //todo use it to tell that download link is from external website 
