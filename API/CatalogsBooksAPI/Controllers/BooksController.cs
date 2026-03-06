@@ -38,9 +38,8 @@ namespace CatalogsBooksAPI.Controllers
         public IActionResult CreateBook(
             [FromForm] int authorId,
             [FromForm] string title,
-
             [FromForm] int? seriesId,
-            [FromForm] DateOnly publicationDate,
+            [FromForm] DateOnly? publicationDate, // Changed to nullable DateOnly?
             [FromForm] bool canDownload,
             [FromForm] string downloadLink,
             [FromForm] string description,
@@ -49,20 +48,43 @@ namespace CatalogsBooksAPI.Controllers
             [FromForm] string coverAlt,
             [FromForm] int pagesCount)
         {
-            // Validation for required fields based on the Book model
+            // 1. Validation for required fields
             if (string.IsNullOrWhiteSpace(title))
             {
                 return BadRequest(new { message = "Title is required" });
             }
 
 
+
+            // 2. Handle 0 values from Form/Swagger (Zero-to-Null Logic)
+            if (seriesId == 0) seriesId = null;
+
+            // Note: If publicationDate is sent as an empty string ("") 
+            // ASP.NET Core will automatically bind it as null because of the DateOnly? type.
+
+            // 3. Verify Foreign Keys exist if they are provided
+            if (authorId > 0)
+            {
+                var authorExists = _context.Authors.Any(a => a.AuthorID == authorId);
+                if (!authorExists) return BadRequest(new { message = "Invalid AuthorID." });
+            }
+
+            if (categoryId > 0)
+            {
+                var categoryExists = _context.Categories.Any(c => c.CategoryID == categoryId);
+                if (!categoryExists) return BadRequest(new { message = "Invalid CategoryID." });
+            }
+
+            // 4. Map and Save
             var book = new Book
             {
                 AuthorID = authorId,
                 Title = title,
 
                 SeireID = seriesId,
-                PublicationDate = publicationDate,
+                PublicationDate = (DateOnly)(publicationDate.HasValue ? publicationDate.Value : default(DateOnly)),
+                // Note: If your database column is NOT NULL, it needs a default. 
+                // If the DB column IS NULL, change the Book.cs model property to DateOnly? 
                 CanDownload = canDownload,
                 DownloadLink = downloadLink,
                 Description = description,
