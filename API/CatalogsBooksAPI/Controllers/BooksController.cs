@@ -38,7 +38,7 @@ namespace CatalogsBooksAPI.Controllers
         public IActionResult CreateBook(
             [FromForm] int authorId,
             [FromForm] string title,
-            [FromForm] string authorName,
+
             [FromForm] int? seriesId,
             [FromForm] DateOnly publicationDate,
             [FromForm] bool canDownload,
@@ -55,16 +55,12 @@ namespace CatalogsBooksAPI.Controllers
                 return BadRequest(new { message = "Title is required" });
             }
 
-            if (string.IsNullOrWhiteSpace(authorName))
-            {
-                return BadRequest(new { message = "Author name is required" });
-            }
 
             var book = new Book
             {
                 AuthorID = authorId,
                 Title = title,
-                AuthorName = authorName,
+
                 SeireID = seriesId,
                 PublicationDate = publicationDate,
                 CanDownload = canDownload,

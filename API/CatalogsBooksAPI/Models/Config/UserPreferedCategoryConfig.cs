@@ -10,9 +10,6 @@ namespace CatalogsBooksAPI.Models.Config
             builder.HasKey(upc => new { upc.AccountID, upc.CategoryID });
 
 
-            builder.HasOne(upa => upa.Account)
-             .WithMany()
-             .HasForeignKey(upa => upa.AccountID);
 
         }
     }

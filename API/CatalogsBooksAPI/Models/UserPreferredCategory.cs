@@ -14,8 +14,7 @@ namespace CatalogsBooksAPI.Models
         [ForeignKey("AccountID")]
         public Account Account { get; set; }
 
-        [JsonIgnore]
-        public Book Book { get; set; }
+
 
         [JsonIgnore]
         [ForeignKey("CategoryID")]

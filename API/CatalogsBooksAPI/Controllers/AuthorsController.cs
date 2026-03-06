@@ -43,21 +43,28 @@ namespace CatalogsBooksAPI.Controllers
                 return BadRequest(new { message = "Author name is required." });
             }
 
-            // 2. Verify Account exists if an AccountID is provided
+            // 2. FIX: Treat 0 as NULL 
+            // This prevents the Foreign Key error when Swagger sends 0 for an empty field
+            if (accountId == 0)
+            {
+                accountId = null;
+            }
+
+            // 3. Verify Account exists ONLY if accountId has a real value
             if (accountId.HasValue && accountId > 0)
             {
                 var accountExists = _context.Accounts.Any(a => a.AccountID == accountId.Value);
                 if (!accountExists)
                 {
-                    return BadRequest(new { message = "Invalid AccountID. The specified Account does not exist." });
+                    return BadRequest(new { message = $"Invalid AccountID. The Account with ID {accountId} does not exist." });
                 }
             }
 
-            // 3. Map and Save
+            // 4. Map and Save
             var author = new Author
             {
                 AuthorName = authorName,
-                AccountID = accountId
+                AccountID = accountId // Will be saved as NULL if 0 was passed
             };
 
             _context.Authors.Add(author);

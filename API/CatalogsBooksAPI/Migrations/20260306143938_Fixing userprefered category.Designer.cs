@@ -4,6 +4,7 @@ using CatalogsBooksAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatalogsBooksAPI.Migrations
 {
     [DbContext(typeof(CatalogsBooksContext))]
-    partial class CatalogsBooksContextModelSnapshot : ModelSnapshot
+    [Migration("20260306143938_Fixing userprefered category")]
+    partial class Fixinguserpreferedcategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,6 +86,10 @@ namespace CatalogsBooksAPI.Migrations
 
                     b.Property<int>("AuthorID")
                         .HasColumnType("int");
+
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("CanDownload")
                         .HasColumnType("bit");
