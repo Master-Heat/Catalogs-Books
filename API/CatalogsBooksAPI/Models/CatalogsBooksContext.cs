@@ -13,6 +13,7 @@ namespace CatalogsBooksAPI.Models
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ViewedBook> ViewedBooks { get; set; }
         public DbSet<BookSeire> BookSeires { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<UserPreferedAuthor> UserPreferedAuthors { get; set; }
         public DbSet<UserPreferredCategory> UserPreferedCategories { get; set; }
 

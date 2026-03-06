@@ -4,6 +4,7 @@ using CatalogsBooksAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatalogsBooksAPI.Migrations
 {
     [DbContext(typeof(CatalogsBooksContext))]
-    partial class CatalogsBooksContextModelSnapshot : ModelSnapshot
+    [Migration("20260305181435_added category table to fix can't dublication category and sub category")]
+    partial class addedcategorytabletofixcantdublicationcategoryandsubcategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,30 +52,6 @@ namespace CatalogsBooksAPI.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("CatalogsBooksAPI.Models.Author", b =>
-                {
-                    b.Property<int>("AuthorID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorID"));
-
-                    b.Property<int?>("AccountID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AuthorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AuthorID");
-
-                    b.HasIndex("AccountID")
-                        .IsUnique()
-                        .HasFilter("[AccountID] IS NOT NULL");
-
-                    b.ToTable("Author");
-                });
-
             modelBuilder.Entity("CatalogsBooksAPI.Models.Book", b =>
                 {
                     b.Property<int>("BookID")
@@ -81,12 +60,12 @@ namespace CatalogsBooksAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookID"));
 
-                    b.Property<int>("AuthorID")
+                    b.Property<int?>("AuthorID")
                         .HasColumnType("int");
 
                     b.Property<string>("AuthorName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("CanDownload")
                         .HasColumnType("bit");
@@ -232,18 +211,19 @@ namespace CatalogsBooksAPI.Migrations
 
             modelBuilder.Entity("CatalogsBooksAPI.Models.UserPreferedAuthor", b =>
                 {
-                    b.Property<int>("AuthorID")
-                        .HasColumnType("int");
-
                     b.Property<int>("AccountID")
                         .HasColumnType("int");
+
+                    b.Property<string>("AuthorName")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("BookID")
                         .HasColumnType("int");
 
-                    b.HasKey("AuthorID", "AccountID");
+                    b.HasKey("AccountID", "AuthorName");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex("AuthorName")
+                        .IsUnique();
 
                     b.HasIndex("BookID");
 
@@ -258,15 +238,10 @@ namespace CatalogsBooksAPI.Migrations
                     b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AccountID1")
-                        .HasColumnType("int");
-
                     b.Property<int?>("BookID")
                         .HasColumnType("int");
 
                     b.HasKey("AccountID", "CategoryID");
-
-                    b.HasIndex("AccountID1");
 
                     b.HasIndex("BookID");
 
@@ -290,22 +265,11 @@ namespace CatalogsBooksAPI.Migrations
                     b.ToTable("ViewedBooks");
                 });
 
-            modelBuilder.Entity("CatalogsBooksAPI.Models.Author", b =>
-                {
-                    b.HasOne("CatalogsBooksAPI.Models.Account", "Account")
-                        .WithOne("Author")
-                        .HasForeignKey("CatalogsBooksAPI.Models.Author", "AccountID");
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("CatalogsBooksAPI.Models.Book", b =>
                 {
-                    b.HasOne("CatalogsBooksAPI.Models.Author", "Author")
+                    b.HasOne("CatalogsBooksAPI.Models.Account", "Account")
                         .WithMany("Books")
-                        .HasForeignKey("AuthorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorID");
 
                     b.HasOne("CatalogsBooksAPI.Models.Category", "Category")
                         .WithMany("Books")
@@ -317,7 +281,7 @@ namespace CatalogsBooksAPI.Migrations
                         .WithMany("Books")
                         .HasForeignKey("SeireID");
 
-                    b.Navigation("Author");
+                    b.Navigation("Account");
 
                     b.Navigation("BookSeire");
 
@@ -381,32 +345,29 @@ namespace CatalogsBooksAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CatalogsBooksAPI.Models.Author", "Author")
-                        .WithMany("UserPreferedAuthor")
-                        .HasForeignKey("AuthorID")
+                    b.HasOne("CatalogsBooksAPI.Models.Book", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorName")
+                        .HasPrincipalKey("AuthorName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CatalogsBooksAPI.Models.Book", null)
+                    b.HasOne("CatalogsBooksAPI.Models.Book", "Book")
                         .WithMany("UserPreferedAuthors")
                         .HasForeignKey("BookID");
 
                     b.Navigation("Account");
 
-                    b.Navigation("Author");
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("CatalogsBooksAPI.Models.UserPreferredCategory", b =>
                 {
                     b.HasOne("CatalogsBooksAPI.Models.Account", "Account")
-                        .WithMany()
+                        .WithMany("UserPreferedCategories")
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("CatalogsBooksAPI.Models.Account", null)
-                        .WithMany("UserPreferedCategories")
-                        .HasForeignKey("AccountID1");
 
                     b.HasOne("CatalogsBooksAPI.Models.Book", "Book")
                         .WithMany("UserPreferedCategories")
@@ -446,7 +407,7 @@ namespace CatalogsBooksAPI.Migrations
 
             modelBuilder.Entity("CatalogsBooksAPI.Models.Account", b =>
                 {
-                    b.Navigation("Author");
+                    b.Navigation("Books");
 
                     b.Navigation("Reviews");
 
@@ -457,13 +418,6 @@ namespace CatalogsBooksAPI.Migrations
                     b.Navigation("UserPreferedCategories");
 
                     b.Navigation("ViewedBooks");
-                });
-
-            modelBuilder.Entity("CatalogsBooksAPI.Models.Author", b =>
-                {
-                    b.Navigation("Books");
-
-                    b.Navigation("UserPreferedAuthor");
                 });
 
             modelBuilder.Entity("CatalogsBooksAPI.Models.Book", b =>

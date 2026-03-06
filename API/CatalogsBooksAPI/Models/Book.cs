@@ -10,7 +10,7 @@ namespace CatalogsBooksAPI.Models
     {
         [Key]
         public int BookID { get; set; }
-        public int? AuthorID { get; set; }
+        public int AuthorID { get; set; }
 
         // this will be used only if the auther is user in our website
         [Required]
@@ -25,23 +25,23 @@ namespace CatalogsBooksAPI.Models
         //todo use it to tell that download link is from external website 
         public string DownloadLink { get; set; }
         public string Description { get; set; }
-        public string Category { get; set; }
-        public string SubCategory { get; set; }
+        public int CategoryID { get; set; }
         public string CoverImageLink { get; set; }
         public string CoverAlt { get; set; }
         // this will be used to create defualt alt in the db for cover image in image tag
         public int PagesCount { get; set; }
 
 
+        [JsonIgnore]
+        [ForeignKey("AuthorID")]
+        virtual public Author Author { get; set; }
 
         [JsonIgnore]
         [ForeignKey("SeireID")]
         virtual public BookSeire BookSeire { get; set; }
 
 
-        [JsonIgnore]
-        [ForeignKey("AuthorID")]
-        virtual public Account Account { get; set; }
+
         [JsonIgnore]
         virtual public List<BookList> ListItems { get; set; }
         [JsonIgnore]
@@ -54,6 +54,10 @@ namespace CatalogsBooksAPI.Models
         virtual public List<UserPreferedAuthor> UserPreferedAuthors { get; set; }
         [JsonIgnore]
         virtual public List<UserPreferredCategory> UserPreferedCategories { get; set; }
+
+        [JsonIgnore]
+        [ForeignKey("CategoryID")]
+        virtual public Category Category { get; set; }
 
     }
 }

@@ -7,17 +7,12 @@ namespace CatalogsBooksAPI.Models.Config
     {
         public void Configure(EntityTypeBuilder<UserPreferredCategory> builder)
         {
-            builder.HasKey(upc => new { upc.AccountID, upc.Category, upc.SubCategory });
+            builder.HasKey(upc => new { upc.AccountID, upc.CategoryID });
 
 
-            // builder.HasIndex(b => new { b.Category, b.SubCategory })
-            //    .IsUnique();
-
-            builder.HasOne<Book>()
-                .WithMany()
-                .HasForeignKey(upc => new { upc.Category, upc.SubCategory })
-                .HasPrincipalKey(b => new { b.Category, b.SubCategory });
-
+            builder.HasOne(upa => upa.Account)
+             .WithMany()
+             .HasForeignKey(upa => upa.AccountID);
 
         }
     }

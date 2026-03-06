@@ -16,7 +16,7 @@ namespace CatalogsBooksAPI.Models
         public string PermissionLevel { get; set; }
 
         [JsonIgnore]
-        virtual public List<Book> Books { get; set; }
+        virtual public Author Author { get; set; }
         [JsonIgnore]
         virtual public List<Review> Reviews { get; set; }
         [JsonIgnore]

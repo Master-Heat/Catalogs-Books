@@ -7,14 +7,11 @@ namespace CatalogsBooksAPI.Models.Config
     {
         public void Configure(EntityTypeBuilder<UserPreferedAuthor> builder)
         {
-            builder.HasKey(upa => new { upa.AccountID, upa.AuthorName });
+            builder.HasKey(upa => new { upa.AuthorID, upa.AccountID });
 
-            builder.HasIndex(b => b.AuthorName).IsUnique();
 
-            builder.HasOne<Book>().
-                WithMany().
-                HasForeignKey(upa => upa.AuthorName).
-                HasPrincipalKey(b => b.AuthorName);
+
+
         }
     }
 }
