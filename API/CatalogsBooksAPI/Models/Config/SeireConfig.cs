@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CatalogsBooksAPI.Models.Config
 {
-    public class BookSeireConfig : IEntityTypeConfiguration<BookSeire>
+    public class SeireConfig : IEntityTypeConfiguration<Seire>
     {
-        public void Configure(EntityTypeBuilder<BookSeire> builder)
+        public void Configure(EntityTypeBuilder<Seire> builder)
         {
 
         }

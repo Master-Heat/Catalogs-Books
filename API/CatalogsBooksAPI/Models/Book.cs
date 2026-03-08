@@ -16,7 +16,7 @@ namespace CatalogsBooksAPI.Models
         [Required]
         public string Title { get; set; }
 
-        public int? SeireID { get; set; }
+
         public DateOnly? PublicationDate { get; set; }
         public bool CanDownload { get; set; }
         // this variable just to tell if the book avilable on our website or not 
@@ -35,8 +35,7 @@ namespace CatalogsBooksAPI.Models
         virtual public Author Author { get; set; }
 
         [JsonIgnore]
-        [ForeignKey("SeireID")]
-        virtual public BookSeire BookSeire { get; set; }
+        virtual public Seire Seire { get; set; }
 
 
 

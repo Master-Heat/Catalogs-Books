@@ -4,13 +4,15 @@ using System.Text.Json.Serialization;
 
 namespace CatalogsBooksAPI.Models
 {
-    public class BookSeire
+    public class Seire
     {
         [Key]
-        public int SeireID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int BookID { get; set; }
         public string SeireName { get; set; }
 
         [JsonIgnore]
-        virtual public List<Book> Books { get; set; }
+        [ForeignKey("BookID")]
+        virtual public Book Books { get; set; }
     }
 }

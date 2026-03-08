@@ -38,7 +38,6 @@ namespace CatalogsBooksAPI.Controllers
         public IActionResult CreateBook(
             [FromForm] int authorId,
             [FromForm] string title,
-            [FromForm] int? seriesId,
             [FromForm] DateOnly? publicationDate, // Changed to nullable DateOnly?
             [FromForm] bool canDownload,
             [FromForm] string downloadLink,
@@ -56,8 +55,6 @@ namespace CatalogsBooksAPI.Controllers
 
 
 
-            // 2. Handle 0 values from Form/Swagger (Zero-to-Null Logic)
-            if (seriesId == 0) seriesId = null;
 
             // Note: If publicationDate is sent as an empty string ("") 
             // ASP.NET Core will automatically bind it as null because of the DateOnly? type.
@@ -81,7 +78,6 @@ namespace CatalogsBooksAPI.Controllers
                 AuthorID = authorId,
                 Title = title,
 
-                SeireID = seriesId,
                 PublicationDate = (DateOnly)(publicationDate.HasValue ? publicationDate.Value : default(DateOnly)),
                 // Note: If your database column is NOT NULL, it needs a default. 
                 // If the DB column IS NULL, change the Book.cs model property to DateOnly? 
@@ -108,7 +104,7 @@ namespace CatalogsBooksAPI.Controllers
         public async Task<ActionResult<Book>> GetBookById(int id)
         {
             var book = await _context.Books
-                .Include(b => b.BookSeire)
+                .Include(b => b.Seire)
                 .Include(b => b.Author)
                 .Include(b => b.Category)
                 .FirstOrDefaultAsync(b => b.BookID == id);

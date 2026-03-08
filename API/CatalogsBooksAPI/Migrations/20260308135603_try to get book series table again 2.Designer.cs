@@ -4,6 +4,7 @@ using CatalogsBooksAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatalogsBooksAPI.Migrations
 {
     [DbContext(typeof(CatalogsBooksContext))]
-    partial class CatalogsBooksContextModelSnapshot : ModelSnapshot
+    [Migration("20260308135603_try to get book series table again 2")]
+    partial class trytogetbookseriestableagain2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,6 +139,19 @@ namespace CatalogsBooksAPI.Migrations
                     b.ToTable("BookLists");
                 });
 
+            modelBuilder.Entity("CatalogsBooksAPI.Models.BookSeire", b =>
+                {
+                    b.Property<int>("BookID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SeireName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BookID");
+
+                    b.ToTable("BookSeires");
+                });
+
             modelBuilder.Entity("CatalogsBooksAPI.Models.Category", b =>
                 {
                     b.Property<int>("CategoryID")
@@ -182,19 +198,6 @@ namespace CatalogsBooksAPI.Migrations
                     b.HasIndex("BookID");
 
                     b.ToTable("Reviews");
-                });
-
-            modelBuilder.Entity("CatalogsBooksAPI.Models.Seire", b =>
-                {
-                    b.Property<int>("BookID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SeireName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BookID");
-
-                    b.ToTable("Seires");
                 });
 
             modelBuilder.Entity("CatalogsBooksAPI.Models.UserList", b =>
@@ -320,6 +323,17 @@ namespace CatalogsBooksAPI.Migrations
                     b.Navigation("UserList");
                 });
 
+            modelBuilder.Entity("CatalogsBooksAPI.Models.BookSeire", b =>
+                {
+                    b.HasOne("CatalogsBooksAPI.Models.Book", "Books")
+                        .WithOne("BookSeire")
+                        .HasForeignKey("CatalogsBooksAPI.Models.BookSeire", "BookID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Books");
+                });
+
             modelBuilder.Entity("CatalogsBooksAPI.Models.Review", b =>
                 {
                     b.HasOne("CatalogsBooksAPI.Models.Account", "Account")
@@ -337,17 +351,6 @@ namespace CatalogsBooksAPI.Migrations
                     b.Navigation("Account");
 
                     b.Navigation("Book");
-                });
-
-            modelBuilder.Entity("CatalogsBooksAPI.Models.Seire", b =>
-                {
-                    b.HasOne("CatalogsBooksAPI.Models.Book", "Books")
-                        .WithOne("Seire")
-                        .HasForeignKey("CatalogsBooksAPI.Models.Seire", "BookID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("CatalogsBooksAPI.Models.UserList", b =>
@@ -450,11 +453,11 @@ namespace CatalogsBooksAPI.Migrations
 
             modelBuilder.Entity("CatalogsBooksAPI.Models.Book", b =>
                 {
+                    b.Navigation("BookSeire");
+
                     b.Navigation("ListItems");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("Seire");
 
                     b.Navigation("UserPreferedAuthors");
 
