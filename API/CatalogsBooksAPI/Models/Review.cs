@@ -14,12 +14,8 @@ namespace CatalogsBooksAPI.Models
         public int AccountID { get; set; }
         public string ReviewText { get; set; }
         public double RateValue { get; set; }
-        // todo for relationships create the following  vitual things
-        /*
-        1- Review  
-        2- Account
-            and configure the foreign keys  [ForeignKey("BookID")], [ForeignKey("AccountID")]
-        */
+        public DateTime ReviewDate { get; set; }
+
         [JsonIgnore]
         [ForeignKey("BookID")]
         public Book Book { get; set; }
