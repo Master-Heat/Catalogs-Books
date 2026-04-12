@@ -46,7 +46,7 @@ namespace CatalogsBooksAPI.Controllers
             {
                 UserName = username,
                 Email = email,
-                PermissionLevel = permissionLevel
+                IsAdmin = false
             };
 
             // Hash the password using Microsoft.Extensions.Identity.Core

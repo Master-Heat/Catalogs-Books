@@ -9,11 +9,12 @@ namespace CatalogsBooksAPI.Models
         public int AccountID { get; set; }
         public string UserName { get; set; }
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         public string PasswordHash { get; set; }
         [Required]
-        public string PermissionLevel { get; set; }
+        public bool IsAdmin { get; set; }
 
         [JsonIgnore]
         virtual public Author Author { get; set; }
