@@ -21,8 +21,8 @@ namespace CatalogsBooksAPI.DTOs.BooksDTOs
         public bool IsInSeire { get; set; }
         public string SeireName { get; set; }
 
-        // from queries
-        public int Views { get; set; }
-        public int Downloads { get; set; }
+        // from query with viewed books 
+        public int ViewsCount { get; set; }
+
     }
 }
