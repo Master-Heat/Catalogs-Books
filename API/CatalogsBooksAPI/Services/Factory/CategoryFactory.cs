@@ -9,7 +9,7 @@ namespace CatalogsBooksAPI.Services.Factories
     public interface ICategoryFactory
     {
         Task<Category> FindCategoryAsync(string mainCategory, string subcategory);
-        Task<Category> CreateCategoryFromDTOAsync(CategoryInfoDTO categoryDto);
+        Task<Category> CreateCategoryFromDTOAsync(CategoryCreateDTO categoryDto);
     }
 
 
@@ -35,7 +35,7 @@ namespace CatalogsBooksAPI.Services.Factories
         }
 
         // 2. Creation Logic
-        public async Task<Category> CreateCategoryFromDTOAsync(CategoryInfoDTO categoryDto)
+        public async Task<Category> CreateCategoryFromDTOAsync(CategoryCreateDTO categoryDto)
         {
             // First, validate the input
             ValidateCategoryDTO(categoryDto);
@@ -60,7 +60,7 @@ namespace CatalogsBooksAPI.Services.Factories
             return newCategory;
         }
 
-        private void ValidateCategoryDTO(CategoryInfoDTO categoryDto)
+        private void ValidateCategoryDTO(CategoryCreateDTO categoryDto)
         {
             if (categoryDto == null)
                 throw new ArgumentNullException(nameof(categoryDto), "Category data cannot be null.");

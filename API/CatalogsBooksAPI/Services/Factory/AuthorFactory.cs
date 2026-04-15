@@ -9,7 +9,7 @@ namespace CatalogsBooksAPI.Services.Factories
     public interface IAuthorFactory
     {
         // Creates a DTO from a Model
-        Task<Author> CreateAuthorFromDTOAsync(AuthorInfoDTO author);
+        Task<Author> CreateAuthorFromDTOAsync(AuthorCreateDTO author);
     }
 
     public class AuthorFactory : IAuthorFactory
@@ -31,7 +31,7 @@ namespace CatalogsBooksAPI.Services.Factories
         }
 
         // 2. Creation Logic (Uses Search to prevent duplicates)
-        public async Task<Author> CreateAuthorFromDTOAsync(AuthorInfoDTO authorDto)
+        public async Task<Author> CreateAuthorFromDTOAsync(AuthorCreateDTO authorDto)
         {
             // First, ensure the data is valid
             ValidateAuthorDTO(authorDto);
@@ -47,14 +47,14 @@ namespace CatalogsBooksAPI.Services.Factories
             var newAuthor = new Author
             {
                 AuthorName = authorDto.AuthorName,
-                AccountID = authorDto.AccountID // Stays null if not provided
+                AccountID = null
             };
 
             _context.Authors.Add(newAuthor);
 
             return newAuthor;
         }
-        private void ValidateAuthorDTO(AuthorInfoDTO authorDto)
+        private void ValidateAuthorDTO(AuthorCreateDTO authorDto)
         {
             if (authorDto == null)
                 throw new ArgumentNullException(nameof(authorDto), "Author data cannot be null.");

@@ -1,11 +1,7 @@
 namespace CatalogsBooksAPI.DTOs.AuthorDTOs
 {
-    public class AuthorInfoDTO
+    public class AuthorCreateDTO
     {
-
-
-        public int? AccountID { get; set; }
-
         public string AuthorName { get; set; }
 
     }
