@@ -1,62 +1,81 @@
-// // API/CatalogsBooksAPI/Services/Factories/BookFactory.cs
-// using CatalogsBooksAPI.DTOs.BooksDTOs;
-// using CatalogsBooksAPI.Models;
-
-// namespace CatalogsBooksAPI.Services.Factories
-// {
-//     /// <summary>
-//     /// Factory Pattern: Encapsulates book creation logic
-//     /// Replaces direct instantiation in controller
-//     /// </summary>
-//     public interface IBookFactory
-//     {
-//         Book CreateFromRequest(BookDetailsDTO request);
-//     }
 
 
-//     public class BookFactory : IBookFactory
-//     {
-//         private readonly CatalogsBooksContext _context;
 
-//         public BookFactory(CatalogsBooksContext context)
-//         {
-//             _context = context;
-//         }
+namespace CatalogsBooksAPI.Services.Factories
+{
+    using System.Linq;
+    using System.Threading.Tasks;
+    using CatalogsBooksAPI.DTOs.BooksDTOs;
+    using CatalogsBooksAPI.Models;
+    using Microsoft.EntityFrameworkCore;
 
-//         public Book CreateFromRequest(BookDetailsDTO request)
-//         {
-//             ValidateRequest(request);
+    public interface IBookFactory
+    {
+        Task<Book> CreateFromDTO(CreateBookDTO dto);
+    }
+    public class BookFactory : IBookFactory
+    {
+        private readonly CatalogsBooksContext _context;
+        // public CategoryFactory(CatalogsBooksContext context)
+        // {
+        //     _context = context;
+        // }
+        public async Task<Book> CreateFromDTO(CreateBookDTO dto)
+        {
+            // 1. Validate the incoming data
+            ValidateBookDTO(dto);
 
-//             var book = new Book
-//             {
-//                 // AuthorID = request.AuthorId,
-//                 Title = request.Title,
-//                 PublicationDate = request.PublicationDate ?? default(DateOnly),
-//                 CanDownload = request.CanDownload,
-//                 DownloadLink = request.DownloadLink,
-//                 Description = request.Description,
-//                 CategoryID = request.CategoryID,
-//                 CoverImageLink = request.CoverImageLink,
-//                 CoverAlt = request.CoverAlt,
-//                 PagesCount = request.PagesCount
-//             };
+            var existingBook = await FindBookAsync(dto.Title);
+            if (existingBook != null)
+            {
+                return existingBook;
+            }
 
-//             return book;
-//         }
+            // 2. Map DTO to Model
 
-//         private void ValidateRequest(BookDetailsDTO request)
-//         {
-//             if (string.IsNullOrWhiteSpace(request.Title))
-//                 throw new ArgumentException("Title is required");
+            return new Book
+            {
+                Title = dto.Title,
+                AuthorID = dto.AuthorID,
+                CategoryID = dto.CategoryID,
+                Description = dto.Description,
+                PagesCount = dto.PagesCount,
+                CanDownload = dto.CanDownload,
+                DownloadLink = dto.DownloadLink,
+                CoverImageLink = dto.CoverImageLink,
+                CoverAlt = dto.CoverAlt,
 
-//             //todo make it rather that search author by id it search by name and if it didn't find any one create new author
-//             if (request.AuthorID > 0 && !_context.Authors.Any(a => a.AuthorID == request.AuthorID))
-//                 throw new ArgumentException("Invalid AuthorID");
-//             //todo : create if author is not exist create new author with the same name
+                // Handle the nullable DateOnly - default to today if null
+                PublicationDate = dto.PublicationDate ?? DateOnly.FromDateTime(DateTime.Now)
+            };
+        }
 
-//             if (request.CategoryID > 0 && !_context.Categories.Any(c => c.CategoryID == request.CategoryID))
-//                 throw new ArgumentException("Invalid CategoryID");
-//             //todo : create if category is not exist create new category with the same name
-//         }
-//     }
-// }
+        private void ValidateBookDTO(CreateBookDTO dto)
+        {
+            if (dto == null)
+                throw new ArgumentNullException(nameof(dto), "Book data cannot be null.");
+
+            if (string.IsNullOrWhiteSpace(dto.Title))
+                throw new ArgumentException("Book Title is required.");
+
+            if (dto.AuthorID <= 0)
+                throw new ArgumentException("A valid Author must be selected.");
+
+            if (dto.CategoryID <= 0)
+                throw new ArgumentException("A valid Category must be selected.");
+
+            if (dto.PagesCount <= 0)
+                throw new ArgumentException("Pages count cannot be negative or zero");
+
+            // Logic validation: If it's downloadable, it must have a link
+            if (dto.CanDownload && string.IsNullOrWhiteSpace(dto.DownloadLink))
+                throw new ArgumentException("Download link is required if the book is set to 'Can Download'.");
+        }
+        public async Task<Book> FindBookAsync(string bookTitle)
+        {
+            return await _context.Books
+           .FirstOrDefaultAsync(c =>
+           c.Title.ToLower() == bookTitle.ToLower());
+        }
+    }
+}

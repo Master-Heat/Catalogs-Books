@@ -20,7 +20,7 @@ namespace CatalogsBooksAPI.Models
         public DateOnly? PublicationDate { get; set; }
         public bool CanDownload { get; set; }
         // this variable just to tell if the book avilable on our website or not 
-        //todo use it to tell that download link is from external website 
+        // use it to tell that download link is from external website 
         public string DownloadLink { get; set; }
         public string Description { get; set; }
         public int CategoryID { get; set; }
