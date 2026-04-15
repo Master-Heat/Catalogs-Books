@@ -1,0 +1,67 @@
+namespace CatalogsBooksAPI.Services.Factories
+{
+    using CatalogsBooksAPI.DTOs.AuthorDTOs;
+    using CatalogsBooksAPI.Models;
+    using Microsoft.EntityFrameworkCore;
+
+
+
+    public interface IAuthorFactory
+    {
+        // Creates a DTO from a Model
+        Task<Author> CreateAuthorFromDTOAsync(AuthorInfoDTO author);
+    }
+
+    public class AuthorFactory : IAuthorFactory
+    {
+        private readonly CatalogsBooksContext _context;
+
+        public AuthorFactory(CatalogsBooksContext context)
+        {
+            _context = context;
+        }
+
+        // 1. Pure Search Logic
+        public async Task<Author> FindAuthorByNameAsync(string authorName)
+        {
+            if (string.IsNullOrWhiteSpace(authorName)) return null;
+
+            return await _context.Authors
+                .FirstOrDefaultAsync(a => a.AuthorName.ToLower() == authorName.ToLower());
+        }
+
+        // 2. Creation Logic (Uses Search to prevent duplicates)
+        public async Task<Author> CreateAuthorFromDTOAsync(AuthorInfoDTO authorDto)
+        {
+            // First, ensure the data is valid
+            ValidateAuthorDTO(authorDto);
+
+            // Second, check for existing author to prevent duplicates
+            var existingAuthor = await FindAuthorByNameAsync(authorDto.AuthorName);
+            if (existingAuthor != null)
+            {
+                return existingAuthor;
+            }
+
+            // Third, map to the model and add to context
+            var newAuthor = new Author
+            {
+                AuthorName = authorDto.AuthorName,
+                AccountID = authorDto.AccountID // Stays null if not provided
+            };
+
+            _context.Authors.Add(newAuthor);
+
+            return newAuthor;
+        }
+        private void ValidateAuthorDTO(AuthorInfoDTO authorDto)
+        {
+            if (authorDto == null)
+                throw new ArgumentNullException(nameof(authorDto), "Author data cannot be null.");
+
+            if (string.IsNullOrWhiteSpace(authorDto.AuthorName))
+                throw new ArgumentException("Author Name is required.");
+        }
+
+    }
+}

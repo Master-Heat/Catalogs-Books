@@ -2,6 +2,7 @@ namespace CatalogsBooksAPI.DTOs.BooksDTOs
 {
     public class BookDetailsDTO
     {
+
         public int BookID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -13,10 +14,13 @@ namespace CatalogsBooksAPI.DTOs.BooksDTOs
         public int PagesCount { get; set; }
 
         // from authortable
+        public int AuthorID { get; set; }
         public string AuthorName { get; set; }
         //from category
+        public int CategoryID { get; set; }
         public string MainCategory { get; set; }
         public string Sbucategory { get; set; }
+
         // from seires
         public bool IsInSeire { get; set; }
         public string SeireName { get; set; }
