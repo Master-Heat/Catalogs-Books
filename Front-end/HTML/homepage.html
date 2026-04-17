@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="../CSS/homepage.css">
+    <script src="../JavaScript/animations.js" defer></script>
+    <script src="../JavaScript/functions.js" defer></script>
+    <script src="../JavaScript/books.js" defer></script>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="nav-bar">
+        <div class="nav-logo"><a href="index.html">Catalogs</a></div>
+
+        <div class="nav-search">
+            <input type="text" placeholder="Search for books..." id="navSearchInput" />
+            <span class="search-icon">
+                <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+            </span>
+        </div>
+
+        <div class="nav-actions">
+            <a href="./charts.html" class="btn-charts">
+                <img src="../assets/Images/Home Page/BarChart3.svg" alt="charts icon">
+                <span>Charts</span>
+            </a>
+            <a href="./aichat.html" class="btn-ai">
+                <img src="../assets/Images/Home Page/Sparkles.svg" alt="sparkles icon">
+                <span>AI</span>
+            </a>
+            <a href="./useraccount.html" class="btn-account">
+                <img src="../assets/Images/Home Page/User.svg" alt="user icon">
+                <span>Account</span>
+            </a>
+        </div>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <a href="./charts.html" class="mobile-btn-charts">
+            <img src="../assets/Images/Home Page/BarChart3.svg" alt="charts icon">
+            Charts
+        </a>
+        <a href="./aichat.html" class="mobile-btn-ai">
+            <img src="../assets/Images/Home Page/Sparkles.svg" alt="sparkles icon">
+            AI
+        </a>
+        <a href="./useraccount.html" class="mobile-btn-account">
+            <img src="../assets/Images/Home Page/User.svg" alt="user icon">
+            Account
+        </a>
+        <div class="mobile-search">
+            <input type="text" placeholder="Search for books..." id="mobileSearchInput" />
+            <span class="search-icon">
+                <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+            </span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <section class="book-section">
+            <h2 class="section-title">Recently Added</h2>
+            <div class="scroll-wrapper">
+                <div class="books-row" id="row-recent">
+                    <!-- JS will inject cards here -->
+                </div>
+            </div>
+        </section>
+
+        <section class="book-section">
+            <h2 class="section-title">Recommended for You</h2>
+            <div class="scroll-wrapper">
+                <div class="books-row" id="row-recommended">
+                </div>
+            </div>
+        </section>
+
+        <section class="book-section">
+            <h2 class="section-title">Popular This Week</h2>
+            <div class="scroll-wrapper">
+                <div class="books-row" id="row-popular">
+                </div>
+            </div>
+        </section>
+
+        <section class="book-section">
+            <h2 class="section-title">New Releases</h2>
+            <div class="scroll-wrapper">
+                <div class="books-row" id="row-new">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">
+            <a href="#">Catalogs</a>
+        </div>
+        <nav class="footer-links">
+            <a>About</a>
+            <a>Contact</a>
+            <a>Privacy</a>
+            <a>Terms</a>
+        </nav>
+        <span class="footer-copy">&copy; 2026 Catalogs</span>
+    </footer>
+
+</body>
+
+</html>

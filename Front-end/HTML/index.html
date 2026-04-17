@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catalogs</title>
+  <link rel="stylesheet" href="../CSS/index.css">
+  <script src="../JavaScript/animations.js" defer></script>
+  <script src="../JavaScript/functions.js" defer></script>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="nav-bar">
+    <div class="nav-logo"><a href="homepage.html">Catalogs</a></div>
+
+    <div class="nav-search">
+      <input type="text" placeholder="Search for books..." id="navSearchInput" />
+      <span class="search-icon">
+        <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+      </span>
+    </div>
+
+    <div class="nav-actions">
+      <a href="./login.html" class="btn-login">
+        <img src="../assets/Images/Landing Page/LogIn.svg" alt="login icon">
+        <span>Log In</span>
+      </a>
+      <a href="./signup.html" class="btn-signup">
+        <img src="../assets/Images/Landing Page/UserPlus.svg" alt="sign up icon">
+        <span>Sign Up</span>
+      </a>
+    </div>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="./login.html" class="mobile-btn-login">
+      <img src="../assets/Images/Landing Page/LogIn.svg" alt="login icon">
+      Log In
+    </a>
+    <a href="./signup.html" class="mobile-btn-signup">
+      <img src="../assets/Images/Landing Page/UserPlus.svg" alt="sign up icon">
+      Sign Up
+    </a>
+    <div class="mobile-search">
+      <input type="text" placeholder="Search for books..." id="mobileSearchInput" />
+      <span class="search-icon">
+        <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+      </span>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>A Comprehensive Books Website</h1>
+      <p>Catalogs is a book library website that provides you with all the features any reader would need.</p>
+      <a href="./signup.html" class="btn-get-started">Get Started</a>
+    </div>
+    <div class="hero-visual">
+      <img src="../assets/Images/Landing Page/Hero-visual.png" alt="Book to Phone illustration" />
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="features">
+    <h2 class="features-title">Website's Features</h2>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-img-wrap">
+          <img src="../assets/Images/Landing Page/Feature-browse.png" alt="Browsing Books" />
+        </div>
+        <span class="feature-number">1</span>
+        <h3>Browsing Books</h3>
+        <p>Browse a library of books and view their details.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img-wrap">
+          <img src="../assets/Images/Landing Page/Feature-download.png" alt="Viewing and Downloading Books" />
+        </div>
+        <span class="feature-number">2</span>
+        <h3>Viewing and Downloading Books</h3>
+        <p>View and Download Books either from us or different providers.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img-wrap">
+          <img src="../assets/Images/Landing Page/Feature-review.png" alt="Rating and Reviewing Books" />
+        </div>
+        <span class="feature-number">3</span>
+        <h3>Rating and Reviewing Books</h3>
+        <p>Rate and Review Books to communicate with other users.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img-wrap">
+          <img src="../assets/Images/Landing Page/Feature-list.png" alt="Adding Books to Lists" />
+        </div>
+        <span class="feature-number">4</span>
+        <h3>Adding Books to Lists</h3>
+        <p>Add books to lists to save it or suggest it to other users.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img-wrap">
+          <img src="../assets/Images/Landing Page/Feature-recommend.png" alt="Books Recommendations" />
+        </div>
+        <span class="feature-number">5</span>
+        <h3>Books Recommendations</h3>
+        <p>Get book recommendations through lists generating for you or through chatting with AI Assistant.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img-wrap">
+          <img src="../assets/Images/Landing Page/Feature-charts.png" alt="Books Charts" />
+        </div>
+        <span class="feature-number">6</span>
+        <h3>Books Charts</h3>
+        <p>View Books charts based on users' ratings.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BEST SELLERS SECTION -->
+  <section class="bestsellers">
+    <h2 class="bestsellers-title">Most-Viewed Books on Our Website:</h2>
+    <div class="bestsellers-grid">
+
+      <div class="book-card">
+        <div class="book-cover">No Cover</div>
+        <div class="book-description">
+          <h4>To Kill a Mockingbird</h4>
+          <p>Harper Lee</p>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover">No Cover</div>
+        <div class="book-description">
+          <h4>1984</h4>
+          <p>George Orwell</p>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover">No Cover</div>
+        <div class="book-description">
+          <h4>Pride and Prejudice</h4>
+          <p>Jane Austen</p>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover">No Cover</div>
+        <div class="book-description">
+          <h4>The Great Gatsby</h4>
+          <p>F. Scott Fitzgerald</p>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover">No Cover</div>
+        <div class="book-description">
+          <h4>Moby Dick</h4>
+          <p>Herman Melville</p>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover">No Cover</div>
+        <div class="book-description">
+          <h4>The Catcher in the Rye</h4>
+          <p>J.D. Salinger</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <a href="#">Catalogs</a>
+    </div>
+    <nav class="footer-links">
+      <a>About</a>
+      <a>Contact</a>
+      <a>Privacy</a>
+      <a>Terms</a>
+    </nav>
+    <span class="footer-copy">&copy; 2026 Catalogs</span>
+  </footer>
+
+</body>
+
+</html>
