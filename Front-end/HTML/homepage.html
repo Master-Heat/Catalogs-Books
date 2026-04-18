@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
+    <link rel="stylesheet" href="../CSS/Shared CSS/shared2.css">
     <link rel="stylesheet" href="../CSS/homepage.css">
     <script src="../JavaScript/animations.js" defer></script>
     <script src="../JavaScript/functions.js" defer></script>
@@ -14,7 +15,9 @@
 <body>
     <!-- NAVBAR -->
     <nav class="nav-bar">
-        <div class="nav-logo"><a href="index.html">Catalogs</a></div>
+        <div class="nav-logo">
+            <a href="index.html">Catalogs</a>
+        </div>
 
         <div class="nav-search">
             <input type="text" placeholder="Search for books..." id="navSearchInput" />
@@ -74,7 +77,6 @@
             <h2 class="section-title">Recently Added</h2>
             <div class="scroll-wrapper">
                 <div class="books-row" id="row-recent">
-                    <!-- JS will inject cards here -->
                 </div>
             </div>
         </section>
