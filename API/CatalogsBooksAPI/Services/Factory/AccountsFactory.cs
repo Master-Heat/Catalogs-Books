@@ -1,6 +1,7 @@
 
 using CatalogsBooksAPI.DTOs.AccountsDTOs;
 using CatalogsBooksAPI.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 namespace CatalogsBooksAPI.Services.Factories
 {
@@ -11,7 +12,7 @@ namespace CatalogsBooksAPI.Services.Factories
     public interface IAccountFactory
     {
         Task<Account> FindAccountByEmailAsync(string email);
-        Account CreateFromRegisterDTO(AccountRegisterDTO dto, string hashedPassword);
+        Account CreateFromRegisterDTO(AccountRegisterDTO dto);
     }
 
 
@@ -20,6 +21,7 @@ namespace CatalogsBooksAPI.Services.Factories
     {
         private readonly CatalogsBooksContext _context;
 
+        private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
         public AccountFactory(CatalogsBooksContext context)
         {
             _context = context;
@@ -36,17 +38,19 @@ namespace CatalogsBooksAPI.Services.Factories
         }
 
         // 2. Creation Logic
-        public Account CreateFromRegisterDTO(AccountRegisterDTO dto, string hashedPassword)
+        public Account CreateFromRegisterDTO(AccountRegisterDTO dto)
         {
             ValidateRegisterDTO(dto);
 
-            return new Account
+            Account account = new Account
             {
                 UserName = dto.UserName,
                 Email = dto.Email,
-                PasswordHash = hashedPassword,
+
                 IsAdmin = false // Defaulting to false as requested
             };
+            account.PasswordHash = _passwordHasher.HashPassword(account, dto.Password);
+            return account;
         }
 
         private void ValidateRegisterDTO(AccountRegisterDTO dto)

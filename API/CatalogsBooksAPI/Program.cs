@@ -1,4 +1,5 @@
 using CatalogsBooksAPI.Models;
+using CatalogsBooksAPI.Services.Factories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Identity.Core;
 var builder = WebApplication.CreateBuilder(args);
@@ -13,10 +14,41 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 
 // 2. Add this to generate the Swagger JSON
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    // ... your other JWT/Swagger settings ...
+
+    options.TagActionsBy(api =>
+    {
+        // This takes the namespace (e.g., YourProject.Controllers.Admin) 
+        // and uses the last part as the heading name
+        if (api.GroupName != null)
+        {
+            return new[] { api.GroupName };
+        }
+
+        var controllerActionDescriptor = api.ActionDescriptor as Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor;
+        if (controllerActionDescriptor != null)
+        {
+            // Option A: Use the full namespace
+            // return new[] { controllerActionDescriptor.ControllerTypeInfo.Namespace };
+
+            // Option B: Use just the last part of the namespace (e.g. "Admin" or "Inventory")
+            var parts = controllerActionDescriptor.ControllerTypeInfo.Namespace.Split('.');
+            return new[] { parts.Last() };
+        }
+
+        return new[] { api.RelativePath };
+    });
+
+    // This helps Swagger keep the operations sorted correctly within the new groups
+    options.DocInclusionPredicate((name, api) => true);
+});
 
 // 3. Keep your Controller support
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IAccountFactory, AccountFactory>();
 
 builder.Services.AddDbContext<CatalogsBooksContext>(options =>
 {
