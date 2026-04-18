@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="../CSS/signup.css">
+    <script src="../JavaScript/animations.js" defer></script>
+    <script src="../JavaScript/functions.js" defer></script>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="nav-bar">
+        <div class="nav-logo">
+            <a href="../HTML/index.html">Catalogs</a>
+        </div>
+
+        <div class="nav-search">
+            <input type="text" placeholder="Search for books..." id="navSearchInput" />
+            <span class="search-icon">
+                <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+            </span>
+        </div>
+
+        <div class="nav-actions">
+            <a href="./login.html" class="btn-login">
+                <img src="../assets/Images/Landing Page/LogIn.svg" alt="login icon">
+                <span>Log In</span>
+            </a>
+            <a href="./signup.html" class="btn-signup">
+                <img src="../assets/Images/Landing Page/UserPlus.svg" alt="sign up icon">
+                <span>Sign Up</span>
+            </a>
+        </div>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <a href="./login.html" class="mobile-btn-login">
+            <img src="../assets/Images/Landing Page/LogIn.svg" alt="login icon">
+            Log In
+        </a>
+        <a href="./signup.html" class="mobile-btn-signup">
+            <img src="../assets/Images/Landing Page/UserPlus.svg" alt="sign up icon">
+            Sign Up
+        </a>
+        <div class="mobile-search">
+            <input type="text" placeholder="Search for books..." id="mobileSearchInput" />
+            <span class="search-icon">
+                <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+            </span>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="signup-card">
+            <h2 class="signup-title">Create Account</h2>
+
+            <form class="signup-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                </div>
+
+                <button type="submit" class="btn-signup-submit">Create Account</button>
+            </form>
+
+            <p class="login-link">
+                Already have an account? <a href="../HTML/login.html">Log in</a>
+            </p>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">
+            <a href="../HTML/index.html">Catalogs</a>
+        </div>
+        <nav class="footer-links">
+            <a>About</a>
+            <a>Contact</a>
+            <a>Privacy</a>
+            <a>Terms</a>
+        </nav>
+        <span class="footer-copy">&copy; 2026 Catalogs</span>
+    </footer>
+</body>
+
+</html>
