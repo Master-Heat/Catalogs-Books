@@ -9,6 +9,7 @@ namespace CatalogsBooksAPI.DTOs.AccountsDTOs
         public string UserName { get; set; }
         [Required]
         public string Email { get; set; }
+        public string AccessToken { get; set; }
 
     }
 }
