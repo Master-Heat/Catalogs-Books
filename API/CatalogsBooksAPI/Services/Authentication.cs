@@ -5,6 +5,7 @@ using System.Text;
 using Azure.Core;
 using CatalogsBooksAPI.DTOs.AccountsDTOs;
 using CatalogsBooksAPI.Models;
+using CatalogsBooksAPI.Repository;
 using CatalogsBooksAPI.Services.Factories;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Authorization;
@@ -17,16 +18,17 @@ namespace CatalogsBooksAPI.Services
     public class Authentication
     {
 
-        private readonly CatalogsBooksContext _context;
+
+        AccountRepo accountRepo;
 
         private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
 
         private readonly IAccountFactory _accountFactory;
         private readonly IConfiguration _config;
 
-        public Authentication(CatalogsBooksContext context, IConfiguration configuration)
+        public Authentication(AccountRepo accountRepo, IConfiguration configuration)
         {
-            _context = context;
+            this.accountRepo = accountRepo;
             _config = configuration;
         }
 
@@ -37,8 +39,7 @@ namespace CatalogsBooksAPI.Services
             {
                 return null;
             }
-            Account dbaccount = await _context.Accounts
-        .FirstOrDefaultAsync(a => a.Email.ToLower() == claimedAccount.Email.ToLower());
+            Account dbaccount = await accountRepo.GetAccountDataByEmail(claimedAccount.Email);
             if (dbaccount == null)
             {
                 return null;

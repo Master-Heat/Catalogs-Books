@@ -1,5 +1,6 @@
 using System.Text;
 using CatalogsBooksAPI.Models;
+using CatalogsBooksAPI.Repository;
 using CatalogsBooksAPI.Services;
 using CatalogsBooksAPI.Services.Factories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -93,6 +94,11 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IAccountFactory, AccountFactory>();
 
 builder.Services.AddScoped<Authentication>();
+
+
+builder.Services.AddScoped<AccountRepo>();
+
+
 
 builder.Services.AddDbContext<CatalogsBooksContext>(options =>
 {

@@ -1,6 +1,7 @@
 
 using CatalogsBooksAPI.DTOs.AccountsDTOs;
 using CatalogsBooksAPI.Models;
+using CatalogsBooksAPI.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 namespace CatalogsBooksAPI.Services.Factories
@@ -11,7 +12,7 @@ namespace CatalogsBooksAPI.Services.Factories
 
     public interface IAccountFactory
     {
-        Task<Account> FindAccountByEmailAsync(string email);
+
         Account CreateFromRegisterDTO(AccountRegisterDTO dto);
     }
 
@@ -19,23 +20,16 @@ namespace CatalogsBooksAPI.Services.Factories
 
     public class AccountFactory : IAccountFactory
     {
-        private readonly CatalogsBooksContext _context;
+        AccountRepo repo;
 
         private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
-        public AccountFactory(CatalogsBooksContext context)
+        public AccountFactory(AccountRepo repo)
         {
-            _context = context;
+            this.repo = repo;
         }
 
         // 1. Search Logic: Used to check if they should redirect to Login
-        public async Task<Account> FindAccountByEmailAsync(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email)) return null;
 
-            return await _context.Accounts
-                .AsQueryable()
-                .FirstOrDefaultAsync(a => a.Email.ToLower() == email.ToLower());
-        }
 
         // 2. Creation Logic
         public Account CreateFromRegisterDTO(AccountRegisterDTO dto)
@@ -63,6 +57,11 @@ namespace CatalogsBooksAPI.Services.Factories
 
             if (string.IsNullOrWhiteSpace(dto.Password))
                 throw new ArgumentException("Password is required.");
+            if (repo.GetAccountDataByEmail(dto.Email) != null)
+            {
+                throw new ArgumentException("Email is reserved for another account");
+
+            }
         }
     }
 }

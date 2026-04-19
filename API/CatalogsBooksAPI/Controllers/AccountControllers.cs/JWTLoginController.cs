@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using CatalogsBooksAPI.DTOs.AccountsDTOs;
 using CatalogsBooksAPI.Models;
+using CatalogsBooksAPI.Repository;
 using CatalogsBooksAPI.Services;
 using CatalogsBooksAPI.Services.Factories;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
@@ -14,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 
+
 namespace CatalogsBooksAPI.Controllers.AccountControllers
 {
     [Route("api/[controller]")]
@@ -21,17 +23,17 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
     public class LogInController : ControllerBase
     {
 
-        private readonly CatalogsBooksContext _context;
+        AccountRepo accountRepo;
 
         private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
 
-        private readonly IAccountFactory _accountFactory;
+        // private readonly IAccountFactory _accountFactory;
         private readonly IConfiguration _config;
         private readonly Authentication _authentication;
 
-        public LogInController(CatalogsBooksContext context, IConfiguration configuration, Authentication authentication)
+        public LogInController(AccountRepo accountRepo, IConfiguration configuration, Authentication authentication)
         {
-            _context = context;
+            this.accountRepo = accountRepo;
             _config = configuration;
             _authentication = authentication;
         }
