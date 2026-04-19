@@ -4,7 +4,7 @@
 
 const bookData = {
   recent: [
-    { title: "To Kill a Mockingbird", author: "Harper Lee", cover: null },
+    { title: "To Kill a Mockingbird", author: "Harper Lee", cover: "../assets/To_Kill_a_Mockingbird_(first_edition_cover).jpg" },
     { title: "1984", author: "George Orwell", cover: null },
     { title: "Pride and Prejudice", author: "Jane Austen", cover: null },
     { title: "The Great Gatsby", author: "F. Scott Fitzgerald", cover: null },

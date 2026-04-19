@@ -5,15 +5,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Catalogs</title>
+  <link rel="stylesheet" href="../CSS/Shared CSS/shared1.css">
   <link rel="stylesheet" href="../CSS/index.css">
   <script src="../JavaScript/animations.js" defer></script>
   <script src="../JavaScript/functions.js" defer></script>
+  <script src="../JavaScript/books.js" defer></script>
 </head>
 
 <body>
   <!-- NAVBAR -->
   <nav class="nav-bar">
-    <div class="nav-logo"><a href="homepage.html">Catalogs</a></div>
+    <div class="nav-logo">
+      <a href="homepage.html">Catalogs</a>
+    </div>
 
     <div class="nav-search">
       <input type="text" placeholder="Search for books..." id="navSearchInput" />
@@ -134,57 +138,12 @@
 
   <!-- BEST SELLERS SECTION -->
   <section class="bestsellers">
-    <h2 class="bestsellers-title">Most-Viewed Books on Our Website:</h2>
-    <div class="bestsellers-grid">
-
-      <div class="book-card">
-        <div class="book-cover">No Cover</div>
-        <div class="book-description">
-          <h4>To Kill a Mockingbird</h4>
-          <p>Harper Lee</p>
+    <div class="book-section">
+      <h2 class="section-title">Most-Viewed Books on Our Website:</h2>
+      <div class="scroll-wrapper">
+        <div class="books-row" id="row-recent">
         </div>
       </div>
-
-      <div class="book-card">
-        <div class="book-cover">No Cover</div>
-        <div class="book-description">
-          <h4>1984</h4>
-          <p>George Orwell</p>
-        </div>
-      </div>
-
-      <div class="book-card">
-        <div class="book-cover">No Cover</div>
-        <div class="book-description">
-          <h4>Pride and Prejudice</h4>
-          <p>Jane Austen</p>
-        </div>
-      </div>
-
-      <div class="book-card">
-        <div class="book-cover">No Cover</div>
-        <div class="book-description">
-          <h4>The Great Gatsby</h4>
-          <p>F. Scott Fitzgerald</p>
-        </div>
-      </div>
-
-      <div class="book-card">
-        <div class="book-cover">No Cover</div>
-        <div class="book-description">
-          <h4>Moby Dick</h4>
-          <p>Herman Melville</p>
-        </div>
-      </div>
-
-      <div class="book-card">
-        <div class="book-cover">No Cover</div>
-        <div class="book-description">
-          <h4>The Catcher in the Rye</h4>
-          <p>J.D. Salinger</p>
-        </div>
-      </div>
-
     </div>
   </section>
 
