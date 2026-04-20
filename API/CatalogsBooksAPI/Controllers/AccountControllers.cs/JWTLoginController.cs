@@ -28,13 +28,13 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
         private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
 
         // private readonly IAccountFactory _accountFactory;
-        private readonly IConfiguration _config;
+        HomePageFactory homePageFactory;
         private readonly Authentication _authentication;
 
-        public LogInController(AccountRepo accountRepo, IConfiguration configuration, Authentication authentication)
+        public LogInController(AccountRepo accountRepo, HomePageFactory homePageFactory, Authentication authentication)
         {
             this.accountRepo = accountRepo;
-            _config = configuration;
+            this.homePageFactory = homePageFactory;
             _authentication = authentication;
         }
 
@@ -50,9 +50,9 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
                 return Unauthorized("Invalid User Name Or Password");
             }
 
+            HomeDashboardDTO dashboardData = await homePageFactory.GenerateHomeData(JWTToken, claimedAccount.Email);
 
-
-            return Ok(JWTToken);
+            return Ok(dashboardData);
         }
 
 

@@ -10,15 +10,9 @@ namespace CatalogsBooksAPI.Services.Factories
 
 
 
-    public interface IAccountFactory
-    {
-
-        Account CreateFromRegisterDTO(AccountRegisterDTO dto);
-    }
 
 
-
-    public class AccountFactory : IAccountFactory
+    public class AccountFactory
     {
         AccountRepo repo;
 
@@ -44,6 +38,16 @@ namespace CatalogsBooksAPI.Services.Factories
                 IsAdmin = false // Defaulting to false as requested
             };
             account.PasswordHash = _passwordHasher.HashPassword(account, dto.Password);
+            return account;
+        }
+        public async Task<UserAccountDTO> GetAccountDataByID(int id)
+        {
+            Account dbaccount = await repo.GetAccountDataByID(id);
+            UserAccountDTO account = new UserAccountDTO
+            {
+                UserName = dbaccount.UserName,
+                Email = dbaccount.Email
+            };
             return account;
         }
 

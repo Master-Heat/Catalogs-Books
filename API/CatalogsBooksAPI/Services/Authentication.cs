@@ -23,7 +23,7 @@ namespace CatalogsBooksAPI.Services
 
         private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
 
-        private readonly IAccountFactory _accountFactory;
+        private readonly AccountFactory _accountFactory;
         private readonly IConfiguration _config;
 
         public Authentication(AccountRepo accountRepo, IConfiguration configuration)

@@ -9,11 +9,7 @@ namespace CatalogsBooksAPI.Services.Factories
     using CatalogsBooksAPI.Models;
     using Microsoft.EntityFrameworkCore;
 
-    public interface IBookFactory
-    {
-        Task<Book> CreateFromDTO(CreateBookDTO dto);
-    }
-    public class BookFactory : IBookFactory
+    public class BookFactory
     {
         private readonly CatalogsBooksContext _context;
         // public CategoryFactory(CatalogsBooksContext context)

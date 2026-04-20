@@ -19,9 +19,9 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
 
         private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
 
-        private readonly IAccountFactory _accountFactory;
+        private readonly AccountFactory _accountFactory;
 
-        public RegisterController(AccountRepo accountRepo, IAccountFactory accountFactory)
+        public RegisterController(AccountRepo accountRepo, AccountFactory accountFactory)
         {
             this.accountRepo = accountRepo;
             _accountFactory = accountFactory;

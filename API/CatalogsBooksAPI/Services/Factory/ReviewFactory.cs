@@ -7,14 +7,8 @@ namespace CatalogsBooksAPI.Services.Factories
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Update.Internal;
 
-    public interface IReviewFactory
-    {
-        Task<Review> CreateOrUpdateReviewAsync(AddRateAndReviewDTO dto);
-    }
 
-
-
-    public class ReviewFactory : IReviewFactory
+    public class ReviewFactory
     {
         private readonly CatalogsBooksContext _context;
 
