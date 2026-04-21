@@ -133,6 +133,17 @@ builder.Services.AddAuthentication(options =>
 );
 builder.Services.AddAuthorization();
 
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("policy1", policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
+
 var app = builder.Build();
 
 
@@ -157,6 +168,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+app.UseCors("policy1");
 
 app.Run();
 

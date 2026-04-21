@@ -47,7 +47,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             string JWTToken = await _authentication.Authenticate(claimedAccount);
             if (JWTToken == null)
             {
-                return Unauthorized("Invalid User Name Or Password");
+                return Unauthorized("Invalid username or password");
             }
 
             HomeDashboardDTO dashboardData = await homePageFactory.GenerateHomeData(JWTToken, claimedAccount.Email);
