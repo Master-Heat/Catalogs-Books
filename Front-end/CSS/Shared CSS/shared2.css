@@ -261,6 +261,17 @@ body {
   transition: border-color 0.2s ease;
 }
 
+.mobile-search input:-webkit-autofill,
+.mobile-search input:-webkit-autofill:hover,
+.mobile-search input:-webkit-autofill:focus,
+.mobile-search input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset !important;
+  -webkit-text-fill-color: #ccc !important;
+  -webkit-text-size-adjust: 0.95rem !important;
+  transition: background-color 5000s ease-in-out 0s;
+  border: 1px solid #ffffff80 !important;
+}
+
 .mobile-search input::placeholder {
   color: #ffffff99;
 }

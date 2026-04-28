@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogs - AI</title>
+    <link rel="stylesheet" href="../CSS/Shared CSS/shared2.css">
+    <link rel="stylesheet" href="../CSS/aichat.css">
+    <script src="../JavaScript/animations.js" defer></script>
+    <script src="../JavaScript/functions.js" defer></script>
+    <script src="../JavaScript/AI Chat/api.js" defer></script>
+    <script src="../JavaScript/AI Chat/chat.js" defer></script>
+    <script src="../JavaScript/AI Chat/app.js" defer></script>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="nav-bar">
+        <div class="nav-logo">
+            <a href="homepage.html">Catalogs</a>
+        </div>
+
+        <div class="nav-search">
+            <input type="text" placeholder="Search for books..." id="navSearchInput" />
+            <span class="search-icon">
+                <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+            </span>
+        </div>
+
+        <div class="nav-actions">
+            <a href="./charts.html" class="btn-charts">
+                <img src="../assets/Images/Home Page/BarChart3.svg" alt="charts icon">
+                <span>Charts</span>
+            </a>
+            <a href="./aichat.html" class="btn-ai">
+                <img src="../assets/Images/Home Page/Sparkles.svg" alt="sparkles icon">
+                <span>AI</span>
+            </a>
+            <a href="./useraccount.html" class="btn-account">
+                <img src="../assets/Images/Home Page/User.svg" alt="user icon">
+                <span>Account</span>
+            </a>
+        </div>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <a href="./charts.html" class="mobile-btn-charts">
+            <img src="../assets/Images/Home Page/BarChart3.svg" alt="charts icon">
+            Charts
+        </a>
+        <a href="./aichat.html" class="mobile-btn-ai">
+            <img src="../assets/Images/Home Page/Sparkles.svg" alt="sparkles icon">
+            AI
+        </a>
+        <a href="./useraccount.html" class="mobile-btn-account">
+            <img src="../assets/Images/Home Page/User.svg" alt="user icon">
+            Account
+        </a>
+        <div class="mobile-search">
+            <input type="text" placeholder="Search for books..." id="mobileSearchInput" />
+            <span class="search-icon">
+                <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+            </span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="page">
+
+        <div class="page__header">
+            <h1 class="page__title">AI Book Assistant</h1>
+            <a href="homepage.html" class="page__close-btn" aria-label="Close AI assistant">
+                <img src="../assets/Images/AI Page/X.svg" alt="">
+            </a>
+        </div>
+
+        <section class="chat" role="log" aria-label="Chat conversation" aria-live="polite">
+
+            <div class="chat__messages" id="chat-messages">
+
+                <div class="message-wrapper message-wrapper--ai">
+                    <div class="message-bubble message-bubble--ai">
+                        Hello! I'm your AI book assistant. I can help you find book
+                        recommendations, answer questions about books, or discuss
+                        literature. What would you like to know?
+                    </div>
+                </div>
+
+                <!-- Dynamic messages injected here by chat.js -->
+            </div>
+
+            <div class="chat__input-bar">
+                <textarea id="chat-input" class="chat__input" placeholder="Ask me anything about books..." rows="1"
+                    aria-label="Type your message" autocomplete="off" spellcheck="true"></textarea>
+
+                <button id="send-btn" class="chat__send-btn" aria-label="Send message">
+                    <img id="send-btn-icon" src="../assets/Images/AI Page/Send.svg" alt="send icon">
+                    <span id="send-btn-text">Send</span>
+                </button>
+            </div>
+
+        </section>
+    </main>
+</body>
+
+</html>
