@@ -6,13 +6,7 @@ namespace CatalogsBooksAPI.Services.Factories
 
 
 
-    public interface IAuthorFactory
-    {
-        // Creates a DTO from a Model
-        Task<Author> CreateAuthorFromDTOAsync(AuthorCreateDTO author);
-    }
-
-    public class AuthorFactory : IAuthorFactory
+    public class AuthorFactory
     {
         private readonly CatalogsBooksContext _context;
 

@@ -5,17 +5,7 @@ namespace CatalogsBooksAPI.Services.Factories
     using CatalogsBooksAPI.DTOs.CategoryDTOs;
     using CatalogsBooksAPI.Models;
     using Microsoft.EntityFrameworkCore;
-
-    public interface ICategoryFactory
-    {
-        Task<Category> FindCategoryAsync(string mainCategory, string subcategory);
-        Task<Category> CreateCategoryFromDTOAsync(CategoryCreateDTO categoryDto);
-    }
-
-
-
-
-    public class CategoryFactory : ICategoryFactory
+    public class CategoryFactory
     {
         private readonly CatalogsBooksContext _context;
 

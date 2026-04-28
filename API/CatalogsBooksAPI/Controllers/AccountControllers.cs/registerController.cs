@@ -1,5 +1,6 @@
 using CatalogsBooksAPI.DTOs.AccountsDTOs;
 using CatalogsBooksAPI.Models;
+using CatalogsBooksAPI.Repository;
 using CatalogsBooksAPI.Services.Factories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,15 +14,16 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
     public class RegisterController : ControllerBase
     {
 
-        private readonly CatalogsBooksContext _context;
+
+        AccountRepo accountRepo;
 
         private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
 
-        private readonly IAccountFactory _accountFactory;
+        private readonly AccountFactory _accountFactory;
 
-        public RegisterController(CatalogsBooksContext context, IAccountFactory accountFactory)
+        public RegisterController(AccountRepo accountRepo, AccountFactory accountFactory)
         {
-            _context = context;
+            this.accountRepo = accountRepo;
             _accountFactory = accountFactory;
         }
 
@@ -32,18 +34,14 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
         {
             try
             {
-                var existing = await _accountFactory.FindAccountByEmailAsync(registerDto.Email);
-                if (existing != null)
-                {
-                    return BadRequest(new { message = "Email is already in use." });
-                }
+
 
 
                 var newAccount = _accountFactory.CreateFromRegisterDTO(registerDto);
 
+                await accountRepo.AddAccount(newAccount);
 
-                _context.Accounts.Add(newAccount);
-                await _context.SaveChangesAsync();
+
 
 
                 return Ok(new { message = $"Registration successful. Welcome, {newAccount.UserName}!" });
@@ -53,6 +51,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
 
                 return BadRequest(new { message = ex.Message });
             }
+
             catch (Exception)
             {
 
