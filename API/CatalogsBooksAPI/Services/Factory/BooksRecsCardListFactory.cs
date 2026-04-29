@@ -41,10 +41,7 @@ namespace CatalogsBooksAPI.Services.Factories
                 CoverImageLink = b.CoverImageLink,
                 CoverAlt = b.CoverAlt,
 
-                // Set these to null/default as requested for now
-                MainCategory = null,
-                Sbucategory = null,
-                ViewsCount = 0
+
             }).ToList();
             return bookCards;
         }

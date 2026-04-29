@@ -9,10 +9,10 @@ namespace CatalogsBooksAPI.DTOs.BooksDTOs
         public string CoverAlt { get; set; }
 
         //from category
-        public string MainCategory { get; set; }
-        public string Sbucategory { get; set; }
+        // public string MainCategory { get; set; }
+        // public string Sbucategory { get; set; }
 
         // from query with viewed books 
-        public int ViewsCount { get; set; }
+        // public int ViewsCount { get; set; }
     }
 }
