@@ -4,6 +4,7 @@ using CatalogsBooksAPI.Repository;
 using CatalogsBooksAPI.Services;
 using CatalogsBooksAPI.Services.Factories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Identity.Core;
@@ -88,6 +89,7 @@ builder.Services.AddSwaggerGen(options =>
 }
 );
 
+
 // 3. Keep your Controller support
 builder.Services.AddControllers();
 
@@ -143,6 +145,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
 
 var app = builder.Build();
 
