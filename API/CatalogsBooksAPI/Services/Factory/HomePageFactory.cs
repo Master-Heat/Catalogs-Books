@@ -48,7 +48,13 @@ namespace CatalogsBooksAPI.Services.Factories
                                 (
                                 accountid,
                                 booksRecsRepo.GetAuthorAndCategoryRecs
-                                )
+                                ),
+
+                PopularThisWeek = await cardListFactory
+                .GenerateGeneralRecsList(booksRecsRepo.GetPopularAllTime),
+
+                PopularAllTime = await cardListFactory
+                .GenerateGeneralRecsList(booksRecsRepo.GetPopularAllTime)
 
 
             };
