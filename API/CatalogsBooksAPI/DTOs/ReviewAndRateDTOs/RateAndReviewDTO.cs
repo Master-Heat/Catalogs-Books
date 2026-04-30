@@ -1,6 +1,6 @@
 namespace CatalogsBooksAPI.DTOs.ReviewAndRateDTOs
 {
-    public class AddRateAndReviewDTO
+    public class RateAndReviewDTO
     {
 
 

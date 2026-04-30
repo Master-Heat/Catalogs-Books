@@ -69,8 +69,7 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             await bookviews.AddBookView(id, int.Parse(IdFromToken));
             return Ok(bookDetails);
 
-            // todo : move this controller to new name space as bookscontrollers
-            // todo : add when adding opening book details it add view for this book 
+
         }
 
 
