@@ -62,5 +62,28 @@ namespace CatalogsBooksAPI.Services.Factories
             }).ToList();
             return bookCards;
         }
+
+        public async Task<List<BookCardDTO>> GenerateRelatedList(int bookid,
+Func<int, Task<List<Book>>> RepoMethod)
+        {
+            List<Book> books = await RepoMethod(bookid);
+            if (books == null) return new List<BookCardDTO>();
+
+
+            var bookCards = books.Select(b => new BookCardDTO
+            {
+                BookID = b.BookID,
+                Title = b.Title,
+                Description = b.Description,
+                CoverImageLink = b.CoverImageLink,
+                CoverAlt = b.CoverAlt,
+
+
+            }).ToList();
+            return bookCards;
+        }
+
+
+
     }
 }

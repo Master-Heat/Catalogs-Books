@@ -100,12 +100,14 @@ builder.Services.AddScoped<BooksRecsCardListFactory>();
 builder.Services.AddScoped<CategoryFactory>();
 builder.Services.AddScoped<HomePageFactory>();
 builder.Services.AddScoped<ReviewFactory>();
+builder.Services.AddScoped<BookDetailsFactory>();
 
 builder.Services.AddScoped<Authentication>();
 
 
 builder.Services.AddScoped<AccountRepo>();
 builder.Services.AddScoped<BooksRecsRepo>();
+builder.Services.AddScoped<BookDetailsRepo>();
 
 
 
