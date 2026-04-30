@@ -1,5 +1,6 @@
 using CatalogsBooksAPI.DTOs.AccountsDTOs;
 using CatalogsBooksAPI.Models;
+using Microsoft.AspNetCore.Routing.Tree;
 using Microsoft.EntityFrameworkCore;
 namespace CatalogsBooksAPI.Repository
 {
@@ -10,6 +11,8 @@ namespace CatalogsBooksAPI.Repository
         public BooksRecsRepo(CatalogsBooksContext context)
         {
             _context = context;
+
+
         }
         public async Task<List<Book>> GetCategoryRecs(int accountID)
         {
@@ -46,29 +49,6 @@ namespace CatalogsBooksAPI.Repository
         }
 
 
-        public async Task<List<Book>> GetPopulatThisWeek()
-        {
-            // this function return top 30 viewed books this week 
-            DateTime lastWeek = DateTime.UtcNow.AddDays(-7);
-
-            return await _context.ViewedBooks.
-            Where(v => v.ViewDate >= lastWeek).
-            GroupBy(v => v.BookID).
-            OrderByDescending(g => g.Count()).
-            Take(30).
-            Select(g => g.First().Book).
-            ToListAsync();
-
-
-        }
-        public async Task<List<Book>> GetPopularAllTime()
-        {
-            return await _context.Books.
-            OrderByDescending(b => b.ViewedBooks.Count()).
-            Take(30).
-            ToListAsync();
-
-        }
 
 
 

@@ -31,10 +31,12 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
         BookDetailsFactory bookDetailsFactory;
         AccountFactory accountFactory;
 
-        public BooksController(BookDetailsFactory bookDetailsFactory, AccountFactory accountFactory)
+        BookviewsRepo bookviews;
+        public BooksController(BookDetailsFactory bookDetailsFactory, AccountFactory accountFactory, BookviewsRepo bookviews)
         {
             this.bookDetailsFactory = bookDetailsFactory;
             this.accountFactory = accountFactory;
+            this.bookviews = bookviews;
         }
 
 
@@ -64,9 +66,10 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             }
 
             BookDetailsDTO bookDetails = await bookDetailsFactory.GetBookDetails(id);
+            await bookviews.AddBookView(id, int.Parse(IdFromToken));
             return Ok(bookDetails);
 
-
+            // todo : move this controller to new name space as bookscontrollers
             // todo : add when adding opening book details it add view for this book 
         }
 

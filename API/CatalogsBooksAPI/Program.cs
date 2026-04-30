@@ -108,6 +108,7 @@ builder.Services.AddScoped<Authentication>();
 builder.Services.AddScoped<AccountRepo>();
 builder.Services.AddScoped<BooksRecsRepo>();
 builder.Services.AddScoped<BookDetailsRepo>();
+builder.Services.AddScoped<BookviewsRepo>();
 
 
 

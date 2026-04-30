@@ -11,14 +11,17 @@ namespace CatalogsBooksAPI.Services.Factories
         BooksRecsRepo booksRecsRepo;
         AccountRepo accountRepo;
         BooksRecsCardListFactory cardListFactory;
+        BookviewsRepo bookviewsRepo;
 
         public HomePageFactory(BooksRecsRepo booksRecsRepo,
         AccountRepo accountRepo,
+        BookviewsRepo bookviewsRepo,
         BooksRecsCardListFactory cardListFactory)
         {
             this.booksRecsRepo = booksRecsRepo;
             this.accountRepo = accountRepo;
             this.cardListFactory = cardListFactory;
+            this.bookviewsRepo = bookviewsRepo;
         }
 
         public async Task<HomeDashboardDTO> GenerateHomeData(string token, string Email)
@@ -51,10 +54,10 @@ namespace CatalogsBooksAPI.Services.Factories
                                 ),
 
                 PopularThisWeek = await cardListFactory
-                .GenerateGeneralRecsList(booksRecsRepo.GetPopularAllTime),
+                .GenerateGeneralRecsList(bookviewsRepo.GetPopularAllTime),
 
                 PopularAllTime = await cardListFactory
-                .GenerateGeneralRecsList(booksRecsRepo.GetPopularAllTime)
+                .GenerateGeneralRecsList(bookviewsRepo.GetPopularAllTime)
 
 
             };
