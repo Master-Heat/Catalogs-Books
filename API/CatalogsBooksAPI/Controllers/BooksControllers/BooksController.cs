@@ -18,7 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 
 
 
-namespace CatalogsBooksAPI.Controllers.AccountControllers
+namespace CatalogsBooksAPI.Controllers.BooksControllers
 {
     [Route("api/[controller]/Authorized")]
     [ApiController]
@@ -66,6 +66,8 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             BookDetailsDTO bookDetails = await bookDetailsFactory.GetBookDetails(id);
             return Ok(bookDetails);
 
+
+            // todo : add when adding opening book details it add view for this book 
         }
 
 
