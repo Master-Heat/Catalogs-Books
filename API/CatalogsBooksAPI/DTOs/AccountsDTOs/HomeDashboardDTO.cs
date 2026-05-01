@@ -5,8 +5,6 @@ namespace CatalogsBooksAPI.DTOs.AccountsDTOs
 {
     public class HomeDashboardDTO
     {
-        public string Token { get; set; }
-        public string Name { get; set; }
 
         public List<BookCardDTO> CategoryRecs { get; set; }
         public List<BookCardDTO> AuthorRecs { get; set; }

@@ -24,15 +24,13 @@ namespace CatalogsBooksAPI.Services.Factories
             this.bookviewsRepo = bookviewsRepo;
         }
 
-        public async Task<HomeDashboardDTO> GenerateHomeData(string token, string Email)
+        public async Task<HomeDashboardDTO> GenerateHomeData(string Email)
 
         {
             Account account = await accountRepo.GetAccountDataByEmail(Email);
             int accountid = account.AccountID;
             HomeDashboardDTO dashboard = new HomeDashboardDTO()
             {
-                Token = token,
-                Name = account.UserName,
                 CategoryRecs = await cardListFactory.
                                     GenerateRecsList
                                     (

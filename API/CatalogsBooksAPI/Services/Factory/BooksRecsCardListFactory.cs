@@ -16,11 +16,15 @@ namespace CatalogsBooksAPI.Services.Factories
     public class BooksRecsCardListFactory
     {
         BooksRecsRepo booksRecsRepo;
+        BookSearchRepo searchRepo;
 
         private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
-        public BooksRecsCardListFactory(BooksRecsRepo booksRecsRepo)
+        public BooksRecsCardListFactory(BooksRecsRepo booksRecsRepo,
+                                        BookSearchRepo searchRepo)
         {
             this.booksRecsRepo = booksRecsRepo;
+            this.searchRepo = searchRepo;
+
         }
 
 
@@ -67,7 +71,7 @@ namespace CatalogsBooksAPI.Services.Factories
         }
 
         public async Task<List<BookCardDTO>> GenerateRelatedList(int bookid,
-Func<int, Task<List<Book>>> RepoMethod)
+            Func<int, Task<List<Book>>> RepoMethod)
         {
             List<Book> books = await RepoMethod(bookid);
 
@@ -76,7 +80,11 @@ Func<int, Task<List<Book>>> RepoMethod)
             return bookCards;
         }
 
-
+        public async Task<List<BookCardDTO>> SmartSearch(string keywork)
+        {
+            List<Book> BookResult = await searchRepo.GetSmartSearch(keywork);
+            return await GenerateBookCardFromBooks(BookResult);
+        }
 
 
     }

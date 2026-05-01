@@ -112,6 +112,7 @@ builder.Services.AddScoped<BookDetailsRepo>();
 builder.Services.AddScoped<BookviewsRepo>();
 builder.Services.AddScoped<RateAndReviewRepo>();
 builder.Services.AddScoped<BookListRepo>();
+builder.Services.AddScoped<BookSearchRepo>();
 
 
 
