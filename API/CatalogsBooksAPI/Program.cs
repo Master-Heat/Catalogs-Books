@@ -101,6 +101,7 @@ builder.Services.AddScoped<CategoryFactory>();
 builder.Services.AddScoped<HomePageFactory>();
 builder.Services.AddScoped<ReviewFactory>();
 builder.Services.AddScoped<BookDetailsFactory>();
+builder.Services.AddScoped<ListsFactory>();
 
 builder.Services.AddScoped<Authentication>();
 
@@ -110,6 +111,7 @@ builder.Services.AddScoped<BooksRecsRepo>();
 builder.Services.AddScoped<BookDetailsRepo>();
 builder.Services.AddScoped<BookviewsRepo>();
 builder.Services.AddScoped<RateAndReviewRepo>();
+builder.Services.AddScoped<BookListRepo>();
 
 
 
