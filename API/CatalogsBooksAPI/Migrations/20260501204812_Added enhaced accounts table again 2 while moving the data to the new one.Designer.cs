@@ -4,6 +4,7 @@ using CatalogsBooksAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatalogsBooksAPI.Migrations
 {
     [DbContext(typeof(CatalogsBooksContext))]
-    partial class CatalogsBooksContextModelSnapshot : ModelSnapshot
+    [Migration("20260501204812_Added enhaced accounts table again 2 while moving the data to the new one")]
+    partial class Addedenhacedaccountstableagain2whilemovingthedatatothenewone
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

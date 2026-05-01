@@ -62,7 +62,7 @@ namespace CatalogsBooksAPI.Services
                 {
                     new Claim (JwtRegisteredClaimNames.Name,claimedAccount.Email),
                     new Claim(JwtRegisteredClaimNames.Sub, dbaccount.AccountID.ToString()),
-                    new Claim(ClaimTypes.Role, dbaccount.IsAdmin ? "Admin" : "User")
+                    new Claim(ClaimTypes.Role, dbaccount.Role )
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
                 SecurityAlgorithms.HmacSha256Signature),

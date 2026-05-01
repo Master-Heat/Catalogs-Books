@@ -13,8 +13,11 @@ namespace CatalogsBooksAPI.Models
         public string Email { get; set; }
 
         public string PasswordHash { get; set; }
+
         [Required]
-        public bool IsAdmin { get; set; }
+        public string Role { get; set; } = "User"; // Default value
+
+        public string AccountState { get; set; } = "Active"; // Default value
 
         [JsonIgnore]
         virtual public Author Author { get; set; }

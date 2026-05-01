@@ -37,7 +37,7 @@ namespace CatalogsBooksAPI.Services.Factories
                 UserName = dto.UserName,
                 Email = dto.Email,
 
-                IsAdmin = false // Defaulting to false as requested
+                Role = "User" // Defaulting to false as requested
             };
             account.PasswordHash = _passwordHasher.HashPassword(account, dto.Password);
             return account;
