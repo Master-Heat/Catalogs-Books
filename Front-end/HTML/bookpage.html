@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book - Catalogs</title>
+    <link rel="stylesheet" href="../CSS/Shared CSS/shared2.css">
+    <link rel="stylesheet" href="../CSS/bookpage.css">
+    <script src="../JavaScript/animations.js" defer></script>
+    <script src="../JavaScript/functions.js" defer></script>
+    <script src="../JavaScript/bookpage.js" defer></script>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav-bar">
+        <div class="nav-logo">
+            <a href="homepage.html">Catalogs</a>
+        </div>
+
+        <div class="nav-search">
+            <input type="text" placeholder="Search for books..." id="navSearchInput" />
+            <span class="search-icon">
+                <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+            </span>
+        </div>
+
+        <div class="nav-actions">
+            <a href="./charts.html" class="btn-charts">
+                <img src="../assets/Images/Home Page/BarChart3.svg" alt="charts icon">
+                <span>Charts</span>
+            </a>
+            <a href="./aichat.html" class="btn-ai">
+                <img src="../assets/Images/Home Page/Sparkles.svg" alt="sparkles icon">
+                <span>AI</span>
+            </a>
+            <a href="./useraccount.html" class="btn-account">
+                <img src="../assets/Images/Home Page/User.svg" alt="user icon">
+                <span>Account</span>
+            </a>
+        </div>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <a href="./charts.html" class="mobile-btn-charts">
+            <img src="../assets/Images/Home Page/BarChart3.svg" alt="charts icon">
+            Charts
+        </a>
+        <a href="./aichat.html" class="mobile-btn-ai">
+            <img src="../assets/Images/Home Page/Sparkles.svg" alt="sparkles icon">
+            AI
+        </a>
+        <a href="./useraccount.html" class="mobile-btn-account">
+            <img src="../assets/Images/Home Page/User.svg" alt="user icon">
+            Account
+        </a>
+        <div class="mobile-search">
+            <input type="text" placeholder="Search for books..." id="mobileSearchInput" />
+            <span class="search-icon">
+                <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+            </span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="book-main">
+
+        <!-- TOP ACTION BUTTONS -->
+        <div class="action-buttons" id="actionButtons"></div>
+
+        <!-- BOOK COVER -->
+        <div class="cover-section">
+            <div class="book-cover-display" id="bookCover">
+                <span>Book Cover</span>
+            </div>
+        </div>
+
+        <!-- TITLE / AUTHOR / STAR RATING -->
+        <div class="book-header">
+            <h1 class="book-title" id="bookTitle">Loading...</h1>
+            <p class="book-author" id="bookAuthor"></p>
+            <div class="star-rating" id="userStarRating">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+            </div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <section class="book-section">
+            <h2 class="section-title">Description</h2>
+            <p class="book-description" id="bookDescription"></p>
+        </section>
+
+        <!-- READ / DOWNLOAD -->
+        <div class="read-download-btns">
+            <button class="btn-read" id="readBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+                Read
+            </button>
+            <button class="btn-download" id="downloadBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Download
+            </button>
+        </div>
+
+        <!-- VOLUMES — series only, hidden by default -->
+        <section class="book-section" id="volumesSection" style="display:none;">
+            <div class="volumes-header" id="volumesHeader">
+                <span id="volumesLabel">Volumes (0)</span>
+                <button class="volumes-toggle" id="volumesToggle" aria-label="Toggle volumes">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="18 15 12 9 6 15" />
+                    </svg>
+                </button>
+            </div>
+            <div class="volumes-list" id="volumesList"></div>
+        </section>
+
+        <!-- BOOK / SERIES INFORMATION -->
+        <section class="book-section">
+            <h2 class="section-title" id="infoTitle">Book Information</h2>
+            <div class="info-table" id="infoTable"></div>
+        </section>
+
+        <!-- RATINGS -->
+        <section class="book-section">
+            <h2 class="section-title">Ratings</h2>
+            <div class="ratings-box">
+                <p class="ratings-label">Website's Users Rating:</p>
+                <div class="ratings-row">
+                    <div class="stars-display" id="avgStars"></div>
+                    <span class="ratings-count" id="ratingsCount"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- REVIEWS -->
+        <section class="book-section">
+            <h2 class="section-title">Reviews</h2>
+            <div class="reviews-list" id="reviewsList"></div>
+        </section>
+
+        <!-- WRITE A REVIEW -->
+        <section class="book-section">
+            <h2 class="section-title">Write a Review</h2>
+            <div class="review-form">
+                <textarea id="reviewText" class="review-textarea"
+                    placeholder="Share your thoughts about this book..."></textarea>
+                <div class="review-star-row">
+                    <span class="star review-star" data-value="1">&#9733;</span>
+                    <span class="star review-star" data-value="2">&#9733;</span>
+                    <span class="star review-star" data-value="3">&#9733;</span>
+                    <span class="star review-star" data-value="4">&#9733;</span>
+                    <span class="star review-star" data-value="5">&#9733;</span>
+                </div>
+                <button class="btn-submit-review" id="submitReview">Submit Review</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- EDIT MODAL (admin only) -->
+    <div class="modal-overlay" id="editModal" style="display:none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Edit Book</h3>
+                <button class="modal-close" id="closeEditModal">&times;</button>
+            </div>
+            <div class="modal-body" id="editModalBody"></div>
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" id="cancelEdit">Cancel</button>
+                <button class="btn-modal-save" id="saveEdit">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRM MODAL -->
+    <div class="modal-overlay" id="deleteModal" style="display:none;">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h3>Confirm Delete</h3>
+                <button class="modal-close" id="closeDeleteModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteModalText"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" id="cancelDelete">Cancel</button>
+                <button class="btn-modal-delete" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+     <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">
+            <a href="homepage.html">Catalogs</a>
+        </div>
+        <nav class="footer-links">
+            <a>About</a>
+            <a>Contact</a>
+            <a>Privacy</a>
+            <a>Terms</a>
+        </nav>
+        <span class="footer-copy">&copy; 2026 Catalogs</span>
+    </footer>
+
+</body>
+
+</html>
