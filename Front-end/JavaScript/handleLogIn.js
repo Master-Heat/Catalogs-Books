@@ -24,7 +24,7 @@ async function performLogin(domain, email, password) {
         }
 
         // 3. Success
-        return await response.json();
+        return await response.text();
 
     } catch (error) {
         // Rethrow or return the error message to be caught/handled by the UI
@@ -35,7 +35,7 @@ async function performLogin(domain, email, password) {
 const loginForm = document.querySelector(".signup-form");
 
 loginForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
 
     // Remove existing error messages if any
     const existingError = loginForm.querySelector(".error-message");
@@ -60,4 +60,6 @@ loginForm.addEventListener('submit', async (event) => {
 
         // window.location.href = "/dashboard.html";
     }
+    localStorage.setItem('jwt_token', result);
+    
 });
