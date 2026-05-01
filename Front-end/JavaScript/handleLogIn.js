@@ -24,7 +24,7 @@ async function performLogin(domain, email, password) {
         }
 
         // 3. Success
-        return await response.json();
+        return await response.text();
 
     } catch (error) {
         // Rethrow or return the error message to be caught/handled by the UI
@@ -60,7 +60,6 @@ loginForm.addEventListener('submit', async (event) => {
 
         // window.location.href = "/dashboard.html";
     }
-    token = result.token
-    localStorage.setItem('jwt_token', token);
+    localStorage.setItem('jwt_token', result);
     
 });

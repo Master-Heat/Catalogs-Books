@@ -57,7 +57,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
                 Token = JWTToken,
                 Dashboard = dashboardData
             };
-            return Ok(response);
+            return Ok(JWTToken);
         }
 
 
