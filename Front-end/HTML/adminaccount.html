@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings - Catalogs</title>
+    <link rel="stylesheet" href="../CSS/Shared CSS/shared2.css">
+    <link rel="stylesheet" href="../CSS/account.css">
+    <script src="../JavaScript/animations.js" defer></script>
+    <script src="../JavaScript/functions.js" defer></script>
+    <script src="../JavaScript/account.js" defer></script>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav-bar">
+        <div class="nav-logo">
+            <a href="homepage.html">Catalogs</a>
+        </div>
+
+        <div class="nav-search">
+            <input type="text" placeholder="Search for books..." id="navSearchInput" />
+            <span class="search-icon">
+                <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+            </span>
+        </div>
+
+        <div class="nav-actions">
+            <a href="./charts.html" class="btn-charts">
+                <img src="../assets/Images/Home Page/BarChart3.svg" alt="charts icon">
+                <span>Charts</span>
+            </a>
+            <a href="./aichat.html" class="btn-ai">
+                <img src="../assets/Images/Home Page/Sparkles.svg" alt="sparkles icon">
+                <span>AI</span>
+            </a>
+            <a href="./useraccount.html" class="btn-account">
+                <img src="../assets/Images/Home Page/User.svg" alt="user icon">
+                <span>Account</span>
+            </a>
+        </div>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <a href="./charts.html" class="mobile-btn-charts">
+            <img src="../assets/Images/Home Page/BarChart3.svg" alt="charts icon">
+            Charts
+        </a>
+        <a href="./aichat.html" class="mobile-btn-ai">
+            <img src="../assets/Images/Home Page/Sparkles.svg" alt="sparkles icon">
+            AI
+        </a>
+        <a href="./useraccount.html" class="mobile-btn-account">
+            <img src="../assets/Images/Home Page/User.svg" alt="user icon">
+            Account
+        </a>
+        <div class="mobile-search">
+            <input type="text" placeholder="Search for books..." id="mobileSearchInput" />
+            <span class="search-icon">
+                <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
+            </span>
+        </div>
+    </div>
+
+    <main class="account-main">
+
+        <h1 class="page-title">Account Settings</h1>
+
+        <!-- INFORMATION -->
+        <div class="account-card">
+            <h2 class="card-title">Information</h2>
+            <div class="form-group">
+                <label class="form-label">Name:</label>
+                <input type="text" class="form-input" id="userName" placeholder="">
+            </div>
+            <button class="btn-update" id="updateInfo">Update</button>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="account-card">
+            <h2 class="card-title">Password</h2>
+            <div class="form-group">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-input" id="currentPassword">
+            </div>
+            <div class="form-group">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-input" id="newPassword">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Confirm New Password</label>
+                <input type="password" class="form-input" id="confirmPassword">
+            </div>
+            <button class="btn-update" id="updatePassword">Update</button>
+        </div>
+
+        <!-- MANAGEMENT (admin only) -->
+        <div class="account-card">
+            <h2 class="card-title">Management</h2>
+            <button class="btn-add-book" id="addBookBtn">Add Book</button>
+        </div>
+
+    </main>
+
+    <!-- ADD BOOK PANEL (slides in) -->
+    <div class="panel-overlay" id="panelOverlay" style="display:none;"></div>
+    <div class="add-book-panel" id="addBookPanel">
+        <main class="add-book-main">
+
+            <h1 class="page-title">Add Book</h1>
+
+            <div class="add-book-card">
+
+                <!-- ROW: Title + Author -->
+                <div class="field-row">
+                    <div class="form-group">
+                        <label class="form-label">Title <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="bookTitle">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Author <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="bookAuthor">
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group full-width">
+                    <label class="form-label">Description <span class="required">*</span></label>
+                    <textarea class="form-input form-textarea" id="bookDescription"></textarea>
+                </div>
+
+                <!-- ROW: Published Year + Publisher -->
+                <div class="field-row">
+                    <div class="form-group">
+                        <label class="form-label">Published Year <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="bookYear">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Publisher <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="bookPublisher">
+                    </div>
+                </div>
+
+                <!-- ROW: Pages + Language -->
+                <div class="field-row">
+                    <div class="form-group">
+                        <label class="form-label">Pages <span class="required">*</span></label>
+                        <input type="number" class="form-input" id="bookPages">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Language <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="bookLanguage">
+                    </div>
+                </div>
+
+                <!-- ROW: ISBN + Genre -->
+                <div class="field-row">
+                    <div class="form-group">
+                        <label class="form-label">ISBN <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="bookISBN">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Genre <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="bookGenre">
+                    </div>
+                </div>
+
+                <!-- Book Cover Upload -->
+                <div class="form-group full-width">
+                    <label class="form-label">Book Cover</label>
+                    <div class="cover-upload" id="coverUpload">
+                        <input type="file" id="coverInput" accept="image/*" style="display:none;">
+                        <span class="cover-upload-text" id="coverUploadText">Upload Cover Image</span>
+                        <img id="coverPreview" class="cover-preview" src="" alt="" style="display:none;">
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="add-book-actions">
+                    <button class="btn-add-book-submit" id="submitBook">Add Book</button>
+                    <button class="btn-cancel-book" id="cancelBook">Cancel</button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">
+            <a href="homepage.html">Catalogs</a>
+        </div>
+        <nav class="footer-links">
+            <a>About</a>
+            <a>Contact</a>
+            <a>Privacy</a>
+            <a>Terms</a>
+        </nav>
+        <span class="footer-copy">&copy; 2026 Catalogs</span>
+    </footer>
+</body>
+
+</html>

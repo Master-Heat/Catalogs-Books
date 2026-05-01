@@ -229,6 +229,13 @@ a,
     color: #333;
 }
 
+.write-review-section {
+    margin-bottom: 28px;
+    background: #fff;
+    padding: 16px;
+    border-radius: 4px;
+}
+
 /* ── READ / DOWNLOAD ──────────────────────────────────────── */
 .read-download-btns {
     display: flex;
@@ -426,7 +433,6 @@ a,
 
 /* ── RATINGS BOX ──────────────────────────────────────────── */
 .ratings-box {
-    border: 1px solid #ddd;
     border-radius: 4px;
     padding: 16px;
     background: #fff;
@@ -467,12 +473,14 @@ a,
 /* ── REVIEWS ──────────────────────────────────────────────── */
 .reviews-list {
     display: flex;
+    gap: 8px;
     flex-direction: column;
 }
 
 .review-item {
-    padding: 14px 0;
-    border-bottom: 1px solid #eee;
+    background: #fff;
+    padding: 16px;
+    border-radius: 4px;
 }
 
 .review-item:last-child {
