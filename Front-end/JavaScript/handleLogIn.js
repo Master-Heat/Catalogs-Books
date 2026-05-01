@@ -35,7 +35,7 @@ async function performLogin(domain, email, password) {
 const loginForm = document.querySelector(".signup-form");
 
 loginForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
 
     // Remove existing error messages if any
     const existingError = loginForm.querySelector(".error-message");
@@ -60,4 +60,7 @@ loginForm.addEventListener('submit', async (event) => {
 
         // window.location.href = "/dashboard.html";
     }
+    token = result.token
+    localStorage.setItem('jwt_token', token);
+    
 });
