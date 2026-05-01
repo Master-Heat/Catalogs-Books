@@ -50,9 +50,14 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
                 return Unauthorized("Invalid username or password");
             }
 
-            HomeDashboardDTO dashboardData = await homePageFactory.GenerateHomeData(JWTToken, claimedAccount.Email);
+            HomeDashboardDTO dashboardData = await homePageFactory.GenerateHomeData(claimedAccount.Email);
 
-            return Ok(dashboardData);
+            var response = new LoginResponseDTO
+            {
+                Token = JWTToken,
+                Dashboard = dashboardData
+            };
+            return Ok(response);
         }
 
 
