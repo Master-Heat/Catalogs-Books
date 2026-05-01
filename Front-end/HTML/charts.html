@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogs - Charts</title>
     <link rel="stylesheet" href="../CSS/Shared CSS/shared2.css">
     <link rel="stylesheet" href="../CSS/charts.css">
+    <link rel="stylesheet" href="../CSS/search.css">
+    <script src="../JavaScript/search.js" defer></script>
     <script src="../JavaScript/animations.js" defer></script>
-    <script src="../JavaScript/functions.js" defer></script>
+    <script src="../JavaScript/charts.js" defer></script>
 </head>
+
 <body>
     <!-- NAVBAR -->
     <nav class="nav-bar">
@@ -17,7 +21,7 @@
         </div>
 
         <div class="nav-search">
-            <input type="text" placeholder="Search for books..." id="navSearchInput" />
+            <input type="text" autocomplete="off" placeholder="Search for books..." id="navSearchInput" />
             <span class="search-icon">
                 <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
             </span>
@@ -60,13 +64,36 @@
             Account
         </a>
         <div class="mobile-search">
-            <input type="text" placeholder="Search for books..." id="mobileSearchInput" />
+            <input type="text" autocomplete="off" placeholder="Search for books..." id="mobileSearchInput" />
             <span class="search-icon">
                 <img src="../assets/Images/Landing Page/Search.svg" alt="search icon">
             </span>
         </div>
     </div>
-    
+
+    <main class="charts-main">
+
+        <!-- HEADER ROW -->
+        <div class="charts-header">
+            <h1 class="charts-title">Book Charts</h1>
+
+            <!-- SORT DROPDOWN -->
+            <div class="sort-wrapper" id="sortWrapper">
+                <button class="sort-btn" id="sortBtn">
+                    <span id="sortLabel">Most Read</span>
+                </button>
+                <div class="sort-dropdown" id="sortDropdown">
+                    <div class="sort-option" data-value="most-read">Most Read</div>
+                    <div class="sort-option" data-value="top-rated">Top Rated</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHARTS LIST -->
+        <div class="charts-list" id="chartsList"></div>
+
+    </main>
+
     <!-- FOOTER -->
     <footer>
         <div class="footer-logo">
@@ -80,5 +107,24 @@
         </nav>
         <span class="footer-copy">&copy; 2026 Catalogs</span>
     </footer>
+
+    <!-- SEARCH OVERLAY -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-overlay-inner">
+            <div class="search-overlay-bar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                </svg>
+                <input type="text" class="search-overlay-input" id="searchOverlayInput"
+                    placeholder="Search for books..." autocomplete="off">
+                <button class="search-overlay-close" id="searchOverlayClose">&times;</button>
+            </div>
+            <p class="search-overlay-info" id="searchOverlayInfo"></p>
+            <div class="search-overlay-list" id="searchOverlayList"></div>
+        </div>
+    </div>
 </body>
+
 </html>
