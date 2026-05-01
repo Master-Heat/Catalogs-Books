@@ -7,9 +7,11 @@ namespace CatalogsBooksAPI.DTOs.AccountsDTOs
     {
         public string Token { get; set; }
         public string Name { get; set; }
+
         public List<BookCardDTO> CategoryRecs { get; set; }
         public List<BookCardDTO> AuthorRecs { get; set; }
         public List<BookCardDTO> AuthorAndCategoryRecs { get; set; }
-        // public List<BookCardDTO> MostViewedRecs { get; set; }
+        public List<BookCardDTO> PopularAllTime { get; set; }
+        public List<BookCardDTO> PopularThisWeek { get; set; }
     }
 }

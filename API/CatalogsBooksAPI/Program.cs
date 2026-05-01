@@ -4,6 +4,7 @@ using CatalogsBooksAPI.Repository;
 using CatalogsBooksAPI.Services;
 using CatalogsBooksAPI.Services.Factories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Identity.Core;
@@ -88,6 +89,7 @@ builder.Services.AddSwaggerGen(options =>
 }
 );
 
+
 // 3. Keep your Controller support
 builder.Services.AddControllers();
 
@@ -98,12 +100,18 @@ builder.Services.AddScoped<BooksRecsCardListFactory>();
 builder.Services.AddScoped<CategoryFactory>();
 builder.Services.AddScoped<HomePageFactory>();
 builder.Services.AddScoped<ReviewFactory>();
+builder.Services.AddScoped<BookDetailsFactory>();
+builder.Services.AddScoped<ListsFactory>();
 
 builder.Services.AddScoped<Authentication>();
 
 
 builder.Services.AddScoped<AccountRepo>();
 builder.Services.AddScoped<BooksRecsRepo>();
+builder.Services.AddScoped<BookDetailsRepo>();
+builder.Services.AddScoped<BookviewsRepo>();
+builder.Services.AddScoped<RateAndReviewRepo>();
+builder.Services.AddScoped<BookListRepo>();
 
 
 
@@ -143,6 +151,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
 
 var app = builder.Build();
 

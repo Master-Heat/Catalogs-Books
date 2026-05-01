@@ -2,7 +2,6 @@ using CatalogsBooksAPI.DTOs.AccountsDTOs;
 using CatalogsBooksAPI.Models;
 using CatalogsBooksAPI.Repository;
 using CatalogsBooksAPI.Services.Factories;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +16,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
 
         AccountRepo accountRepo;
 
-        private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
+
 
         private readonly AccountFactory _accountFactory;
 
@@ -37,7 +36,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
 
 
 
-                var newAccount = _accountFactory.CreateFromRegisterDTO(registerDto);
+                var newAccount = await _accountFactory.CreateFromRegisterDTO(registerDto);
 
                 await accountRepo.AddAccount(newAccount);
 

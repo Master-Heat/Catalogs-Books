@@ -16,14 +16,18 @@ namespace CatalogsBooksAPI.DTOs.BooksDTOs
         // from authortable
         public int AuthorID { get; set; }
         public string AuthorName { get; set; }
+        public List<BookCardDTO> FromSameAuthor { get; set; }
         //from category
         public int CategoryID { get; set; }
         public string MainCategory { get; set; }
         public string Sbucategory { get; set; }
+        public List<BookCardDTO> FromSameSubcategory { get; set; }
+
 
         // from seires
         public bool IsInSeire { get; set; }
         public string SeireName { get; set; }
+        public List<BookCardDTO> FromSameSeire { get; set; }
 
         // from query with viewed books 
         public int ViewsCount { get; set; }

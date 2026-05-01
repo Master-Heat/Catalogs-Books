@@ -16,19 +16,21 @@ namespace CatalogsBooksAPI.Services.Factories
     {
         AccountRepo repo;
 
-        private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
-        public AccountFactory(AccountRepo repo)
+        // private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
+        private readonly IPasswordHasher<Account> _passwordHasher;
+        public AccountFactory(AccountRepo repo, IPasswordHasher<Account> passwordHasher)
         {
             this.repo = repo;
+            _passwordHasher = passwordHasher;
         }
 
         // 1. Search Logic: Used to check if they should redirect to Login
 
 
         // 2. Creation Logic
-        public Account CreateFromRegisterDTO(AccountRegisterDTO dto)
+        public async Task<Account> CreateFromRegisterDTO(AccountRegisterDTO dto)
         {
-            ValidateRegisterDTO(dto);
+            await ValidateRegisterDTO(dto);
 
             Account account = new Account
             {
@@ -51,7 +53,7 @@ namespace CatalogsBooksAPI.Services.Factories
             return account;
         }
 
-        private void ValidateRegisterDTO(AccountRegisterDTO dto)
+        private async Task ValidateRegisterDTO(AccountRegisterDTO dto)
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto), "Registration data is missing.");
@@ -61,7 +63,9 @@ namespace CatalogsBooksAPI.Services.Factories
 
             if (string.IsNullOrWhiteSpace(dto.Password))
                 throw new ArgumentException("Password is required.");
-            if (repo.GetAccountDataByEmail(dto.Email) != null)
+
+            Account existingAccount = await repo.GetAccountDataByEmail(dto.Email);
+            if (existingAccount != null)
             {
                 throw new ArgumentException("Email is reserved for another account");
 

@@ -1,5 +1,6 @@
 using CatalogsBooksAPI.DTOs.AccountsDTOs;
 using CatalogsBooksAPI.Models;
+using Microsoft.AspNetCore.Routing.Tree;
 using Microsoft.EntityFrameworkCore;
 namespace CatalogsBooksAPI.Repository
 {
@@ -10,6 +11,8 @@ namespace CatalogsBooksAPI.Repository
         public BooksRecsRepo(CatalogsBooksContext context)
         {
             _context = context;
+
+
         }
         public async Task<List<Book>> GetCategoryRecs(int accountID)
         {
@@ -38,9 +41,9 @@ namespace CatalogsBooksAPI.Repository
                         .Select(vb => vb.Book) // Get the book viewed
                         .SelectMany(b => _context.Books
                             .Where(allBooks =>
-                             allBooks.AuthorID == b.AuthorID &&
-                             allBooks.CategoryID == b.CategoryID &&
-                              allBooks.BookID != b.BookID))
+                            allBooks.AuthorID == b.AuthorID &&
+                            allBooks.CategoryID == b.CategoryID &&
+                            allBooks.BookID != b.BookID))
                         .Distinct()
                         .ToListAsync();
         }

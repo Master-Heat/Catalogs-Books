@@ -27,13 +27,16 @@ namespace CatalogsBooksAPI.Services.Factories
         // 1. Search Logic: Used to check if they should redirect to Login
 
 
-        // 2. Creation Logic
-        public async Task<List<BookCardDTO>> GenerateRecsList(int accoutnID,
-        Func<int, Task<List<Book>>> RepoMethod)
-        {
-            List<Book> books = await RepoMethod(accoutnID);
 
-            var bookCards = books.Select(b => new BookCardDTO
+
+        // 2. Creation Logic
+
+        public async Task<List<BookCardDTO>> GenerateBookCardFromBooks(List<Book> books)
+        {
+            if (books == null) return new List<BookCardDTO>();
+
+
+            return [.. books.Select(b => new BookCardDTO
             {
                 BookID = b.BookID,
                 Title = b.Title,
@@ -41,12 +44,40 @@ namespace CatalogsBooksAPI.Services.Factories
                 CoverImageLink = b.CoverImageLink,
                 CoverAlt = b.CoverAlt,
 
-                // Set these to null/default as requested for now
-                MainCategory = null,
-                Sbucategory = null,
-                ViewsCount = 0
-            }).ToList();
+            })];
+        }
+
+
+        public async Task<List<BookCardDTO>> GenerateRecsList(int accoutnID,
+        Func<int, Task<List<Book>>> RepoMethod)
+        {
+            List<Book> books = await RepoMethod(accoutnID);
+
+            var bookCards = await GenerateBookCardFromBooks(books);
             return bookCards;
         }
+        public async Task<List<BookCardDTO>> GenerateGeneralRecsList(
+        Func<Task<List<Book>>> RepoMethod)
+        {
+            List<Book> books = await RepoMethod();
+
+
+            var bookCards = await GenerateBookCardFromBooks(books);
+            return bookCards;
+        }
+
+        public async Task<List<BookCardDTO>> GenerateRelatedList(int bookid,
+Func<int, Task<List<Book>>> RepoMethod)
+        {
+            List<Book> books = await RepoMethod(bookid);
+
+
+            var bookCards = await GenerateBookCardFromBooks(books);
+            return bookCards;
+        }
+
+
+
+
     }
 }

@@ -52,7 +52,6 @@ namespace CatalogsBooksAPI.Models
         [JsonIgnore]
         virtual public List<UserPreferredCategory> UserPreferedCategories { get; set; }
 
-        [JsonIgnore]
         [ForeignKey("CategoryID")]
         virtual public Category Category { get; set; }
 
