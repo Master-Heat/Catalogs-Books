@@ -20,6 +20,196 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  background-color: #F9F8F5;
+  color: #1a1a1a;
+  min-height: 100vh;
+  font-family: 'Product Sans', sans-serif;
+}
+
+/* ── MAIN LAYOUT ──────────────────────────────────────────── */
+.charts-main {
+  max-width: 1260px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 125px 24px 80px;
+}
+
+/* ── HEADER ROW ───────────────────────────────────────────── */
+.charts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.charts-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+/* ── SORT DROPDOWN ────────────────────────────────────────── */
+.sort-wrapper {
+  position: relative;
+}
+
+.sort-btn {
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  min-width: 120px;
+  text-align: center;
+  transition: background 0.2s;
+  user-select: none;
+}
+
+.sort-btn:hover {
+  background: #333;
+}
+
+.sort-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  min-width: 100%;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  display: none;
+  flex-direction: column;
+}
+
+.sort-dropdown.open {
+  display: flex;
+}
+
+.sort-option {
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #1a1a1a;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.sort-option:hover {
+  background: #f0ede8;
+}
+
+.sort-option.active {
+  background: #e8e5e0;
+  font-weight: 400;
+}
+
+/* ── CHARTS LIST CONTAINER ────────────────────────────────── */
+.charts-list {
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* ── CHART ITEM ───────────────────────────────────────────── */
+.chart-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.chart-item:last-child {
+  border-bottom: none;
+}
+
+.chart-item:hover {
+  background: #faf9f7;
+}
+
+/* Rank number */
+.chart-rank {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+  min-width: 32px;
+}
+
+/* Book thumbnail */
+.chart-cover {
+  width: 48px;
+  height: 64px;
+  background: #ddd;
+  border-radius: 3px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Book info */
+.chart-info {
+  flex: 1;
+}
+
+.chart-book-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+  font-family: 'Playfair Display', serif;
+}
+
+.chart-book-author {
+  font-size: 13px;
+  color: #777;
+}
+
+/* Stat (right side) */
+.chart-stat {
+  font-size: 14px;
+  color: #555;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Stars (top rated view) */
+.chart-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.chart-star {
+  font-size: 16px;
+  color: #f0b429;
+}
+
+.chart-rating-value {
+  font-size: 14px;
+  font-weight: 400;
+  color: #1a1a1a;
+}
+
 @media (max-width: 1150px) {
   .nav-bar {
     padding: 14px 24px;
@@ -49,6 +239,24 @@ html {
 
 /* TABLET (<= 768px) */
 @media (max-width: 768px) {
+  .charts-main {
+    padding: 100px 16px 60px;
+  }
+
+  .charts-title {
+    font-size: 26px;
+  }
+
+  .chart-item {
+    padding: 14px 16px;
+    gap: 14px;
+  }
+
+  .chart-cover {
+    width: 40px;
+    height: 54px;
+  }
+
   footer {
     flex-direction: column;
     align-items: center;
@@ -63,4 +271,28 @@ html {
 
 /* MOBILE (<= 480px) */
 @media (max-width: 480px) {
+  .charts-title {
+    font-size: 22px;
+  }
+
+  .chart-rank {
+    min-width: 24px;
+    font-size: 13px;
+  }
+
+  .chart-book-title {
+    font-size: 14px;
+  }
+
+  .chart-book-author {
+    font-size: 12px;
+  }
+
+  .chart-stat {
+    font-size: 12px;
+  }
+
+  .chart-star {
+    font-size: 13px;
+  }
 }

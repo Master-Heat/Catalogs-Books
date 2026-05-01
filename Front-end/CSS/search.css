@@ -1,0 +1,227 @@
+@font-face {
+  font-family: 'Product Sans';
+  src: url('../assets/Fonts/GoogleSans-VariableFont.woff2') format('woff2'),
+    url('../assets/Fonts/GoogleSans-VariableFont.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('../assets/Fonts/PlayfairDisplay-VariableFont.woff2') format('woff2'),
+    url('../assets/Fonts/PlayfairDisplay-VariableFont.ttf') format('truetype');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* SEARCH OVERLAY */
+.search-overlay {
+    position: fixed;
+    inset: 0;
+    background: #f5f3ef;
+    z-index: 999;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.search-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ── INNER WRAPPER ────────────────────────────────────────── */
+.search-overlay-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+}
+
+/* ── SEARCH BAR ROW ───────────────────────────────────────── */
+.search-overlay-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 2px solid #1a1a1a;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+}
+
+.search-overlay-bar svg {
+    flex-shrink: 0;
+    color: #777;
+}
+
+.search-overlay-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    font-family: 'Product Sans', sans-serif;
+    color: #1a1a1a;
+    outline: none;
+}
+
+.search-overlay-input::placeholder {
+    color: #bbb;
+}
+
+.search-overlay-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #777;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.15s;
+    flex-shrink: 0;
+}
+
+.search-overlay-close:hover {
+    color: #1a1a1a;
+}
+
+/* ── INFO LINE ────────────────────────────────────────────── */
+.search-overlay-info {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 12px;
+    font-family: 'Product Sans', sans-serif;
+    min-height: 20px;
+}
+
+.search-overlay-info span {
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+/* ── RESULTS LIST ─────────────────────────────────────────── */
+.search-overlay-list {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #e0ddd8;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.search-overlay-list:empty {
+    border: none;
+}
+
+/* ── RESULT ITEM ──────────────────────────────────────────── */
+.search-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.search-item:last-child {
+    border-bottom: none;
+}
+
+.search-item:hover {
+    background: #faf9f7;
+}
+
+/* Cover */
+.search-cover {
+    width: 52px;
+    height: 70px;
+    background: #ddd;
+    border-radius: 3px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 11px;
+    font-family: 'Product Sans', sans-serif;
+}
+
+.search-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Info */
+.search-info-block {
+    flex: 1;
+}
+
+.search-book-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+}
+
+.search-book-title mark {
+    background: transparent;
+    color: #1a1a1a;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: #f0b429;
+    text-underline-offset: 2px;
+}
+
+.search-book-author {
+    font-size: 13px;
+    color: #777;
+    font-family: 'Product Sans', sans-serif;
+}
+
+/* ── EMPTY STATE ──────────────────────────────────────────── */
+.search-empty {
+    text-align: center;
+    padding: 60px 24px;
+}
+
+.search-empty-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.search-empty-sub {
+    font-size: 14px;
+    color: #999;
+    font-family: 'Product Sans', sans-serif;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .search-overlay-inner {
+        padding: 24px 16px 60px;
+    }
+
+    .search-overlay-input {
+        font-size: 16px;
+    }
+
+    .search-item {
+        padding: 14px 16px;
+        gap: 14px;
+    }
+
+    .search-cover {
+        width: 44px;
+        height: 60px;
+    }
+
+    .search-book-title {
+        font-size: 14px;
+    }
+}
