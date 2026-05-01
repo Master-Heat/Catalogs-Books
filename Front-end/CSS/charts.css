@@ -1,0 +1,66 @@
+@font-face {
+  font-family: 'Product Sans';
+  src: url('../assets/Fonts/GoogleSans-VariableFont.woff2') format('woff2'),
+    url('../assets/Fonts/GoogleSans-VariableFont.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('../assets/Fonts/PlayfairDisplay-VariableFont.woff2') format('woff2'),
+    url('../assets/Fonts/PlayfairDisplay-VariableFont.ttf') format('truetype');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 1150px) {
+  .nav-bar {
+    padding: 14px 24px;
+  }
+
+  .nav-logo * {
+    font-size: 2rem;
+  }
+
+  .nav-search,
+  .nav-actions {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .mobile-menu {
+    display: flex;
+  }
+
+  footer {
+    padding: 24px;
+  }
+}
+
+/* TABLET (<= 768px) */
+@media (max-width: 768px) {
+  footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px 16px;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
+}
+
+/* MOBILE (<= 480px) */
+@media (max-width: 480px) {
+}
