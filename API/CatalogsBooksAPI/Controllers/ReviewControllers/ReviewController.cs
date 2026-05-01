@@ -24,27 +24,31 @@ namespace CatalogsBooksAPI.Controllers.ReviewController
         {
             _reviewFactory = reviewFactory;
         }
+        protected int GetUserId()
+        {
+            var id = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                     ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return int.TryParse(id, out int result) ? result : 0;
+        }
 
 
         [HttpPost("submit")]
         [Authorize]
-        public async Task<IActionResult> SubmitReview([FromBody] RateAndReviewDTO reviewDto)
+        public async Task<IActionResult> SubmitReview(int BookID, string ReviewText, double RateValue)
         {
-            string IdFromToken = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
-                      ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (int.Parse(IdFromToken) != reviewDto.AccountID)
-            {
-                return Unauthorized();
-            }
+            int IdFromToken = GetUserId();
+            if (IdFromToken == 0)
+            { return Unauthorized(); }
 
             try
             {
                 // Call the factory logic
                 await _reviewFactory.CreateOrUpdateReviewAsync(
-                    reviewDto.AccountID,
-                    reviewDto.BookID,
-                    reviewDto.ReviewText,
-                    reviewDto.RateValue
+                    IdFromToken,
+                    BookID,
+                    ReviewText,
+                   RateValue
                 );
 
                 return Ok(new { message = "Review submitted successfully." });
