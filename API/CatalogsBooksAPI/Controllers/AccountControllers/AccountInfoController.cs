@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 
 
@@ -27,10 +28,39 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
 
 
         AccountFactory accountFactory;
+        HomePageFactory homePageFactory;
 
-        public AccountInfoController(AccountFactory accountFactory)
+        public AccountInfoController(AccountFactory accountFactory,
+                                    HomePageFactory homePageFactory)
         {
             this.accountFactory = accountFactory;
+            this.homePageFactory = homePageFactory;
+        }
+
+        [NonAction] // Tells ASP.NET this is not an API endpoint
+        protected int GetUserId()
+        {
+            var id = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                     ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return int.TryParse(id, out int result) ? result : 0;
+        }
+
+        [NonAction]
+        protected string GetUserRole()
+        {
+            return User.FindFirst(ClaimTypes.Role)?.Value
+                   ?? User.FindFirst("role")?.Value
+                   ?? string.Empty;
+        }
+
+        [NonAction]
+        protected string GetUserEmail()
+        {
+            return User.FindFirst(JwtRegisteredClaimNames.Name)?.Value
+              ?? User.FindFirst(ClaimTypes.Name)?.Value
+              ?? User.FindFirst("name")?.Value
+              ?? string.Empty;
         }
 
 
@@ -39,23 +69,35 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
         [Authorize]
         public async Task<IActionResult> GetInfo(int id)
         {
-            string IdFromToken = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
-                         ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            string roleClaimed = User.FindFirst(ClaimTypes.Role)?.Value
-                       ?? User.FindFirst("role")?.Value;
-            if (string.IsNullOrWhiteSpace(IdFromToken) ||
+            int IdFromToken = GetUserId();
+            string roleClaimed = GetUserRole();
+            if (IdFromToken == 0 ||
                 string.IsNullOrWhiteSpace(roleClaimed))
             {
                 return Unauthorized();
             }
-            if (IdFromToken != id.ToString() && roleClaimed != "Admin")
+            if (IdFromToken != id && roleClaimed != "Admin")
             {
                 return Forbid();
             }
 
-            UserAccountDTO accountdata = await accountFactory.GetAccountDataByID(int.Parse(IdFromToken));
+            UserAccountDTO accountdata = await accountFactory.GetAccountDataByID(IdFromToken);
             return Ok(accountdata);
 
+
+
+        }
+        [HttpGet("homepage")]
+        [Authorize]
+        public async Task<ActionResult> GetUserHomePage()
+        {
+            string email = GetUserEmail();
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return Unauthorized();
+            }
+            HomeDashboardDTO homeDashboard = await homePageFactory.GenerateHomeData(email);
+            return Ok(homeDashboard);
         }
 
 
