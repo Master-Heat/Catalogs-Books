@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 
 
@@ -32,16 +33,21 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
         AccountFactory accountFactory;
 
         BookviewsRepo bookviews;
-        public BooksController(BookDetailsFactory bookDetailsFactory, AccountFactory accountFactory, BookviewsRepo bookviews)
+        BooksRecsCardListFactory bookCardListFactory;
+        public BooksController(BookDetailsFactory bookDetailsFactory,
+                                AccountFactory accountFactory,
+                                BookviewsRepo bookviews,
+                                BooksRecsCardListFactory bookCardListFactory)
         {
             this.bookDetailsFactory = bookDetailsFactory;
             this.accountFactory = accountFactory;
             this.bookviews = bookviews;
+            this.bookCardListFactory = bookCardListFactory;
         }
 
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [Authorize]
         public async Task<IActionResult> GetBookDetials(int id)
         {
@@ -73,8 +79,13 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
         }
 
 
-
-
+        [HttpGet("search")]
+        [Authorize]
+        public async Task<ActionResult> Search([FromQuery] string keyword)
+        {
+            List<BookCardDTO> SearchResult = await bookCardListFactory.SmartSearch(keyword);
+            return Ok(SearchResult);
+        }
 
 
     }
