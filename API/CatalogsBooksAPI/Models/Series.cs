@@ -4,12 +4,12 @@ using System.Text.Json.Serialization;
 
 namespace CatalogsBooksAPI.Models
 {
-    public class Seire
+    public class Series
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int BookID { get; set; }
-        public string SeireName { get; set; }
+        public string SeriesName { get; set; }
 
         [JsonIgnore]
         [ForeignKey("BookID")]

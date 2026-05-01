@@ -34,11 +34,11 @@ namespace CatalogsBooksAPI.Repository
             // 2. Database Level: Broad Filter
             // Find any book title, description , serirename  containing any of the 3-char prefixes
             List<Book> candidates = await _context.Books
-                        .Include(b => b.Seire)
+                        .Include(b => b.Series)
                         .Where(b => prefixes.Any(p =>
                         b.Title.Contains(p) ||
                         b.Description.Contains(p) ||
-                        (b.Seire != null && b.Seire.SeireName.Contains(p))))
+                        (b.Series != null && b.Series.SeriesName.Contains(p))))
                 .Take(200) // Safety limit
                 .ToListAsync();
 
@@ -49,9 +49,9 @@ namespace CatalogsBooksAPI.Repository
             List<Book> rankedResults = [.. candidates
                 .Select(book =>
                 {
-                    // We use the null-conditional operator ?. to avoid crashes if Seire is null
+                    // We use the null-conditional operator ?. to avoid crashes if  is null
                 int titleScore = Fuzz.TokenSetRatio(searchTerm, book.Title);
-                int seriesScore = Fuzz.TokenSetRatio(searchTerm, book.Seire?.SeireName ?? "");
+                int seriesScore = Fuzz.TokenSetRatio(searchTerm, book.Series?.SeriesName ?? "");
                 int descScore = Fuzz.TokenSetRatio(searchTerm, book.Description ?? "");
                 double finalScore = (titleScore * 1.0) + (seriesScore * 0.7) + (descScore * 0.4);
                     return new

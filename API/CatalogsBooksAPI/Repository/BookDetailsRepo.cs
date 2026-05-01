@@ -54,23 +54,23 @@ namespace CatalogsBooksAPI.Repository
                 .ToListAsync();
         }
 
-        public async Task<string> GetSeireName(int bookId)
+        public async Task<string> GetSeriesName(int bookId)
         {
-            Seire seire = await _context.Books
+            Series series = await _context.Books
             .Where(b => b.BookID == bookId)
-            .Select(b => b.Seire)
+            .Select(b => b.Series)
             .FirstOrDefaultAsync();
-            if (seire == null) return null;
-            return seire.SeireName;
+            if (series == null) return null;
+            return series.SeriesName;
 
         }
-        public async Task<List<Book>> GetBooksInSameSeire(int bookId)
+        public async Task<List<Book>> GetBooksInSameSeries(int bookId)
         {
-            string seireName = await GetSeireName(bookId); // Note the lowercase variable
-            if (seireName == null) return null;
+            string seriesName = await GetSeriesName(bookId); // Note the lowercase variable
+            if (seriesName == null) return null;
 
-            return await _context.Seires
-                    .Where(s => s.SeireName == seireName && s.BookID != bookId) // Use variable here
+            return await _context.Series
+                    .Where(s => s.SeriesName == seriesName && s.BookID != bookId) // Use variable here
                     .Include(s => s.Books)
                     .Select(s => s.Books)
                     .ToListAsync();

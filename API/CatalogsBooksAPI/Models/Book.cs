@@ -35,7 +35,7 @@ namespace CatalogsBooksAPI.Models
         virtual public Author Author { get; set; }
 
         [JsonIgnore]
-        virtual public Seire Seire { get; set; }
+        virtual public Series Series { get; set; }
 
 
 

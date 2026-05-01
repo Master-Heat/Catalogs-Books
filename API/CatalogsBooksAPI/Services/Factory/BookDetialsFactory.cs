@@ -24,7 +24,7 @@ namespace CatalogsBooksAPI.Services.Factories
             // 2. Fetch related details (Strings and IDs)
             var categoryInfo = await bookDetailsRepo.GetCategoryName(bookid);
             var authorName = await bookDetailsRepo.GetAuthorName(bookid);
-            var seriesName = await bookDetailsRepo.GetSeireName(bookid);
+            var seriesName = await bookDetailsRepo.GetSeriesName(bookid);
 
             // 3. get the count of the views
             int viewsCount = await bookDetailsRepo.GetBookViews(bookid);
@@ -32,7 +32,7 @@ namespace CatalogsBooksAPI.Services.Factories
             // We pass the method names from your repo as the 'Func' parameter
             var sameAuthor = await cardListFactory.GenerateRelatedList(bookid, bookDetailsRepo.getBooksFromSameAutho);
             var sameCategory = await cardListFactory.GenerateRelatedList(bookid, bookDetailsRepo.getBooksFromSameSubCategory);
-            var sameSeries = await cardListFactory.GenerateRelatedList(bookid, bookDetailsRepo.GetBooksInSameSeire);
+            var sameSeries = await cardListFactory.GenerateRelatedList(bookid, bookDetailsRepo.GetBooksInSameSeries);
 
 
             // 5. Assemble the final DTO

@@ -104,7 +104,7 @@ namespace CatalogsBooksAPI.Controllers
         public async Task<ActionResult<Book>> GetBookById(int id)
         {
             var book = await _context.Books
-                .Include(b => b.Seire)
+                .Include(b => b.Series)
                 .Include(b => b.Author)
                 .Include(b => b.Category)
                 .FirstOrDefaultAsync(b => b.BookID == id);

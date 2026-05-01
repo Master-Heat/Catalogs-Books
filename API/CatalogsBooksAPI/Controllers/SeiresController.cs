@@ -9,32 +9,32 @@ namespace CatalogsBooksAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SeiresController : ControllerBase
+    public class SeriesController : ControllerBase
     {
         private readonly CatalogsBooksContext _context;
 
-        public SeiresController(CatalogsBooksContext context)
+        public SeriesController(CatalogsBooksContext context)
         {
             _context = context;
         }
 
         /// <summary>
-        /// GET: api/SeiresController
+        /// GET: api/SeriesController
         /// Retrieves all book series from the database
         /// </summary>
         /// <returns>List of all book series</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(List<Seire>), 200)]
+        [ProducesResponseType(typeof(List<Series>), 200)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<List<Seire>>> GetAllSeires()
+        public async Task<ActionResult<List<Series>>> GetAllSeries()
         {
             try
             {
-                var Seires = await _context.Seires
+                var Series = await _context.Series
                     .Include(bs => bs.Books)
                     .ToListAsync();
 
-                return Ok(Seires);
+                return Ok(Series);
             }
             catch (Exception ex)
             {
@@ -43,16 +43,16 @@ namespace CatalogsBooksAPI.Controllers
         }
 
         /// <summary>
-        /// POST: api/SeiresController
+        /// POST: api/SeriesController
         /// Adds a new book series to the database
         /// </summary>
-        /// <param name="Seire">Book series details to create</param>
+        /// <param name="Series">Book series details to create</param>
         /// <returns>Created book series</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(Seire), 201)]
+        [ProducesResponseType(typeof(Series), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<Seire>> CreateSeire([FromBody] Seire Seire)
+        public async Task<ActionResult<Series>> CreateSeries([FromBody] Series Series)
         {
             try
             {
@@ -61,15 +61,15 @@ namespace CatalogsBooksAPI.Controllers
                     return BadRequest(ModelState);
                 }
 
-                if (string.IsNullOrWhiteSpace(Seire.SeireName))
+                if (string.IsNullOrWhiteSpace(Series.SeriesName))
                 {
                     return BadRequest(new { message = "Series name is required" });
                 }
 
-                _context.Seires.Add(Seire);
+                _context.Series.Add(Series);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetSeireById), new { id = Seire.BookID }, Seire);
+                return CreatedAtAction(nameof(GetSeriesById), new { id = Series.BookID }, Series);
             }
             catch (Exception ex)
             {
@@ -78,24 +78,24 @@ namespace CatalogsBooksAPI.Controllers
         }
 
         /// <summary>
-        /// GET: api/SeiresController/{id}
+        /// GET: api/SeriesController/{id}
         /// Retrieves a specific book series by ID
         /// </summary>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Seire), 200)]
+        [ProducesResponseType(typeof(Series), 200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<Seire>> GetSeireById(int id)
+        public async Task<ActionResult<Series>> GetSeriesById(int id)
         {
-            var Seire = await _context.Seires
+            var Series = await _context.Series
                 .Include(bs => bs.Books)
                 .FirstOrDefaultAsync(bs => bs.BookID == id);
 
-            if (Seire == null)
+            if (Series == null)
             {
                 return NotFound(new { message = $"Book series with ID {id} not found" });
             }
 
-            return Ok(Seire);
+            return Ok(Series);
         }
     }
 }
