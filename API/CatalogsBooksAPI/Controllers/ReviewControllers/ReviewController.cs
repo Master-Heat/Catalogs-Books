@@ -35,11 +35,18 @@ namespace CatalogsBooksAPI.Controllers.ReviewController
 
         [HttpPost("submit")]
         [Authorize]
-        public async Task<IActionResult> SubmitReview(int BookID, string ReviewText, double RateValue)
+        public async Task<IActionResult> SubmitReview(int BookID, string ReviewText, double? RateValue)
         {
             int IdFromToken = GetUserId();
             if (IdFromToken == 0)
             { return Unauthorized(); }
+
+            if (RateValue == null)
+            {
+                return BadRequest("Rate must have a value");
+            }
+            double rate = (double)RateValue;
+
 
             try
             {
@@ -48,7 +55,7 @@ namespace CatalogsBooksAPI.Controllers.ReviewController
                     IdFromToken,
                     BookID,
                     ReviewText,
-                   RateValue
+                    rate
                 );
 
                 return Ok(new { message = "Review submitted successfully." });
