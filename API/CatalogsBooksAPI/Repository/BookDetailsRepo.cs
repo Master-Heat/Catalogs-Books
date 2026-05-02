@@ -110,5 +110,9 @@ namespace CatalogsBooksAPI.Repository
         }
 
 
+        public async Task<List<Book>> GetAllBooks()
+        {
+            return await _context.Books.ToListAsync();
+        }
     }
 }

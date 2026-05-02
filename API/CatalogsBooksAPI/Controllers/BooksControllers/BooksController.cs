@@ -139,6 +139,20 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             return Forbid();
 
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult> GetAllBooks()
+        {
+            string RoleFromToken = GetAccountRole();
+            if (RoleFromToken == "Admin" || RoleFromToken == "AI")
+            {
+
+
+                List<BookCardDTO> allBooks = await bookFactory.GetAllBooks();
+                return Ok(allBooks);
+            }
+            else return Forbid();
+        }
     }
 }
 

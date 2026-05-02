@@ -74,6 +74,17 @@ namespace CatalogsBooksAPI.Services.Factories
             return await _bookDetailsRepo.GetBookbyTitle(bookTitle);
         }
 
-
+        public async Task<List<BookCardDTO>> GetAllBooks()
+        {
+            List<Book> AllBooks = await _bookDetailsRepo.GetAllBooks();
+            return AllBooks.Select(b => new BookCardDTO
+            {
+                BookID = b.BookID,
+                Title = b.Title,
+                Description = b.Description,
+                CoverImageLink = b.CoverImageLink,
+                CoverAlt = b.CoverAlt
+            }).ToList();
+        }
     }
 }
