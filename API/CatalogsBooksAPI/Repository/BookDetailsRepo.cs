@@ -26,7 +26,7 @@ namespace CatalogsBooksAPI.Repository
                 .Select(b => b.Category).
                 FirstOrDefaultAsync();
 
-            return (category.MainCategory, category.Sbucategory);
+            return (category.MainCategory, category.SubCategory);
         }
 
         public async Task<string> GetAuthorName(int bookId)

@@ -12,7 +12,7 @@ namespace CatalogsBooksAPI.Models
         [Key]
         public int CategoryID { get; set; }
         public string MainCategory { get; set; }
-        public string Sbucategory { get; set; }
+        public string SubCategory { get; set; }
 
         [JsonIgnore]
         virtual public List<Book> Books { get; set; }

@@ -46,7 +46,7 @@ namespace CatalogsBooksAPI.Controllers
             var category = new Category
             {
                 MainCategory = mainCategory,
-                Sbucategory = subcategory // Matches the property name 'Sbucategory' in your model
+                SubCategory = subcategory // Matches the property name 'Sbucategory' in your model
             };
 
             _context.Categories.Add(category);
