@@ -163,6 +163,26 @@ namespace CatalogsBooksAPI.Controllers.ReviewController
             return Unauthorized();
         }
 
+        [HttpDelete]
+        [Authorize]
+        public async Task<ActionResult> RemoveReview(int reviewId)
+        {
+            string Role = GetAccountRole();
+            Review review = await _reviewRepo.GetReviewByID(reviewId);
+            if (review == null)
+            {
+                return NotFound("could find any reivew with this ID");
+            }
+            if (Role == "Admin" || review.AccountID == GetUserId())
+            {
+                bool isRemoved = await _reviewRepo.RemoveRateAndReview(reviewId);
+                if (isRemoved)
+                {
+                    return Ok();
+                }
+                return Forbid();
+            }
+            return BadRequest();
+        }
     }
-
 }

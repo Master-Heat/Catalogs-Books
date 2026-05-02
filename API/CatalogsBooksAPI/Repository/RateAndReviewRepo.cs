@@ -131,5 +131,20 @@ namespace CatalogsBooksAPI.Repository
                 .Where(r => r.ReviewID == id).FirstOrDefaultAsync();
 
         }
+        public async Task<bool> RemoveRateAndReview(int reviewId)
+        {
+            Review review = await GetReviewByID(reviewId);
+            if (review == null) return false;
+            int rowsAffected = await _context.Reviews
+                .Where(r => r.ReviewID == reviewId)
+                .ExecuteDeleteAsync();
+            if (rowsAffected == 1)
+            {
+                _context.SaveChanges();
+            }
+            return rowsAffected > 0;
+        }
+
+
     }
 }
