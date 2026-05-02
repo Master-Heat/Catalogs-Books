@@ -40,5 +40,43 @@ namespace CatalogsBooksAPI.Repository
             _context.SaveChanges();
             return;
         }
+        public async Task<List<ReviewItemDTO>> GetActiveReviewsWithUserInfoAsync(int bookid)
+        {
+            return await _context.Reviews
+        .Where(r => r.BookID == bookid && !string.IsNullOrWhiteSpace(r.ReviewText))
+        .Select(r => new ReviewItemDTO
+        {
+            ReviewDate = r.ReviewDate,
+            ReviewID = r.ReviewID,
+            Email = r.Account.Email,
+            UserName = r.Account.UserName,
+            Role = r.Account.Role,
+            ReviewText = r.ReviewText
+        })
+        .ToListAsync();
+        }
+
+        public async Task<(double AverageRate, int TotalRatings)> GetBookRatingStatsAsync(int bookId)
+        {
+            var stats = await _context.Reviews
+                .Where(r => r.BookID == bookId)
+                .GroupBy(r => r.BookID)
+                .Select(g => (new
+                {
+
+
+                    AverageRate = g.Average(r => r.RateValue),
+                    TotalRatings = g.Count()
+                }
+                )
+                )
+                .FirstOrDefaultAsync();
+
+            if (stats == null)
+            {
+                return (0.0, 0);
+            }
+            return (stats.AverageRate, stats.TotalRatings);
+        }
     }
 }

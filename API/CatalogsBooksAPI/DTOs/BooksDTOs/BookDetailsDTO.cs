@@ -1,3 +1,5 @@
+using CatalogsBooksAPI.DTOs.ReviewAndRateDTOs;
+
 namespace CatalogsBooksAPI.DTOs.BooksDTOs
 {
     public class BookDetailsDTO
@@ -31,6 +33,11 @@ namespace CatalogsBooksAPI.DTOs.BooksDTOs
 
         // from query with viewed books 
         public int ViewsCount { get; set; }
+        // from query with review 
+        public List<ReviewItemDTO> Reviews { get; set; }
+        public double AverageRate { get; set; }
+        public int TotalRatings { get; set; }
+        public int ActiveReviewCount { get; set; }
 
     }
 }
