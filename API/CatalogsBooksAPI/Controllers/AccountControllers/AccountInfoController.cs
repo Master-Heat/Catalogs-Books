@@ -120,7 +120,25 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             return Unauthorized();
 
         }
-
+        [HttpPut("changerole/{id:int}")]
+        [Authorize]
+        public async Task<ActionResult> ChangeUserRole(int id, [FromBody] string newRole)
+        {
+            int IdFromToken = GetUserId();
+            string roleClaimed = GetAccountRole();
+            if (IdFromToken == 0 ||
+                string.IsNullOrWhiteSpace(roleClaimed))
+            {
+                return Unauthorized();
+            }
+            if (roleClaimed != "Admin")
+            {
+                return Forbid();
+            }
+            bool result = await accountFactory.ModifyAccountRole(id, newRole);
+            if (!result) return NotFound();
+            return NoContent();
+        }
 
 
 

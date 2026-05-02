@@ -28,7 +28,17 @@ namespace CatalogsBooksAPI.Repository
             _context.Accounts.Add(newAccount);
             _context.SaveChanges();
         }
-
+        public async Task<bool> ModifyAccountRole(int id, string newRole)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountID == id);
+            if (account != null)
+            {
+                account.Role = newRole;
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
 
 
     }
