@@ -51,6 +51,27 @@ namespace CatalogsBooksAPI.Repository
             return false;
         }
 
+        public async Task<List<Book>> GetUserViewedBooks(int accountId)
+        {
+            var viewedBooks = await _context.ViewedBooks
+                .Where(vb => vb.AccountID == accountId)
+                .Include(vb => vb.Book)
+                .Select(vb => vb.Book)
+                .ToListAsync();
+
+            return viewedBooks;
+        }
+        public async Task<bool> removeAccount(int id)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountID == id);
+            if (account != null)
+            {
+                _context.Accounts.Remove(account);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
 
     }
 }

@@ -2,7 +2,7 @@ using CatalogsBooksAPI.DTOs.BooksDTOs;
 
 namespace CatalogsBooksAPI.DTOs.AuthorDTOs
 {
-    public class AuthorBooks
+    public class AuthorBooksDTO
     {
 
 

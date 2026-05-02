@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using CatalogsBooksAPI.DTOs.AccountsDTOs;
+using CatalogsBooksAPI.DTOs.BooksDTOs;
 using CatalogsBooksAPI.Models;
 using CatalogsBooksAPI.Repository;
 using CatalogsBooksAPI.Services;
@@ -160,6 +161,64 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             return NoContent();
         }
 
-    }
+        [HttpGet("viewedbooks{accountId:int}")]
+        [Authorize]
+        public async Task<ActionResult> GetUserViewedBooks(int accountId)
+        {
+            int IdFromToken = GetUserId();
+            string roleClaimed = GetAccountRole();
+            if (IdFromToken == 0 ||
+                string.IsNullOrWhiteSpace(roleClaimed))
+            {
+                return Unauthorized();
+            }
+            if (IdFromToken != accountId && roleClaimed != "Admin")
+            {
+                return Forbid();
+            }
+            if (roleClaimed == "Admin" || roleClaimed == "AI")
+            {
+                List<BookCardDTO> viewedBooks = await accountFactory.GetUserViewedBooks(IdFromToken);
+                if (viewedBooks == null || viewedBooks.Count == 0) return NotFound();
+                return Ok(viewedBooks);
+            }
+            return Forbid();
 
+        }
+        [HttpGet("viewedbooks")]
+        [Authorize]
+        public async Task<ActionResult> GetUserViewedBooksFromToken()
+        {
+            int IdFromToken = GetUserId();
+            if (IdFromToken == 0)
+            {
+                return Unauthorized();
+            }
+
+            List<BookCardDTO> viewedBooks = await accountFactory.GetUserViewedBooks(IdFromToken);
+            if (viewedBooks == null || viewedBooks.Count == 0) return NotFound();
+            return Ok(viewedBooks);
+
+        }
+
+        [HttpDelete("removeaccount/{id:int}")]
+        [Authorize]
+        public async Task<ActionResult> RemoveAccount(int id)
+        {
+
+            string roleClaimed = GetAccountRole();
+            if (
+                string.IsNullOrWhiteSpace(roleClaimed))
+            {
+                return Unauthorized();
+            }
+            if (roleClaimed != "Admin")
+            {
+                return Forbid();
+            }
+            bool result = await accountFactory.RemoveAccount(id);
+            if (!result) return NotFound();
+            return NoContent();
+        }
+    }
 }

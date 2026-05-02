@@ -1,7 +1,9 @@
 namespace CatalogsBooksAPI.Services.Factories
 {
     using CatalogsBooksAPI.DTOs.AuthorDTOs;
+    using CatalogsBooksAPI.DTOs.BooksDTOs;
     using CatalogsBooksAPI.Models;
+    using CatalogsBooksAPI.Repository;
     using Microsoft.EntityFrameworkCore;
 
 
@@ -9,6 +11,7 @@ namespace CatalogsBooksAPI.Services.Factories
     public class AuthorFactory
     {
         private readonly CatalogsBooksContext _context;
+        private readonly AuthorRepo _authorRepo;
 
         public AuthorFactory(CatalogsBooksContext context)
         {
@@ -16,16 +19,23 @@ namespace CatalogsBooksAPI.Services.Factories
         }
 
         // 1. Pure Search Logic
-        public async Task<Author> FindAuthorByNameAsync(string authorName)
+        public async Task<AuthorDTO> FindAuthorByNameAsync(string authorName)
         {
             if (string.IsNullOrWhiteSpace(authorName)) return null;
 
-            return await _context.Authors
+            var author = await _context.Authors
                 .FirstOrDefaultAsync(a => a.AuthorName.ToLower() == authorName.ToLower());
+
+            return author == null ? null : new AuthorDTO
+            {
+                AuthorID = author.AuthorID,
+                AuthorName = author.AuthorName,
+                AccountId = author.AccountID
+            };
         }
 
         // 2. Creation Logic (Uses Search to prevent duplicates)
-        public async Task<Author> CreateAuthorFromDTOAsync(AuthorCreateDTO authorDto)
+        public async Task<bool> CreateAuthorFromDTOAsync(AuthorCreateDTO authorDto)
         {
             // First, ensure the data is valid
             ValidateAuthorDTO(authorDto);
@@ -34,7 +44,7 @@ namespace CatalogsBooksAPI.Services.Factories
             var existingAuthor = await FindAuthorByNameAsync(authorDto.AuthorName);
             if (existingAuthor != null)
             {
-                return existingAuthor;
+                return false;
             }
 
             // Third, map to the model and add to context
@@ -44,9 +54,22 @@ namespace CatalogsBooksAPI.Services.Factories
                 AccountID = null
             };
 
-            _context.Authors.Add(newAuthor);
+            return await _authorRepo.AddAuthor(newAuthor);
+        }
 
-            return newAuthor;
+        public async Task<List<AuthorDTO>> GetAllAuthorsAsync()
+        {
+            var authors = await _authorRepo.GetAllAuthors();
+            return [.. authors.Select(a => new AuthorDTO
+            {
+                AuthorID = a.AuthorID,
+                AuthorName = a.AuthorName,
+                AccountId = a.AccountID
+            })];
+        }
+        public async Task<bool> DeleteAuthorAsync(int id)
+        {
+            return await _authorRepo.DeleteAuthor(id);
         }
         private void ValidateAuthorDTO(AuthorCreateDTO authorDto)
         {
@@ -57,5 +80,53 @@ namespace CatalogsBooksAPI.Services.Factories
                 throw new ArgumentException("Author Name is required.");
         }
 
+        public async Task<AuthorBooksDTO> GetAuthorWithBooksAsync(int authorId)
+        {
+            var author = await _authorRepo.GetAuthorByID(authorId);
+            if (author == null) return null;
+
+            var books = await _authorRepo.GetBooksByAuthorID(authorId);
+
+            return new AuthorBooksDTO
+            {
+                AccountID = author.AuthorID,
+                AuthorName = author.AuthorName,
+
+                AuthorBookCards = books.Select(b => new BookCardDTO
+                {
+                    BookID = b.BookID,
+                    Title = b.Title,
+                    Description = b.Description,
+                    CoverImageLink = b.CoverImageLink,
+                    CoverAlt = b.CoverAlt
+                }).ToList()
+            };
+        }
+        public async Task<List<AuthorBooksDTO>> GetAllAuthorsWithBooksAsync()
+        {
+            var authors = await _authorRepo.GetAllAuthors();
+            var authorBooksList = new List<AuthorBooksDTO>();
+
+            foreach (var author in authors)
+            {
+                var books = await _authorRepo.GetBooksByAuthorID(author.AuthorID);
+                var authorBooks = new AuthorBooksDTO
+                {
+                    AccountID = author.AuthorID,
+                    AuthorName = author.AuthorName,
+                    AuthorBookCards = books.Select(b => new BookCardDTO
+                    {
+                        BookID = b.BookID,
+                        Title = b.Title,
+                        Description = b.Description,
+                        CoverImageLink = b.CoverImageLink,
+                        CoverAlt = b.CoverAlt
+                    }).ToList()
+                };
+                authorBooksList.Add(authorBooks);
+            }
+
+            return authorBooksList;
+        }
     }
 }

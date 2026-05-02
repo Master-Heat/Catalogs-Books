@@ -1,5 +1,6 @@
 
 using CatalogsBooksAPI.DTOs.AccountsDTOs;
+using CatalogsBooksAPI.DTOs.BooksDTOs;
 using CatalogsBooksAPI.Models;
 using CatalogsBooksAPI.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -73,6 +74,26 @@ namespace CatalogsBooksAPI.Services.Factories
         public async Task<bool> ModifyAccountState(int id, string newState)
         {
             return await repo.ModifyAccountState(id, newState);
+        }
+
+        public async Task<List<BookCardDTO>> GetUserViewedBooks(int accountId)
+        {
+            List<Book> viewedBooks = await repo.GetUserViewedBooks(accountId);
+
+            List<BookCardDTO> bookCards = viewedBooks.Select(book => new BookCardDTO
+            {
+                BookID = book.BookID,
+                Title = book.Title,
+                Description = book.Description,
+                CoverImageLink = book.CoverImageLink,
+                CoverAlt = book.CoverAlt
+            }).ToList();
+
+            return bookCards;
+        }
+        public async Task<bool> RemoveAccount(int id)
+        {
+            return await repo.removeAccount(id);
         }
 
         private async Task ValidateRegisterDTO(AccountRegisterDTO dto)
