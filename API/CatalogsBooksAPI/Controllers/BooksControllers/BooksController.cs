@@ -34,18 +34,32 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
 
         BookviewsRepo bookviews;
         BooksRecsCardListFactory bookCardListFactory;
+        BookFactory bookFactory;
+        BookDetailsRepo bookDetailsRepo;
         public BooksController(BookDetailsFactory bookDetailsFactory,
                                 AccountFactory accountFactory,
                                 BookviewsRepo bookviews,
-                                BooksRecsCardListFactory bookCardListFactory)
+                                BooksRecsCardListFactory bookCardListFactory,
+                                BookFactory bookFactory,
+                                BookDetailsRepo bookDetailsRepo
+                                )
         {
             this.bookDetailsFactory = bookDetailsFactory;
             this.accountFactory = accountFactory;
             this.bookviews = bookviews;
             this.bookCardListFactory = bookCardListFactory;
+            this.bookFactory = bookFactory;
+            this.bookDetailsRepo = bookDetailsRepo;
         }
 
 
+        [NonAction]
+        protected string GetAccountRole()
+        {
+            return User.FindFirst(ClaimTypes.Role)?.Value
+                   ?? User.FindFirst("role")?.Value
+                   ?? string.Empty;
+        }
 
         [HttpGet("{id:int}")]
         [Authorize]
@@ -87,7 +101,46 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             return Ok(SearchResult);
         }
 
+        [HttpPost("add")]
+        [Authorize]
+        public async Task<ActionResult> AddBook(CreateBookDTO bookDTO)
+        {
+            string roleFromToken = GetAccountRole();
+            if (roleFromToken == "Admin")
+            {
 
+                try
+                {
+                    // 1. Use the Factory to validate and map the DTO
+                    var book = await bookFactory.CreateFromDTO(bookDTO);
+
+                    // 2. Logic Check: If factory returns a book with an ID, it already exists
+                    if (book.BookID > 0)
+                    {
+                        return Conflict(new { message = "A book with this title already exists." });
+                    }
+
+                    // 3. Save to database via Repository
+                    // Note: You may need to add an 'AddBook' method to your BookDetailsRepo
+                    await bookDetailsRepo.AddBook(book);
+
+                    return CreatedAtAction(nameof(AddBook), new { id = book.BookID }, book);
+                }
+                catch (ArgumentException ex)
+                {
+                    // Catch the specific validation errors from your Factory
+                    return BadRequest(new { message = ex.Message });
+                }
+                catch (Exception)
+                {
+                    return StatusCode(500, "An error occurred while saving the book.");
+                }
+            }
+            return Forbid();
+
+        }
     }
-
 }
+
+
+

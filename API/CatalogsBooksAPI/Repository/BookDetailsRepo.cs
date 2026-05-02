@@ -1,5 +1,6 @@
 using CatalogsBooksAPI.DTOs.BooksDTOs;
 using CatalogsBooksAPI.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
@@ -87,5 +88,27 @@ namespace CatalogsBooksAPI.Repository
             return await _context.ViewedBooks
                     .CountAsync(v => v.BookID == bookid);
         }
+
+        public async Task<Book> AddBook(Book book)
+        {
+            Book oldBook = await GetBookById(book.BookID);
+            if (oldBook != null) return null;
+
+            await _context.Books.AddAsync(book);
+            _context.SaveChanges();
+            return book;
+
+        }
+
+        public async Task<Book> GetBookbyTitle(string bookTitle)
+        {
+            Book book = await _context.Books
+            .FirstOrDefaultAsync(c =>
+            c.Title.ToLower() == bookTitle.ToLower());
+
+            return book;
+        }
+
+
     }
 }

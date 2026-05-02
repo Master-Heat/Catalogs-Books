@@ -7,15 +7,17 @@ namespace CatalogsBooksAPI.Services.Factories
     using System.Threading.Tasks;
     using CatalogsBooksAPI.DTOs.BooksDTOs;
     using CatalogsBooksAPI.Models;
+    using CatalogsBooksAPI.Repository;
     using Microsoft.EntityFrameworkCore;
 
     public class BookFactory
     {
-        private readonly CatalogsBooksContext _context;
-        // public CategoryFactory(CatalogsBooksContext context)
-        // {
-        //     _context = context;
-        // }
+        // private readonly CatalogsBooksContext _context;
+        private readonly BookDetailsRepo _bookDetailsRepo;
+        public BookFactory(BookDetailsRepo bookDetailsRepo)
+        {
+            _bookDetailsRepo = bookDetailsRepo;
+        }
         public async Task<Book> CreateFromDTO(CreateBookDTO dto)
         {
             // 1. Validate the incoming data
@@ -69,9 +71,9 @@ namespace CatalogsBooksAPI.Services.Factories
         }
         public async Task<Book> FindBookAsync(string bookTitle)
         {
-            return await _context.Books
-           .FirstOrDefaultAsync(c =>
-           c.Title.ToLower() == bookTitle.ToLower());
+            return await _bookDetailsRepo.GetBookbyTitle(bookTitle);
         }
+
+
     }
 }
