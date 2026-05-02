@@ -39,6 +39,17 @@ namespace CatalogsBooksAPI.Repository
             }
             return false;
         }
+        public async Task<bool> ModifyAccountState(int id, string newState)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountID == id);
+            if (account != null)
+            {
+                account.AccountState = newState;
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
 
 
     }

@@ -140,7 +140,25 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             return NoContent();
         }
 
-
+        [HttpPut("changestate/{id:int}")]
+        [Authorize]
+        public async Task<ActionResult> ChangeUserState(int id, [FromBody] string newState)
+        {
+            int IdFromToken = GetUserId();
+            string roleClaimed = GetAccountRole();
+            if (IdFromToken == 0 ||
+                string.IsNullOrWhiteSpace(roleClaimed))
+            {
+                return Unauthorized();
+            }
+            if (roleClaimed != "Admin")
+            {
+                return Forbid();
+            }
+            bool result = await accountFactory.ModifyAccountState(id, newState);
+            if (!result) return NotFound();
+            return NoContent();
+        }
 
     }
 

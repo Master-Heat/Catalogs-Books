@@ -70,6 +70,10 @@ namespace CatalogsBooksAPI.Services.Factories
             return await repo.ModifyAccountRole(id, newRole);
         }
 
+        public async Task<bool> ModifyAccountState(int id, string newState)
+        {
+            return await repo.ModifyAccountState(id, newState);
+        }
 
         private async Task ValidateRegisterDTO(AccountRegisterDTO dto)
         {

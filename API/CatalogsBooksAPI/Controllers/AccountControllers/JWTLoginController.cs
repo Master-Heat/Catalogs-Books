@@ -49,6 +49,12 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             {
                 return Unauthorized("Invalid username or password");
             }
+            Account account = await accountRepo.GetAccountDataByEmail(claimedAccount.Email);
+            if (account.AccountState == "Banned")
+            {
+                return Unauthorized("Your account has been banned. Please contact support for more information.");
+            }
+
 
             HomeDashboardDTO dashboardData = await homePageFactory.GenerateHomeData(claimedAccount.Email);
 
