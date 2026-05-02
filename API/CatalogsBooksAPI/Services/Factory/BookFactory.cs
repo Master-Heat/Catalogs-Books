@@ -86,5 +86,26 @@ namespace CatalogsBooksAPI.Services.Factories
                 CoverAlt = b.CoverAlt
             }).ToList();
         }
+        public async Task<bool> alterExistingBook(AlterBookDTO book)
+        {
+            Book existingBook = await _bookDetailsRepo.GetBookById(book.BookID);
+            if (existingBook == null) return false;
+
+            // Update the existing book with the new data
+            existingBook.BookID = book.BookID;
+            existingBook.Title = book.Title;
+            existingBook.AuthorID = book.AuthorID;
+            existingBook.CategoryID = book.CategoryID;
+            existingBook.Description = book.Description;
+            existingBook.PagesCount = book.PagesCount;
+            existingBook.CanDownload = book.CanDownload;
+            existingBook.DownloadLink = book.DownloadLink;
+            existingBook.CoverImageLink = book.CoverImageLink;
+            existingBook.CoverAlt = book.CoverAlt;
+            existingBook.PublicationDate = book.PublicationDate ?? DateOnly.FromDateTime(DateTime.Now);
+
+            return await _bookDetailsRepo.AlterExisitngBook(existingBook);
+        }
+
     }
 }

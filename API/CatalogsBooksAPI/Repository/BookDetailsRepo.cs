@@ -114,5 +114,14 @@ namespace CatalogsBooksAPI.Repository
         {
             return await _context.Books.ToListAsync();
         }
+        public async Task<bool> AlterExisitngBook(Book book)
+        {
+            Book exisitingBook = await GetBookById(book.BookID);
+            if (exisitingBook == null) return false;
+
+            _context.Books.Update(book);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

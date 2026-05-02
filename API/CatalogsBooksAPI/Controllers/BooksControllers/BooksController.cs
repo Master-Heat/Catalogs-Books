@@ -139,6 +139,7 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             return Forbid();
 
         }
+
         [HttpGet]
         [Authorize]
         public async Task<ActionResult> GetAllBooks()
@@ -153,7 +154,24 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             }
             else return Forbid();
         }
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult> AlterBook(AlterBookDTO book)
+        {
+            string RoleFromToken = GetAccountRole();
+            if (RoleFromToken == "Admin")
+            {
+                bool result = await bookFactory.alterExistingBook(book);
+                if (result) return Ok(book);
+                else return NotFound(new { message = "No book found with the provided ID." });
+            }
+            else return Forbid();
+        }
     }
+
+
+
+
 }
 
 
