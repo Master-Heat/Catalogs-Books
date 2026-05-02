@@ -123,5 +123,14 @@ namespace CatalogsBooksAPI.Repository
             await _context.SaveChangesAsync();
             return true;
         }
+        public async Task<bool> DeleteBook(int bookId)
+        {
+            Book book = await GetBookById(bookId);
+            if (book == null) return false;
+
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

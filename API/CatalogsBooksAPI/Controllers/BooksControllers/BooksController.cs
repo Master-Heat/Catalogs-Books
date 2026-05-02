@@ -167,6 +167,19 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             }
             else return Forbid();
         }
+        [HttpDelete("{id:int}")]
+        [Authorize]
+        public async Task<ActionResult> DeleteBook(int id)
+        {
+            string RoleFromToken = GetAccountRole();
+            if (RoleFromToken == "Admin")
+            {
+                bool result = await bookDetailsRepo.DeleteBook(id);
+                if (result) return Ok();
+                else return NotFound(new { message = "No book found with the provided ID." });
+            }
+            else return Forbid();
+        }
     }
 
 
