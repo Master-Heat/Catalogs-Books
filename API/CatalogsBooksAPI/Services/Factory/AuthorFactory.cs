@@ -10,12 +10,12 @@ namespace CatalogsBooksAPI.Services.Factories
 
     public class AuthorFactory
     {
-        private readonly CatalogsBooksContext _context;
+        // private readonly CatalogsBooksContext _context;
         private readonly AuthorRepo _authorRepo;
 
-        public AuthorFactory(CatalogsBooksContext context)
+        public AuthorFactory(AuthorRepo authorRepo)
         {
-            _context = context;
+            _authorRepo = authorRepo;
         }
 
         // 1. Pure Search Logic
@@ -23,8 +23,7 @@ namespace CatalogsBooksAPI.Services.Factories
         {
             if (string.IsNullOrWhiteSpace(authorName)) return null;
 
-            var author = await _context.Authors
-                .FirstOrDefaultAsync(a => a.AuthorName.ToLower() == authorName.ToLower());
+            var author = await _authorRepo.GetAuthorByName(authorName);
 
             return author == null ? null : new AuthorDTO
             {
