@@ -52,6 +52,21 @@ namespace CatalogsBooksAPI.Services.Factories
             };
             return account;
         }
+        public async Task<AccountInfoDTO> GetAccountDataByEmil(string Email)
+        {
+            Account dbaccount = await repo.GetAccountDataByEmail(Email);
+            AccountInfoDTO account = new AccountInfoDTO
+            {
+                AccountID = dbaccount.AccountID,
+                UserName = dbaccount.UserName,
+                Role = dbaccount.Role,
+                AccountState = dbaccount.AccountState
+            };
+            return account;
+        }
+
+
+
 
         private async Task ValidateRegisterDTO(AccountRegisterDTO dto)
         {

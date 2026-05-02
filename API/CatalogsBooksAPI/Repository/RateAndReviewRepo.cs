@@ -1,3 +1,4 @@
+using CatalogsBooksAPI.DTOs.BooksDTOs;
 using CatalogsBooksAPI.DTOs.ReviewAndRateDTOs;
 using CatalogsBooksAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +78,39 @@ namespace CatalogsBooksAPI.Repository
                 return (0.0, 0);
             }
             return (stats.AverageRate, stats.TotalRatings);
+        }
+
+        public async Task<List<UserReviewDTO>> GetUserReviews(int accountid)
+        {
+            return await _context.Reviews
+
+         .Where(r => r.AccountID == accountid && !string.IsNullOrWhiteSpace(r.ReviewText))
+         .Select(r => new UserReviewDTO
+         {
+             ReviewID = r.ReviewID,
+             RateValue = r.RateValue,
+             ReviewText = r.ReviewText,
+             ReviewDate = r.ReviewDate,
+
+             // Mapping the nested BookCardDTO directly from the navigation property
+             ReviewedBookCard = new BookCardDTO
+             {
+                 BookID = r.Book.BookID,
+                 Title = r.Book.Title,
+                 Description = r.Book.Description,
+                 CoverImageLink = r.Book.CoverImageLink,
+                 CoverAlt = r.Book.CoverAlt
+             }
+         })
+         .ToListAsync();
+        }
+
+
+        public async Task<List<Review>> GetBookReviews(int bookid)
+        {
+            return await _context.Reviews
+            .Where(r => r.BookID == bookid && !string.IsNullOrWhiteSpace(r.ReviewText))
+            .ToListAsync();
         }
     }
 }

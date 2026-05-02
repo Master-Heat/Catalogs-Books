@@ -15,9 +15,9 @@ namespace CatalogsBooksAPI.Models
         public string PasswordHash { get; set; }
 
         [Required]
-        public string Role { get; set; } = "User"; // Default value
+        public string Role { get; set; }  // Default value
 
-        public string AccountState { get; set; } = "Active"; // Default value
+        public string AccountState { get; set; }  // Default value
 
         [JsonIgnore]
         virtual public Author Author { get; set; }

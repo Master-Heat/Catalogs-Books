@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
@@ -47,7 +48,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
         }
 
         [NonAction]
-        protected string GetUserRole()
+        protected string GetAccountRole()
         {
             return User.FindFirst(ClaimTypes.Role)?.Value
                    ?? User.FindFirst("role")?.Value
@@ -65,12 +66,12 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
 
 
 
-        [HttpGet("{id}")]
+        [HttpGet("byid/{id:int}")]
         [Authorize]
-        public async Task<IActionResult> GetInfo(int id)
+        public async Task<ActionResult> GetInfo(int id)
         {
             int IdFromToken = GetUserId();
-            string roleClaimed = GetUserRole();
+            string roleClaimed = GetAccountRole();
             if (IdFromToken == 0 ||
                 string.IsNullOrWhiteSpace(roleClaimed))
             {
@@ -81,7 +82,8 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
                 return Forbid();
             }
 
-            UserAccountDTO accountdata = await accountFactory.GetAccountDataByID(IdFromToken);
+            UserAccountDTO accountdata = await accountFactory.GetAccountDataByID(id);
+            if (accountdata == null) return NotFound();
             return Ok(accountdata);
 
 
@@ -100,7 +102,24 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             return Ok(homeDashboard);
         }
 
+        [HttpGet("byemail/{email}")]
+        [Authorize]
+        public async Task<ActionResult> GetUserInfoFromEmail(string email)
+        {
+            string claimedRole = GetAccountRole();
+            if (string.IsNullOrWhiteSpace(claimedRole))
+            {
+                return Forbid();
+            }
+            if (claimedRole == "Admin" || claimedRole == "AI")
+            {
+                AccountInfoDTO accountInfo = await accountFactory.GetAccountDataByEmil(email);
+                if (accountInfo == null) return NotFound();
+                return Ok(accountInfo);
+            }
+            return Unauthorized();
 
+        }
 
 
 

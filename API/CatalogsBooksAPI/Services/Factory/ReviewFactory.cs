@@ -72,7 +72,21 @@ namespace CatalogsBooksAPI.Services.Factories
             OldReview.ReviewDate = DateTime.Now;
             return OldReview;
         }
+        public async Task<List<RateAndReviewDTO>> GetAllBookReviews(int bookid)
+        {
+            List<Review> reviews = await rateAndReviewRepo.GetBookReviews(bookid);
+            if (reviews == null) return null;
+            return [.. reviews.Select(r => new RateAndReviewDTO{
+                BookID = r.BookID,
+                AccountID = r.AccountID,
+                ReviewText = r.ReviewText,
+                RateValue = r.RateValue,
+                ReviewDate = r.ReviewDate
+            })
 
+
+            ];
+        }
 
     }
 }
