@@ -87,6 +87,20 @@ namespace CatalogsBooksAPI.Services.Factories
 
             ];
         }
+        public async Task<RateAndReviewDTO> GetReviewDTOByID(int reivewid)
+        {
+            Review review = await rateAndReviewRepo.GetReviewByID(reivewid);
+            if (review == null) return null;
+            return new RateAndReviewDTO
+            {
+                BookID = review.BookID,
+                AccountID = review.AccountID,
+                ReviewText = review.ReviewText,
+                RateValue = review.RateValue,
+                ReviewDate = review.ReviewDate
+            };
+
+        }
 
     }
 }

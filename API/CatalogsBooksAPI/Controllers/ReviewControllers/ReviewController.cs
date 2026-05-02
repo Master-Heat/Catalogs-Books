@@ -48,7 +48,7 @@ namespace CatalogsBooksAPI.Controllers.ReviewController
 
         [HttpPost("submit")]
         [Authorize]
-        public async Task<IActionResult> SubmitReview(int BookID, string ReviewText, double? RateValue)
+        public async Task<ActionResult> SubmitReview(int BookID, string ReviewText, double? RateValue)
         {
             int IdFromToken = GetUserId();
             if (IdFromToken == 0)
@@ -87,7 +87,7 @@ namespace CatalogsBooksAPI.Controllers.ReviewController
 
         [Authorize]
         [HttpGet("user/{accountid:int}")]
-        public async Task<IActionResult> GetUserReviews(int accountid)
+        public async Task<ActionResult> GetUserReviews(int accountid)
         {
             string role = GetAccountRole();
             if (string.IsNullOrWhiteSpace(role))
@@ -104,7 +104,7 @@ namespace CatalogsBooksAPI.Controllers.ReviewController
         }
         [Authorize]
         [HttpGet("user/")]
-        public async Task<IActionResult> GetMyReviews()
+        public async Task<ActionResult> GetMyReviews()
         {
             int accountid = GetUserId();
 
@@ -120,7 +120,7 @@ namespace CatalogsBooksAPI.Controllers.ReviewController
         }
         [Authorize]
         [HttpGet("book/{bookid}")]
-        public async Task<IActionResult> GetAllBookReviews(int bookid)
+        public async Task<ActionResult> GetAllBookReviews(int bookid)
         {
             string role = GetAccountRole();
             if (string.IsNullOrWhiteSpace(role))
@@ -135,5 +135,34 @@ namespace CatalogsBooksAPI.Controllers.ReviewController
             }
             return BadRequest();
         }
+
+
+        [Authorize]
+        [HttpDelete("reviewId")]
+        public async Task<ActionResult> RemoveUserOwnReview(int reviewId)
+        {
+            int IdFromToken = GetUserId();
+            string Role = GetAccountRole();
+            RateAndReviewDTO review = await _reviewFactory.GetReviewDTOByID(reviewId);
+            if (review == null)
+            {
+                return NotFound("could find any reivew with this ID");
+            }
+            if (review.AccountID == IdFromToken || Role == "Admin")
+            {
+
+                bool isRemoved = await _reviewRepo.RemoveReview(reviewId);
+                if (isRemoved)
+                {
+
+                    return Ok();
+                }
+
+                return BadRequest();
+            }
+            return Unauthorized();
+        }
+
     }
+
 }

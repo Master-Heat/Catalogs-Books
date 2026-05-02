@@ -84,25 +84,25 @@ namespace CatalogsBooksAPI.Repository
         {
             return await _context.Reviews
 
-         .Where(r => r.AccountID == accountid && !string.IsNullOrWhiteSpace(r.ReviewText))
-         .Select(r => new UserReviewDTO
-         {
-             ReviewID = r.ReviewID,
-             RateValue = r.RateValue,
-             ReviewText = r.ReviewText,
-             ReviewDate = r.ReviewDate,
+        .Where(r => r.AccountID == accountid && !string.IsNullOrWhiteSpace(r.ReviewText))
+        .Select(r => new UserReviewDTO
+        {
+            ReviewID = r.ReviewID,
+            RateValue = r.RateValue,
+            ReviewText = r.ReviewText,
+            ReviewDate = r.ReviewDate,
 
-             // Mapping the nested BookCardDTO directly from the navigation property
-             ReviewedBookCard = new BookCardDTO
-             {
-                 BookID = r.Book.BookID,
-                 Title = r.Book.Title,
-                 Description = r.Book.Description,
-                 CoverImageLink = r.Book.CoverImageLink,
-                 CoverAlt = r.Book.CoverAlt
-             }
-         })
-         .ToListAsync();
+            // Mapping the nested BookCardDTO directly from the navigation property
+            ReviewedBookCard = new BookCardDTO
+            {
+                BookID = r.Book.BookID,
+                Title = r.Book.Title,
+                Description = r.Book.Description,
+                CoverImageLink = r.Book.CoverImageLink,
+                CoverAlt = r.Book.CoverAlt
+            }
+        })
+        .ToListAsync();
         }
 
 
@@ -111,6 +111,25 @@ namespace CatalogsBooksAPI.Repository
             return await _context.Reviews
             .Where(r => r.BookID == bookid && !string.IsNullOrWhiteSpace(r.ReviewText))
             .ToListAsync();
+        }
+
+        public async Task<bool> RemoveReview(int reviewId)
+        {
+            int rowsAffected = await _context.Reviews
+        .Where(r => r.ReviewID == reviewId)
+        .ExecuteDeleteAsync();
+            if (rowsAffected == 1)
+            {
+                _context.SaveChanges();
+            }
+            return rowsAffected > 0;
+        }
+
+        public async Task<Review> GetReviewByID(int id)
+        {
+            return await _context.Reviews
+                .Where(r => r.ReviewID == id).FirstOrDefaultAsync();
+
         }
     }
 }
