@@ -60,8 +60,23 @@ namespace CatalogsBooksAPI.Services.Factories
 
             };
             return dashboard;
+        }
 
+        public async Task<ChartDTO> GenerateChartsData()
+        {
 
+            ChartDTO chart = new ChartDTO()
+            {
+                HighestRate = await
+                cardListFactory.GenerateGeneralRecsList(booksRecsRepo.GetBookByHighestRate),
+
+                PopularAllTime = await
+                cardListFactory.GenerateGeneralRecsList(bookviewsRepo.GetPopularAllTime),
+
+                // PopularThisWeek = await
+                // cardListFactory.GenerateGeneralRecsList(bookviewsRepo.GetPopulatThisWeek)
+            };
+            return chart;
         }
 
     }

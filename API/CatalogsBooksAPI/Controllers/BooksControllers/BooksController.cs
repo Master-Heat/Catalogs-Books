@@ -36,12 +36,14 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
         BooksRecsCardListFactory bookCardListFactory;
         BookFactory bookFactory;
         BookDetailsRepo bookDetailsRepo;
+        HomePageFactory homePageFactory;
         public BooksController(BookDetailsFactory bookDetailsFactory,
                                 AccountFactory accountFactory,
                                 BookviewsRepo bookviews,
                                 BooksRecsCardListFactory bookCardListFactory,
                                 BookFactory bookFactory,
                                 BookDetailsRepo bookDetailsRepo
+                                , HomePageFactory homePageFactory
                                 )
         {
             this.bookDetailsFactory = bookDetailsFactory;
@@ -50,6 +52,7 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             this.bookCardListFactory = bookCardListFactory;
             this.bookFactory = bookFactory;
             this.bookDetailsRepo = bookDetailsRepo;
+            this.homePageFactory = homePageFactory;
         }
 
 
@@ -180,10 +183,17 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             }
             else return Forbid();
         }
+
+
+        [HttpGet("Chart")]
+        public async Task<ActionResult> GetChartsData()
+        {
+            ChartDTO chartData = await homePageFactory.GenerateChartsData();
+            return Ok(chartData);
+
+        }
+
     }
-
-
-
 
 }
 

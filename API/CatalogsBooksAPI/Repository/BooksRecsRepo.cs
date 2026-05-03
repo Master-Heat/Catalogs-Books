@@ -48,11 +48,25 @@ namespace CatalogsBooksAPI.Repository
                         .ToListAsync();
         }
 
-
-
-
-
-
-
+        public async Task<List<Book>> GetBookByHighestRate()
+        {
+            return await _context.Reviews
+        .GroupBy(r => r.BookID)
+        .Select(group => new
+        {
+            BookID = group.Key,
+            AverageRating = group.Average(r => r.RateValue)
+        })
+        .OrderByDescending(x => x.AverageRating)
+        .Join(_context.Books
+                .Include(b => b.Author)   // Must load to avoid line 46 crash
+                .Include(b => b.Category), // Must load to avoid line 46 crash
+              reviewResult => reviewResult.BookID,
+              book => book.BookID,
+              (reviewResult, book) => book) // Directly returns the Book object
+        .ToListAsync();
+        }
     }
+
+
 }

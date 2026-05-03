@@ -17,13 +17,16 @@ namespace CatalogsBooksAPI.Services.Factories
     {
         BooksRecsRepo booksRecsRepo;
         BookSearchRepo searchRepo;
+        BookviewsRepo bookviewsRepo;
 
         private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
         public BooksRecsCardListFactory(BooksRecsRepo booksRecsRepo,
-                                        BookSearchRepo searchRepo)
+                                        BookSearchRepo searchRepo,
+                                        BookviewsRepo bookviewsRepo)
         {
             this.booksRecsRepo = booksRecsRepo;
             this.searchRepo = searchRepo;
+            this.bookviewsRepo = bookviewsRepo;
 
         }
 
