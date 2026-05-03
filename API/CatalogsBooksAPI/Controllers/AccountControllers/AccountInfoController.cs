@@ -161,30 +161,34 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             return NoContent();
         }
 
-        [HttpGet("viewedbooks{accountId:int}")]
-        [Authorize]
-        public async Task<ActionResult> GetUserViewedBooks(int accountId)
-        {
-            int IdFromToken = GetUserId();
-            string roleClaimed = GetAccountRole();
-            if (IdFromToken == 0 ||
-                string.IsNullOrWhiteSpace(roleClaimed))
-            {
-                return Unauthorized();
-            }
-            if (IdFromToken != accountId && roleClaimed != "Admin")
-            {
-                return Forbid();
-            }
-            if (roleClaimed == "Admin" || roleClaimed == "AI")
-            {
-                List<BookCardDTO> viewedBooks = await accountFactory.GetUserViewedBooks(IdFromToken);
-                if (viewedBooks == null || viewedBooks.Count == 0) return NotFound();
-                return Ok(viewedBooks);
-            }
-            return Forbid();
+        // [HttpGet("viewedbooks{accountId:int}")]
+        // [Authorize]
+        // public async Task<ActionResult> GetUserViewedBooks(int accountId)
+        // {
+        //     int IdFromToken = GetUserId();
+        //     string roleClaimed = GetAccountRole();
+        //     if (IdFromToken == 0 ||
+        //         string.IsNullOrWhiteSpace(roleClaimed))
+        //     {
+        //         return Unauthorized();
+        //     }
+        //     if (IdFromToken != accountId && roleClaimed != "Admin")
+        //     {
+        //         return Forbid();
+        //     }
+        //     if (roleClaimed == "Admin" || roleClaimed == "AI")
+        //     {
+        //         List<BookCardDTO> viewedBooks = await accountFactory.GetUserViewedBooks(IdFromToken);
+        //         if (viewedBooks == null || viewedBooks.Count == 0) return NotFound();
+        //         return Ok(viewedBooks);
+        //     }
+        //     return Forbid();
 
-        }
+        // }
+
+
+
+
         [HttpGet("viewedbooks")]
         [Authorize]
         public async Task<ActionResult> GetUserViewedBooksFromToken()
