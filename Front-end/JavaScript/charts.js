@@ -36,22 +36,109 @@ const CHARTS_DATA = {
 // ── STATE ─────────────────────────────────────────────────────
 let currentSort = "most-read"; // default
 
-// ── INIT ──────────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-    /* ── Swap for real API call later ──
-       Promise.all([
-           fetch("/api/charts/most-read").then(r => r.json()),
-           fetch("/api/charts/top-rated").then(r => r.json())
-       ]).then(([mostRead, topRated]) => {
-           CHARTS_DATA.mostRead = mostRead;
-           CHARTS_DATA.topRated = topRated;
-           renderCharts();
-       });
-    */
+// ── HELPERS ───────────────────────────────────────────────────
+function getStoredUser() {
+    try {
+        return JSON.parse(localStorage.getItem("user") || "{}");
+    } catch {
+        return {};
+    }
+}
 
+function showAdminPanelIfAdmin() {
+    const user = getStoredUser();
+    const isAdmin = user.role === "Admin" || user.role === "admin";
+
+    if (isAdmin) {
+        const navActions = document.querySelector(".nav-actions");
+        if (navActions) {
+            const adminLink = document.createElement("a");
+            adminLink.href = "./adminaccount.html";
+            adminLink.className = "btn-admin";
+            adminLink.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L6 6V10C6 14.42 8.46 18.36 12 20.77C15.54 18.36 18 14.42 18 10V6L12 2Z"/>
+                    <path d="M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12Z"/>
+                </svg>
+                <span>Admin</span>
+            `;
+            navActions.insertBefore(adminLink, navActions.querySelector(".btn-account"));
+        }
+
+        const mobileMenu = document.querySelector(".mobile-menu");
+        if (mobileMenu) {
+            const mobileAdminLink = document.createElement("a");
+            mobileAdminLink.href = "./adminaccount.html";
+            mobileAdminLink.className = "mobile-btn-admin";
+            mobileAdminLink.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L6 6V10C6 14.42 8.46 18.36 12 20.77C15.54 18.36 18 14.42 18 10V6L12 2Z"/>
+                    <path d="M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12Z"/>
+                </svg>
+                Admin
+            `;
+            const mobileAccount = mobileMenu.querySelector(".mobile-btn-account");
+            mobileMenu.insertBefore(mobileAdminLink, mobileAccount);
+        }
+    }
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", async () => {
+    // Try to load real chart data from API
+    await loadChartData();
     initSortDropdown();
     renderCharts();
+    showAdminPanelIfAdmin();
 });
+
+// ── LOAD CHART DATA FROM API ──────────────────────────────────
+async function loadChartData() {
+    try {
+        const token = localStorage.getItem("jwt_token");
+        
+        // Only try to fetch if user is authenticated
+        if (!token) {
+            return;
+        }
+
+        const headers = {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        };
+
+        // Try to fetch most-read from popular books endpoint
+        try {
+            const mostReadUrl = CONFIG.buildUrl(CONFIG.ENDPOINTS.CHARTS_MOST_READ);
+            const mostReadRes = await fetch(mostReadUrl, { headers });
+            if (mostReadRes.ok) {
+                const data = await mostReadRes.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    CHARTS_DATA.mostRead = data;
+                }
+            }
+        } catch (e) {
+            // Silently fall back to mock data
+        }
+
+        // Try to fetch top-rated
+        try {
+            const topRatedUrl = CONFIG.buildUrl(CONFIG.ENDPOINTS.CHARTS_TOP_RATED);
+            const topRatedRes = await fetch(topRatedUrl, { headers });
+            if (topRatedRes.ok) {
+                const data = await topRatedRes.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    CHARTS_DATA.topRated = data;
+                }
+            }
+        } catch (e) {
+            // Silently fall back to mock data
+        }
+
+    } catch (error) {
+        // Will use mock data as fallback
+    }
+}
 
 // ── SORT DROPDOWN ─────────────────────────────────────────────
 function initSortDropdown() {
@@ -122,7 +209,7 @@ function createChartItem(book, rank, sortType) {
 
     // Navigate to book page on click
     item.addEventListener("click", () => {
-        window.location.href = `bookpage.html?id=${book.id}`;
+        window.location.href = `./bookpage.html?id=${book.id}`;
     });
 
     // Cover
