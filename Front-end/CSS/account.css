@@ -123,6 +123,44 @@ body {
     background: #333;
 }
 
+/* ── LOGOUT CARD ──────────────────────────────────────────── */
+.logout-card {
+    border: 1px solid #e8b4b4;
+    background: #fff5f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logout-text {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* ── LOGOUT BUTTON ────────────────────────────────────────── */
+.btn-logout {
+    background: #c0392b;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    align-self: flex-start;
+}
+
+.btn-logout:hover {
+    background: #a03020;
+    transform: translateY(-1px);
+}
+
+.btn-logout:active {
+    transform: translateY(0);
+}
+
 /* ── ADD BOOK BUTTON (management card) ────────────────────── */
 .btn-add-book {
     width: 100%;

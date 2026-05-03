@@ -1,15 +1,14 @@
 // ============================================================
 // CONFIG
 // ============================================================
-const APIDomain = "http://localhost:5184";
 const MIN_BOOKS_TO_SHOW = 3;
 
 // ============================================================
 // API FETCH
 // ============================================================
 
-async function getHomepageData(APIDomain, token) {
-  const url = `${APIDomain}/api/AccountInfo/homepage`;
+async function getHomepageData(token) {
+  const url = CONFIG.buildUrl(CONFIG.ENDPOINTS.ACCOUNT_HOMEPAGE);
 
   try {
     const response = await fetch(url, {
@@ -28,7 +27,6 @@ async function getHomepageData(APIDomain, token) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Failed to fetch homepage data:", error);
     return null;
   }
 }
@@ -57,7 +55,7 @@ function createBookCard(book) {
 
   card.style.cursor = "pointer";
   card.addEventListener("click", () => {
-    window.location.href = `bookpage.html?id=${book.id}`;
+    window.location.href = `./bookpage.html?id=${book.id}`;
   });
 
   // Cover
@@ -171,6 +169,46 @@ function buildDashboard(dashboard) {
 }
 
 // ============================================================
+// SHOW ADMIN PANEL FOR ADMINS
+// ============================================================
+
+function showAdminPanelIfAdmin() {
+  if (AuthGuard.isAdmin()) {
+    const navActions = document.querySelector(".nav-actions");
+    if (navActions) {
+      const adminLink = document.createElement("a");
+      adminLink.href = "./adminaccount.html";
+      adminLink.className = "btn-admin";
+      adminLink.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L6 6V10C6 14.42 8.46 18.36 12 20.77C15.54 18.36 18 14.42 18 10V6L12 2Z"/>
+          <path d="M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12Z"/>
+        </svg>
+        <span>Admin</span>
+      `;
+      navActions.insertBefore(adminLink, navActions.querySelector(".btn-account"));
+    }
+
+    // Also add to mobile menu
+    const mobileMenu = document.querySelector(".mobile-menu");
+    if (mobileMenu) {
+      const mobileAdminLink = document.createElement("a");
+      mobileAdminLink.href = "./adminaccount.html";
+      mobileAdminLink.className = "mobile-btn-admin";
+      mobileAdminLink.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L6 6V10C6 14.42 8.46 18.36 12 20.77C15.54 18.36 18 14.42 18 10V6L12 2Z"/>
+          <path d="M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12Z"/>
+        </svg>
+        Admin
+      `;
+      const mobileAccount = mobileMenu.querySelector(".mobile-btn-account");
+      mobileMenu.insertBefore(mobileAdminLink, mobileAccount);
+    }
+  }
+}
+
+// ============================================================
 // INIT
 // ============================================================
 
@@ -178,21 +216,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("jwt_token");
 
   if (!token) {
-    console.warn("No JWT token found – showing empty dashboard.");
     return;
   }
 
   try {
-    const dashboard = await getHomepageData(APIDomain, token);
+    const dashboard = await getHomepageData(token);
 
     if (!dashboard) {
-      console.warn("API returned no data.");
       return;
     }
 
-    console.log("Dashboard data:", dashboard);
     buildDashboard(dashboard);
+    showAdminPanelIfAdmin();
   } catch (err) {
-    console.error("Failed to initialise dashboard:", err);
+    // Silent error handling
   }
 }); 

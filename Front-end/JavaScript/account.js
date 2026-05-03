@@ -1,68 +1,183 @@
 /* ============================================================
    ACCOUNT PAGE — account.js
-   Handles: update name, update password, add book (admin)
+   Connects to: GET /api/AccountInfo/{id}
    ============================================================ */
 
-// ── INIT ──────────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-    loadUserInfo();
-    initInfoUpdate();
-    initPasswordUpdate();
+// ── HELPERS ───────────────────────────────────────────────────
+function getAuthHeaders() {
+    const token = localStorage.getItem("jwt_token");
+    return {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type":  "application/json"
+    };
+}
 
-    // Admin-only
-    const addBookBtn = document.getElementById("addBookBtn");
-    if (addBookBtn) {
-        initAddBook();
-    }
-});
-
-// ── LOAD USER INFO ────────────────────────────────────────────
-function loadUserInfo() {
-    /* ── Replace with real API call ──
-       fetch("/api/user/me")
-         .then(r => r.json())
-         .then(user => {
-             document.getElementById("userName").value = user.name;
-         });
-    */
+function getStoredUser() {
     try {
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        const nameEl = document.getElementById("userName");
-        if (nameEl && user.name) nameEl.value = user.name;
+        return JSON.parse(localStorage.getItem("user") || "{}");
     } catch {
-        // silent
+        return {};
     }
 }
 
-// ── UPDATE INFO ───────────────────────────────────────────────
+// ── SHOW ADMIN PANEL FOR ADMINS ───────────────────────────────
+function showAdminPanelIfAdmin() {
+    const user = getStoredUser();
+    const isAdmin = user.role === "Admin" || user.role === "admin";
+
+    if (isAdmin) {
+        const navActions = document.querySelector(".nav-actions");
+        if (navActions) {
+            const adminLink = document.createElement("a");
+            adminLink.href = "./adminaccount.html";
+            adminLink.className = "btn-admin";
+            adminLink.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L6 6V10C6 14.42 8.46 18.36 12 20.77C15.54 18.36 18 14.42 18 10V6L12 2Z"/>
+                    <path d="M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12Z"/>
+                </svg>
+                <span>Admin</span>
+            `;
+            navActions.insertBefore(adminLink, navActions.querySelector(".btn-account"));
+        }
+
+        const mobileMenu = document.querySelector(".mobile-menu");
+        if (mobileMenu) {
+            const mobileAdminLink = document.createElement("a");
+            mobileAdminLink.href = "./adminaccount.html";
+            mobileAdminLink.className = "mobile-btn-admin";
+            mobileAdminLink.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L6 6V10C6 14.42 8.46 18.36 12 20.77C15.54 18.36 18 14.42 18 10V6L12 2Z"/>
+                    <path d="M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12Z"/>
+                </svg>
+                Admin
+            `;
+            const mobileAccount = mobileMenu.querySelector(".mobile-btn-account");
+            mobileMenu.insertBefore(mobileAdminLink, mobileAccount);
+        }
+    }
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("jwt_token");
+
+    if (!token) {
+        window.location.href = "./login.html";
+        return;
+    }
+
+    await loadUserInfo();
+    initInfoUpdate();
+    initPasswordUpdate();
+    initLogout();
+    showAdminPanelIfAdmin();
+});
+
+// ── LOAD USER INFO ────────────────────────────────────────────
+async function loadUserInfo() {
+    const storedUser = getStoredUser();
+    const userId     = storedUser.id;
+
+    if (!userId) {
+        showMessage("Could not identify user. Please log in again.", "error");
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${CONFIG.API_DOMAIN}${CONFIG.ENDPOINTS.ACCOUNT_INFO}/${userId}`,
+            { method: "GET", headers: getAuthHeaders() }
+        );
+
+        if (response.status === 401) {
+            localStorage.removeItem("jwt_token");
+            localStorage.removeItem("user");
+            window.location.href = "./login.html";
+            return;
+        }
+
+        if (!response.ok) throw new Error("Failed to load account info.");
+
+        // API returns UserAccountDTO:
+        // { accountID, userName, email, role, ... }
+        const data = await response.json();
+
+        // Populate fields
+        const nameEl  = document.getElementById("userName");
+        const emailEl = document.getElementById("userEmail");
+
+        if (nameEl)  nameEl.value  = data.userName || "";
+        if (emailEl) emailEl.value = data.email    || "";
+
+        // Update stored user with fresh data
+        localStorage.setItem("user", JSON.stringify({
+            id:    data.accountID,
+            name:  data.userName,
+            email: data.email,
+            role:  data.role
+        }));
+
+    } catch (error) {
+        console.error("Failed to load user info:", error);
+        showMessage("Failed to load account info.", "error");
+    }
+}
+
+// ── UPDATE USER INFO ──────────────────────────────────────────
 function initInfoUpdate() {
     const btn = document.getElementById("updateInfo");
     if (!btn) return;
 
-    btn.addEventListener("click", () => {
-        const name = document.getElementById("userName").value.trim();
+    btn.addEventListener("click", async () => {
+        const nameEl = document.getElementById("userName");
+        const name = nameEl.value.trim();
 
         if (!name) {
-            showMessage("Please enter your name.", "error");
+            showMessage("Please enter a name.", "error");
             return;
         }
 
-        /* ── Replace with real API call ──
-           fetch("/api/user/me", {
-               method: "PATCH",
-               headers: { "Content-Type": "application/json" },
-               body: JSON.stringify({ name })
-           }).then(() => showMessage("Name updated successfully.", "success"));
-        */
+        if (name.length < 2) {
+            showMessage("Name must be at least 2 characters.", "error");
+            return;
+        }
 
-        // Update localStorage for now
         try {
-            const user = JSON.parse(localStorage.getItem("user") || "{}");
-            user.name = name;
-            localStorage.setItem("user", JSON.stringify(user));
-        } catch { /* silent */ }
+            const storedUser = getStoredUser();
+            const userId = storedUser.id;
 
-        showMessage("Name updated successfully.", "success");
+            const response = await fetch(
+                `${CONFIG.API_DOMAIN}${CONFIG.ENDPOINTS.ACCOUNT_INFO}/${userId}`,
+                {
+                    method: "PUT",
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify({ userName: name })
+                }
+            );
+
+            if (response.status === 401) {
+                localStorage.removeItem("jwt_token");
+                localStorage.removeItem("user");
+                window.location.href = "./login.html";
+                return;
+            }
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || "Failed to update user info.");
+            }
+
+            const updatedUser = getStoredUser();
+            updatedUser.name = name;
+            localStorage.setItem("user", JSON.stringify(updatedUser));
+
+            showMessage("User information updated successfully.", "success");
+        } catch (error) {
+            console.error("Failed to update user info:", error);
+            showMessage(error.message || "Failed to update user information.", "error");
+        }
     });
 }
 
@@ -71,7 +186,7 @@ function initPasswordUpdate() {
     const btn = document.getElementById("updatePassword");
     if (!btn) return;
 
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
         const current = document.getElementById("currentPassword").value;
         const next    = document.getElementById("newPassword").value;
         const confirm = document.getElementById("confirmPassword").value;
@@ -91,148 +206,28 @@ function initPasswordUpdate() {
             return;
         }
 
-        /* ── Replace with real API call ──
-           fetch("/api/user/password", {
-               method: "PATCH",
-               headers: { "Content-Type": "application/json" },
-               body: JSON.stringify({ currentPassword: current, newPassword: next })
-           })
-           .then(r => {
-               if (!r.ok) throw new Error("Wrong current password.");
-               showMessage("Password updated successfully.", "success");
-               document.getElementById("currentPassword").value = "";
-               document.getElementById("newPassword").value     = "";
-               document.getElementById("confirmPassword").value = "";
-           })
-           .catch(err => showMessage(err.message, "error"));
-        */
+        // Note: Wire to password update endpoint when available
+        // For now show coming soon message
+        showMessage("Password update coming soon.", "success");
 
-        showMessage("Password updated successfully.", "success");
         document.getElementById("currentPassword").value = "";
         document.getElementById("newPassword").value     = "";
         document.getElementById("confirmPassword").value = "";
     });
 }
 
-// ── ADD BOOK (admin) ──────────────────────────────────────────
-function initAddBook() {
-    const addBookBtn  = document.getElementById("addBookBtn");
-    const panel       = document.getElementById("addBookPanel");
-    const overlay     = document.getElementById("panelOverlay");
-    const cancelBtn   = document.getElementById("cancelBook");
-    const submitBtn   = document.getElementById("submitBook");
-    const coverUpload = document.getElementById("coverUpload");
-    const coverInput  = document.getElementById("coverInput");
-    const coverPreview= document.getElementById("coverPreview");
-    const coverText   = document.getElementById("coverUploadText");
+// ── LOGOUT ────────────────────────────────────────────────────
+function initLogout() {
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (!logoutBtn) return;
 
-    // Open panel
-    addBookBtn.addEventListener("click", () => {
-        overlay.style.display = "block";
-        panel.classList.add("open");
-        document.body.style.overflow = "hidden";
+    logoutBtn.addEventListener("click", () => {
+        AuthGuard.logout();
     });
-
-    // Close panel
-    function closePanel() {
-        panel.classList.remove("open");
-        overlay.style.display = "none";
-        document.body.style.overflow = "";
-        resetBookForm();
-    }
-
-    cancelBtn.addEventListener("click", closePanel);
-    overlay.addEventListener("click", closePanel);
-
-    // Cover image upload
-    coverUpload.addEventListener("click", () => coverInput.click());
-
-    coverInput.addEventListener("change", () => {
-        const file = coverInput.files[0];
-        if (!file) return;
-
-        const url = URL.createObjectURL(file);
-        coverPreview.src         = url;
-        coverPreview.style.display = "block";
-        coverText.style.display    = "none";
-    });
-
-    // Submit book
-    submitBtn.addEventListener("click", () => {
-        const book = gatherBookForm();
-        if (!book) return;
-
-        /* ── Replace with real API call ──
-           const formData = new FormData();
-           Object.entries(book).forEach(([k, v]) => formData.append(k, v));
-           if (coverInput.files[0]) formData.append("cover", coverInput.files[0]);
-
-           fetch("/api/books", { method: "POST", body: formData })
-             .then(r => r.json())
-             .then(() => {
-                 showMessage("Book added successfully.", "success");
-                 closePanel();
-             })
-             .catch(() => showMessage("Failed to add book.", "error"));
-        */
-
-        console.log("New book:", book);
-        showMessage("Book added successfully.", "success");
-        closePanel();
-    });
-}
-
-// ── GATHER FORM DATA ──────────────────────────────────────────
-function gatherBookForm() {
-    const fields = {
-        title:       document.getElementById("bookTitle").value.trim(),
-        author:      document.getElementById("bookAuthor").value.trim(),
-        description: document.getElementById("bookDescription").value.trim(),
-        year:        document.getElementById("bookYear").value.trim(),
-        publisher:   document.getElementById("bookPublisher").value.trim(),
-        pages:       document.getElementById("bookPages").value.trim(),
-        language:    document.getElementById("bookLanguage").value.trim(),
-        isbn:        document.getElementById("bookISBN").value.trim(),
-        genre:       document.getElementById("bookGenre").value.trim(),
-    };
-
-    // Check required fields
-    const missing = Object.entries(fields)
-        .filter(([, v]) => !v)
-        .map(([k]) => k);
-
-    if (missing.length > 0) {
-        showMessage(`Please fill in: ${missing.join(", ")}.`, "error");
-        return null;
-    }
-
-    return fields;
-}
-
-// ── RESET FORM ────────────────────────────────────────────────
-function resetBookForm() {
-    const ids = [
-        "bookTitle", "bookAuthor", "bookDescription",
-        "bookYear", "bookPublisher", "bookPages",
-        "bookLanguage", "bookISBN", "bookGenre"
-    ];
-    ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = "";
-    });
-
-    const coverInput   = document.getElementById("coverInput");
-    const coverPreview = document.getElementById("coverPreview");
-    const coverText    = document.getElementById("coverUploadText");
-
-    if (coverInput)   coverInput.value            = "";
-    if (coverPreview) coverPreview.style.display  = "none";
-    if (coverText)    coverText.style.display     = "inline";
 }
 
 // ── SHOW MESSAGE ──────────────────────────────────────────────
 function showMessage(text, type = "success") {
-    // Remove any existing message
     const existing = document.getElementById("accountMessage");
     if (existing) existing.remove();
 
@@ -250,17 +245,15 @@ function showMessage(text, type = "success") {
         padding:      "12px 24px",
         borderRadius: "4px",
         fontSize:     "13px",
-        fontFamily:   "'Product Sans', 'Nunito', sans-serif",
         zIndex:       "9999",
         boxShadow:    "0 4px 12px rgba(0,0,0,0.2)",
-        transition:   "opacity 0.3s",
     });
 
     document.body.appendChild(msg);
 
-    // Auto-remove after 3 seconds
     setTimeout(() => {
-        msg.style.opacity = "0";
+        msg.style.opacity    = "0";
+        msg.style.transition = "opacity 0.3s";
         setTimeout(() => msg.remove(), 300);
     }, 3000);
 }
