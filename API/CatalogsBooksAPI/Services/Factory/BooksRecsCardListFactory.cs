@@ -80,7 +80,7 @@ namespace CatalogsBooksAPI.Services.Factories
             return bookCards;
         }
 
-        public async Task<List<BookCardDTO>> SmartSearch(string keywork)
+        public virtual async Task<List<BookCardDTO>> SmartSearch(string keywork)
         {
             List<Book> BookResult = await searchRepo.GetSmartSearch(keywork);
             return await GenerateBookCardFromBooks(BookResult);

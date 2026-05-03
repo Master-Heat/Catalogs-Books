@@ -1,3 +1,5 @@
 <Solution>
  <Project Path="CatalogsBooksAPI\CatalogsBooksAPI.csproj" />
+ <Project Path="MyProject.Tests/MyProject.Tests.csproj" />
+ <Project Path="Another.Test/Another.Test.csproj" />
 </Solution>

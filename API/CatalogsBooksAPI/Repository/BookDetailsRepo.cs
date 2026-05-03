@@ -8,7 +8,9 @@ namespace CatalogsBooksAPI.Repository
 {
     public class BookDetailsRepo
     {
+
         CatalogsBooksContext _context;
+        protected BookDetailsRepo() { }
         public BookDetailsRepo(CatalogsBooksContext context)
         {
             _context = context;
@@ -110,7 +112,7 @@ namespace CatalogsBooksAPI.Repository
         }
 
 
-        public async Task<List<Book>> GetAllBooks()
+        public virtual async Task<List<Book>> GetAllBooks()
         {
             return await _context.Books.ToListAsync();
         }
