@@ -21,7 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CatalogsBooksAPI.Controllers.BooksControllers
 {
-    [Route("api/[controller]/Authorized")]
+    [Route("api/[controller]")]
     [ApiController]
     public class BooksController : ControllerBase
     {

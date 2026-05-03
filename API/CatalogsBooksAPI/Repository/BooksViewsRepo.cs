@@ -28,13 +28,22 @@ namespace CatalogsBooksAPI.Repository
             // this function return top 30 viewed books this week 
             DateTime lastWeek = DateTime.UtcNow.AddDays(-7);
 
-            return await _context.ViewedBooks.
-            Where(v => v.ViewDate >= lastWeek).
-            GroupBy(v => v.BookID).
-            OrderByDescending(g => g.Count()).
-            Take(30).
-            Select(g => g.First().Book).
-            ToListAsync();
+
+            List<int> topBookIds = await _context.ViewedBooks
+                .Where(v => v.ViewDate >= lastWeek)
+                .GroupBy(v => v.BookID)
+                .OrderByDescending(g => g.Count())
+                .Take(30)
+                .Select(g => g.Key) // Just get the IDs first
+                .ToListAsync();
+
+            if (topBookIds.Count == 0) return new List<Book>();
+
+            return await _context.Books
+                            .Include(b => b.Author)   // Must load for the factory
+                            .Include(b => b.Category) // Must load for the factory[cite: 6]
+                            .Where(b => topBookIds.Contains(b.BookID))
+                            .ToListAsync();
 
 
         }

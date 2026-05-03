@@ -18,7 +18,7 @@ namespace Another.Tests
         public async Task Search_WhenCalled_ReturnsOkWithResults()
         {
             // 1. ARRANGE - Mocking dependencies
-            var mockRecsFactory = new Mock<BooksRecsCardListFactory>(null!, null!);
+            var mockRecsFactory = new Mock<BooksRecsCardListFactory>(null!, null!, null!);
 
             // Setup remaining 5 mocks for the constructor
             var mockDetailsFactory = new Mock<BookDetailsFactory>(null!, null!, null!);
@@ -26,6 +26,7 @@ namespace Another.Tests
             var mockViewsRepo = new Mock<BookviewsRepo>(null!, null!, null!);
             var mockBookFactory = new Mock<BookFactory>(null!);
             var mockDetailsRepo = new Mock<BookDetailsRepo>(null!);
+            var mockhomepageFactory = new Mock<HomePageFactory>(null!, null!, null!, null!);
 
             // Define the search behavior
             var keyword = "Fantasy";
@@ -44,7 +45,8 @@ namespace Another.Tests
                 mockViewsRepo.Object,
                 mockRecsFactory.Object, // This is the mock we are testing
                 mockBookFactory.Object,
-                mockDetailsRepo.Object
+                mockDetailsRepo.Object,
+                mockhomepageFactory.Object
             );
 
             // 2. ISOLATE Identity (Required because of [Authorize])

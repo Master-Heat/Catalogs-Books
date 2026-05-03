@@ -20,7 +20,7 @@ namespace MyProject.Tests
 
 
             var mockBookFactory = new Mock<BookFactory>(null!);
-
+            var mockhomepageFactory = new Mock<HomePageFactory>(null!, null!, null!, null!);
 
 
 
@@ -28,7 +28,7 @@ namespace MyProject.Tests
             var mockDetailsFactory = new Mock<BookDetailsFactory>(null!, null!, null!);
             var mockAccountFactory = new Mock<AccountFactory>(null!, null!);
             var mockViewsRepo = new Mock<BookviewsRepo>(null!, null!, null!);
-            var mockRecsFactory = new Mock<BooksRecsCardListFactory>(null!, null!);
+            var mockRecsFactory = new Mock<BooksRecsCardListFactory>(null!, null!, null!);
             var mockDetailsRepo = new Mock<BookDetailsRepo>(null!);
 
 
@@ -55,7 +55,8 @@ namespace MyProject.Tests
                 mockViewsRepo.Object,
                 mockRecsFactory.Object,
                 mockBookFactory.Object,
-                mockDetailsRepo.Object
+                mockDetailsRepo.Object,
+                mockhomepageFactory.Object
             );
 
             // 2. ISOLATE GetAccountRole()

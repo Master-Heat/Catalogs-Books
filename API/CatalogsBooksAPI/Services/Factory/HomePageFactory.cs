@@ -52,7 +52,7 @@ namespace CatalogsBooksAPI.Services.Factories
                                 ),
 
                 PopularThisWeek = await cardListFactory
-                .GenerateGeneralRecsList(bookviewsRepo.GetPopularAllTime),
+                .GenerateGeneralRecsList(bookviewsRepo.GetPopulatThisWeek),
 
                 PopularAllTime = await cardListFactory
                 .GenerateGeneralRecsList(bookviewsRepo.GetPopularAllTime)
@@ -73,8 +73,8 @@ namespace CatalogsBooksAPI.Services.Factories
                 PopularAllTime = await
                 cardListFactory.GenerateGeneralRecsList(bookviewsRepo.GetPopularAllTime),
 
-                // PopularThisWeek = await
-                // cardListFactory.GenerateGeneralRecsList(bookviewsRepo.GetPopulatThisWeek)
+                PopularThisWeek = await
+                cardListFactory.GenerateGeneralRecsList(bookviewsRepo.GetPopulatThisWeek)
             };
             return chart;
         }

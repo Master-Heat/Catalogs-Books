@@ -8,6 +8,6 @@ namespace CatalogsBooksAPI.DTOs.AccountsDTOs
 
         public List<BookCardDTO> HighestRate { get; set; }
         public List<BookCardDTO> PopularAllTime { get; set; }
-        // public List<BookCardDTO> PopularThisWeek { get; set; }
+        public List<BookCardDTO> PopularThisWeek { get; set; }
     }
 }
