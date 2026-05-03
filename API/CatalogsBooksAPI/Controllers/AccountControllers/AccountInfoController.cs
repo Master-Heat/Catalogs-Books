@@ -94,12 +94,12 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
         [Authorize]
         public async Task<ActionResult> GetUserHomePage()
         {
-            string email = GetUserEmail();
-            if (string.IsNullOrWhiteSpace(email))
+            int Id = GetUserId();
+            if (Id == 0)
             {
                 return Unauthorized();
             }
-            HomeDashboardDTO homeDashboard = await homePageFactory.GenerateHomeData(email);
+            HomeDashboardDTO homeDashboard = await homePageFactory.GenerateHomeData(Id);
             return Ok(homeDashboard);
         }
 

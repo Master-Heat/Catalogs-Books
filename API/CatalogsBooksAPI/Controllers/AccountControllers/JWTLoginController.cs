@@ -56,13 +56,9 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             }
 
 
-            HomeDashboardDTO dashboardData = await homePageFactory.GenerateHomeData(claimedAccount.Email);
 
-            var response = new LoginResponseDTO
-            {
-                Token = JWTToken,
-                Dashboard = dashboardData
-            };
+
+
             return Ok(JWTToken);
         }
 
