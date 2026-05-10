@@ -8,6 +8,7 @@ using CatalogsBooksAPI.Repository;
 using CatalogsBooksAPI.Services.Factories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Tasks;
 
 namespace CatalogsBooksAPI.Controllers.BooksControllers
 {
@@ -16,11 +17,11 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
     [ApiController]
     public class BookListsController : ControllerBase
     {
-        private readonly ListsFactory _listsFactory;
+        private readonly BookListRepo _listRepo;
 
-        public BookListsController(ListsFactory listsFactory)
+        public BookListsController(BookListRepo listRepo)
         {
-            _listsFactory = listsFactory;
+            _listRepo = listRepo;
         }
 
         // Helper method to extract AccountID from the JWT Token
@@ -38,8 +39,17 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
         public async Task<IActionResult> GetMyLists()
         {
             int accountId = GetUserIdFromToken();
-            var lists = await _listsFactory.GetAllUserListsWithBooks(accountId);
-            return Ok(lists);
+            try
+            {
+
+                var lists = await _listRepo.GetAllUserListsWithBooksIncluded(accountId);
+                return Ok(lists);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpPost("CreateList")]
@@ -48,7 +58,7 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             int accountId = GetUserIdFromToken();
             try
             {
-                await _listsFactory.CreateEmptyUserList(accountId, listName.Trim());
+                await _listRepo.AddNewList(listName.Trim(), accountId);
                 return Ok(new { message = $"List '{listName.Trim()}' created successfully." });
             }
             catch (ArgumentException ex)
@@ -64,7 +74,7 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
 
             try
             {
-                await _listsFactory.AddBookToList(accountId, request.ListID, request.BookID);
+                await _listRepo.AddBookToListAsync(request.ListID, request.BookID, accountId);
                 return Ok(new { message = "Book added to list successfully." });
             }
             catch (ArgumentException ex)

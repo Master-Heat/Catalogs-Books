@@ -1,6 +1,9 @@
 using System.Net.Http.Headers;
+using CatalogsBooksAPI.DTOs.BooksDTOs;
+using CatalogsBooksAPI.DTOs.ListsDTOs;
 using CatalogsBooksAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 namespace CatalogsBooksAPI.Repository
 {
     public class BookListRepo
@@ -12,62 +15,120 @@ namespace CatalogsBooksAPI.Repository
         }
         public async Task<List<UserList>> GetAllUserLists(int accountID)
         {
+            // return await _context.UserLists.Where(l => l.AccountID == accountID).ToListAsync();
+
+
+
+
+
+
             return await _context.UserLists.Where(l => l.AccountID == accountID).ToListAsync();
         }
 
 
 
-        public async Task<UserList> CheckIfListExist(int accountID, string listName)
+
+        public async Task AddNewList(string listName, int accountID)
         {
-            return await _context.UserLists
-                    .AsQueryable()
-                    .FirstOrDefaultAsync(l => l.AccountID == accountID &&
-                                        l.ListName == listName.Trim());
-        }
-        public async Task AddNewList(UserList list)
-        {
-            _context.UserLists.Add(list);
+            // _context.UserLists.Add(list);
+            // _context.SaveChanges();
+
+            if (string.IsNullOrWhiteSpace(listName))
+            {
+
+                throw new ArgumentException("List Name is Required");
+            }
+
+            UserList existlist = await _context.UserLists
+                    .FirstOrDefaultAsync(l => l.AccountID == accountID
+                                        && l.ListName.Trim() == listName.Trim());
+            if (existlist != null)
+            {
+                throw new ArgumentException("List is Already exist \nCan't Have Two Lists With The Same Name");
+            }
+            UserList userList = new UserList
+            {
+                AccountID = accountID,
+                ListName = listName.Trim()
+            };
+            _context.UserLists.Add(userList);
             _context.SaveChanges();
-        }
 
-        public async Task<List<Book>> GetBooksFromList(int listID)
-        {
-            return await _context.BookLists
-                .Where(l => l.ListID == listID)
-                .Include(l => l.Book).
-                Select(l => l.Book)
-                .ToListAsync();
+
 
         }
 
-        public async Task<List<UserList>> GetAllUserListsWithBooksIncluded(int accountID)
+        public async Task<List<GeneralUserListDTO>> GetAllUserListsWithBooksIncluded(int accountID)
         {
+            // return await _context.UserLists
+            //     .Where(l => l.AccountID == accountID)
+            //     .Include(l => l.BookLists) // Navigation property to the bridge table
+            //         .ThenInclude(bl => bl.Book) // Navigation property to the actual Book
+            //     .ToListAsync();
+
+
+
+
+
+
+
+
             return await _context.UserLists
                 .Where(l => l.AccountID == accountID)
-                .Include(l => l.BookLists) // Navigation property to the bridge table
-                    .ThenInclude(bl => bl.Book) // Navigation property to the actual Book
-                .ToListAsync();
+                .Select(list => new GeneralUserListDTO
+                {
+                    ListID = list.ListID,
+                    ListName = list.ListName,
+                    BookCards = list.BookLists.Where(bl => bl.Book != null)
+                    .Select(bl => new BookCardDTO
+                    {
+                        BookID = bl.BookID,
+                        Title = bl.Book.Title,
+                        Description = bl.Book.Description,
+                        CoverImageLink = bl.Book.CoverImageLink,
+                        CoverAlt = bl.Book.CoverAlt
+                    }).ToList()
+                }).ToListAsync();
+            // .Include(l => l.BookLists)
+            // .ThenInclude(bl => bl.Book)
+            // .ToListAsync();
         }
 
 
 
-        public async Task<bool> IsBookInList(int listID, int bookID)
+        public async Task AddBookToListAsync(int? listID, int? bookID, int? accoutID)
         {
-            // Checks if this specific book is already linked to this specific list
-            return await _context.BookLists
-                .AnyAsync(bl => bl.ListID == listID && bl.BookID == bookID);
-        }
+            if (listID == null || bookID == null || accoutID == null)
+            {
+                throw new ArgumentException("book id, account id and list id are required");
+            }
+            bool bookExist = await _context.Books.AnyAsync(b => b.BookID == bookID);
+            if (!bookExist)
+            {
+                throw new ArgumentException("This book doesn't exist");
+            }
 
-        public async Task AddBookToListAsync(int listID, int bookID)
-        {
+            bool ifUserOwnTheList = await _context.UserLists.AnyAsync(l => l.AccountID == accoutID && l.ListID == listID);
+            if (!ifUserOwnTheList)
+            {
+
+                throw new UnauthorizedAccessException("You don't have access to this list");
+            }
             var bookListEntry = new BookList
             {
-                ListID = listID,
-                BookID = bookID
+                ListID = (int)listID,
+                BookID = (int)bookID
             };
+            bool bookExisitInList = await _context.BookLists.AnyAsync(l => l.ListID == listID && l.BookID == bookID);
+            if (bookExisitInList)
+            {
+                return;
+            }
 
             await _context.BookLists.AddAsync(bookListEntry);
             await _context.SaveChangesAsync();
         }
+
+
     }
 }

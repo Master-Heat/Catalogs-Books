@@ -13,8 +13,8 @@ namespace CatalogsBooksAPI.Repository
         }
         public async Task<Account> GetAccountDataByID(int id)
         {
-            return await _context.Accounts.
-            FirstOrDefaultAsync(a => a.AccountID == id);
+            return await _context.Accounts.FirstOrDefaultAsync(a => a.AccountID == id);
+            
         }
 
         public async Task<Account> GetAccountDataByEmail(string mail)
