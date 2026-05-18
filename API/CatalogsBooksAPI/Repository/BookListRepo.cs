@@ -102,18 +102,32 @@ namespace CatalogsBooksAPI.Repository
             {
                 throw new ArgumentException("book id, account id and list id are required");
             }
-            bool bookExist = await _context.Books.AnyAsync(b => b.BookID == bookID);
-            if (!bookExist)
-            {
-                throw new ArgumentException("This book doesn't exist");
-            }
+            var validation = await _context.UserLists
+                            .Where(l => l.ListID == listID && l.AccountID == accoutID)
+                            .Select(l => new
+                            {
 
-            bool ifUserOwnTheList = await _context.UserLists.AnyAsync(l => l.AccountID == accoutID && l.ListID == listID);
-            if (!ifUserOwnTheList)
-            {
+                                bookExist = _context.Books.Any(b => b.BookID == bookID),
+                                AlreadyInList = _context.BookLists.Any(l => l.ListID == listID && l.BookID == bookID)
+                            }).FirstOrDefaultAsync();
 
+            if (validation == null)
                 throw new UnauthorizedAccessException("You don't have access to this list");
-            }
+            if (!validation.bookExist)
+                throw new ArgumentException("This book doesn't exist");
+            if (validation.AlreadyInList) return;
+            // bool bookExists = await _context.Books.AnyAsync(b => b.BookID == bookID);
+            // if (!bookExists)
+            // {
+            //     throw new ArgumentException("This book doesn't exist");
+            // }
+
+            // bool ifUserOwnTheList = await _context.UserLists.AnyAsync(l => l.AccountID == accoutID && l.ListID == listID);
+            // if (!ifUserOwnTheList)
+            // {
+
+            //     throw new UnauthorizedAccessException("You don't have access to this list");
+            // }
             var bookListEntry = new BookList
             {
                 ListID = (int)listID,
