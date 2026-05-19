@@ -18,12 +18,12 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
 
 
 
-        private readonly AccountFactory _accountFactory;
 
-        public RegisterController(AccountRepo accountRepo, AccountFactory accountFactory)
+
+        public RegisterController(AccountRepo accountRepo)
         {
             this.accountRepo = accountRepo;
-            _accountFactory = accountFactory;
+
         }
 
 
@@ -36,9 +36,9 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
 
 
 
-                var newAccount = await _accountFactory.CreateFromRegisterDTO(registerDto);
+                Account newAccount = await accountRepo.CreateFromRegisterDTO(registerDto);
 
-                await accountRepo.AddAccount(newAccount);
+
 
 
 

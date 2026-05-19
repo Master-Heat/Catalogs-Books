@@ -23,7 +23,6 @@ namespace CatalogsBooksAPI.Services
 
         private readonly PasswordHasher<Account> _passwordHasher = new PasswordHasher<Account>();
 
-        private readonly AccountFactory _accountFactory;
         private readonly IConfiguration _config;
 
         public Authentication(AccountRepo accountRepo, IConfiguration configuration)
@@ -39,7 +38,7 @@ namespace CatalogsBooksAPI.Services
             {
                 return null;
             }
-            Account dbaccount = await accountRepo.GetAccountDataByEmail(claimedAccount.Email);
+            Account dbaccount = await accountRepo.GetAccountByEmail(claimedAccount.Email);
             if (dbaccount == null)
             {
                 return null;
@@ -58,12 +57,12 @@ namespace CatalogsBooksAPI.Services
 
             var tokenDescrtor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
+                Subject = new ClaimsIdentity(
+                [
                     new Claim (JwtRegisteredClaimNames.Name,claimedAccount.Email),
                     new Claim(JwtRegisteredClaimNames.Sub, dbaccount.AccountID.ToString()),
                     new Claim(ClaimTypes.Role, dbaccount.Role )
-                }),
+                ]),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
                 SecurityAlgorithms.HmacSha256Signature),
 

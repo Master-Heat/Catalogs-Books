@@ -29,13 +29,13 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
 
 
 
-        AccountFactory accountFactory;
+        AccountRepo accountRepo;
         HomePageFactory homePageFactory;
 
-        public AccountInfoController(AccountFactory accountFactory,
+        public AccountInfoController(AccountRepo accountRepo,
                                     HomePageFactory homePageFactory)
         {
-            this.accountFactory = accountFactory;
+            this.accountRepo = accountRepo;
             this.homePageFactory = homePageFactory;
         }
 
@@ -83,7 +83,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
                 return Forbid();
             }
 
-            UserAccountDTO accountdata = await accountFactory.GetAccountDataByID(id);
+            UserAccountDTO accountdata = await accountRepo.GetAccountDataByID(id);
             if (accountdata == null) return NotFound();
             return Ok(accountdata);
 
@@ -114,7 +114,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             }
             if (claimedRole == "Admin" || claimedRole == "AI")
             {
-                AccountInfoDTO accountInfo = await accountFactory.GetAccountDataByEmil(email);
+                AccountInfoDTO accountInfo = await accountRepo.GetAccountDataByEmail(email);
                 if (accountInfo == null) return NotFound();
                 return Ok(accountInfo);
             }
@@ -136,7 +136,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             {
                 return Forbid();
             }
-            bool result = await accountFactory.ModifyAccountRole(id, newRole);
+            bool result = await accountRepo.ModifyAccountRole(id, newRole);
             if (!result) return NotFound();
             return NoContent();
         }
@@ -156,7 +156,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             {
                 return Forbid();
             }
-            bool result = await accountFactory.ModifyAccountState(id, newState);
+            bool result = await accountRepo.ModifyAccountState(id, newState);
             if (!result) return NotFound();
             return NoContent();
         }
@@ -199,7 +199,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
                 return Unauthorized();
             }
 
-            List<BookCardDTO> viewedBooks = await accountFactory.GetUserViewedBooks(IdFromToken);
+            List<BookCardDTO> viewedBooks = await accountRepo.GetUserViewedBooks(IdFromToken);
             if (viewedBooks == null || viewedBooks.Count == 0) return NotFound();
             return Ok(viewedBooks);
 
@@ -220,7 +220,7 @@ namespace CatalogsBooksAPI.Controllers.AccountControllers
             {
                 return Forbid();
             }
-            bool result = await accountFactory.RemoveAccount(id);
+            bool result = await accountRepo.removeAccount(id);
             if (!result) return NotFound();
             return NoContent();
         }

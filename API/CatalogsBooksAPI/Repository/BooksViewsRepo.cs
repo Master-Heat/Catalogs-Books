@@ -60,7 +60,7 @@ namespace CatalogsBooksAPI.Repository
         {
             Book book = await bookDetailsRepo.GetBookById(BookID);
             if (book == null) return;
-            Account account = await accountRepoe.GetAccountDataByID(accountid);
+            UserAccountDTO account = await accountRepoe.GetAccountDataByID(accountid);
             if (account == null) return;
             DateTime viewdate = DateTime.Now;
             ViewedBook existingView = await CheckedIfAlreadyViewed(BookID, accountid);
@@ -86,7 +86,7 @@ namespace CatalogsBooksAPI.Repository
         public async Task<ViewedBook> CheckedIfAlreadyViewed(int BookID, int accountid)
         {
             return await _context.ViewedBooks
-                     .FirstOrDefaultAsync(v => v.AccountID == accountid && v.BookID == BookID);
+                    .FirstOrDefaultAsync(v => v.AccountID == accountid && v.BookID == BookID);
         }
 
 

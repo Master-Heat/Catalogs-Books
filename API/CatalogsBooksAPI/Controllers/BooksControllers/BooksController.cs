@@ -30,7 +30,7 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
 
 
         BookDetailsFactory bookDetailsFactory;
-        AccountFactory accountFactory;
+        AccountRepo accountRepo;
 
         BookviewsRepo bookviews;
         BooksRecsCardListFactory bookCardListFactory;
@@ -38,7 +38,7 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
         BookDetailsRepo bookDetailsRepo;
         HomePageFactory homePageFactory;
         public BooksController(BookDetailsFactory bookDetailsFactory,
-                                AccountFactory accountFactory,
+                                AccountRepo accountRepo,
                                 BookviewsRepo bookviews,
                                 BooksRecsCardListFactory bookCardListFactory,
                                 BookFactory bookFactory,
@@ -47,7 +47,7 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
                                 )
         {
             this.bookDetailsFactory = bookDetailsFactory;
-            this.accountFactory = accountFactory;
+            this.accountRepo = accountRepo;
             this.bookviews = bookviews;
             this.bookCardListFactory = bookCardListFactory;
             this.bookFactory = bookFactory;
@@ -81,7 +81,7 @@ namespace CatalogsBooksAPI.Controllers.BooksControllers
             {
                 return Unauthorized();
             }
-            UserAccountDTO accountFromTokenID = await accountFactory.GetAccountDataByID(int.Parse(IdFromToken));
+            UserAccountDTO accountFromTokenID = await accountRepo.GetAccountDataByID(int.Parse(IdFromToken));
 
             if (accountFromTokenID == null)
             {

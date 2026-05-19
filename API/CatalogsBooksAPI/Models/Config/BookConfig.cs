@@ -30,7 +30,7 @@ namespace CatalogsBooksAPI.Models.Config
 
                      // Cascade delete for ViewedBooks
                      builder.HasMany(b => b.ViewedBooks)
-                            .WithOne()
+                            .WithOne(v => v.Book)
                             .HasForeignKey(v => v.BookID)
                             .OnDelete(DeleteBehavior.Cascade);
               }
