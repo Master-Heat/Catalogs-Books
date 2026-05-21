@@ -1,3 +1,4 @@
+using System.Formats.Nrbf;
 using CatalogsBooksAPI.Models;
 using FuzzySharp;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +17,12 @@ namespace CatalogsBooksAPI.Repository
         {
             if (string.IsNullOrWhiteSpace(searchTerm)) return new List<Book>();
 
+            string normalizedSearch = searchTerm.Trim().ToLower();
             // 1. Get the first 3 characters of each word
-            List<string> prefixes = searchTerm.ToLower()
+            List<string> prefixes = normalizedSearch
                 .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                .Where(word => word.Length >= 3) // Only take words long enough to have a prefix
-                .Select(word => word.Substring(0, 2))
+                .Select(word => word.Length <= 3 ? word : word.Substring(0, 3)) // Only take words long enough to have a prefix
+                .Distinct()
                 .ToList();
 
             if (!prefixes.Any())
@@ -49,11 +51,37 @@ namespace CatalogsBooksAPI.Repository
             List<Book> rankedResults = [.. candidates
                 .Select(book =>
                 {
+                    string title = book.Title.ToLower().Trim() ?? "";
+                    string series = book.Series?.SeriesName.ToLower().Trim() ?? "";
+                    string desc = book.Description?.ToLower().Trim() ?? "";
                     // We use the null-conditional operator ?. to avoid crashes if  is null
-                int titleScore = Fuzz.TokenSetRatio(searchTerm, book.Title);
-                int seriesScore = Fuzz.TokenSetRatio(searchTerm, book.Series?.SeriesName ?? "");
-                int descScore = Fuzz.TokenSetRatio(searchTerm, book.Description ?? "");
-                double finalScore = (titleScore * 1.0) + (seriesScore * 0.7) + (descScore * 0.4);
+                    
+                    //handle typos 
+                int titleTokenFuzz = Fuzz.TokenSetRatio(normalizedSearch, title);
+                    // handle order 
+                int titleSequenceFuzz = Fuzz.Ratio(normalizedSearch, title);
+
+                double titleFuzz =((titleTokenFuzz * 0.98) + (titleSequenceFuzz * 0.2))* 1.0;
+                double seriesFuzz =Fuzz.TokenSetRatio(normalizedSearch,series)*0.6;
+                double descFuzz =Fuzz.TokenSetRatio(normalizedSearch,desc)*0.2;
+
+
+            // Intent Multiplier Application (Handles Order Balance) 
+            double titleMultiplier =1.0;
+            if(title == normalizedSearch ) titleMultiplier = 3.0;
+            else if ( title.StartsWith(normalizedSearch))titleMultiplier = 2.0;
+            else if ( title.Contains(normalizedSearch))titleMultiplier = 1.5;
+
+             double seriresMultiplier = 1.0;
+            if (series == normalizedSearch) seriresMultiplier = 2.0;
+            else if (series.Contains(normalizedSearch)) seriresMultiplier =1.2;
+
+         double descMultiplier = 1.0;
+            if(desc.Contains(normalizedSearch))descMultiplier =1.2;
+
+                double finalScore = (titleFuzz * titleMultiplier)
+                                    + (seriesFuzz * seriresMultiplier)
+                                    + (descFuzz * descMultiplier);
                     return new
                     {
                         Book = book,
