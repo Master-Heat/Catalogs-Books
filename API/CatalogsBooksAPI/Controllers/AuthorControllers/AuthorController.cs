@@ -14,16 +14,16 @@ namespace CatalogsBooksAPI.Controllers.AuthorController
     [Authorize(Roles = "Admin")] // This covers EVERY function in this controller
     public class AuthorController : ControllerBase
     {
-        AuthorFactory _authorFactory;
+        private readonly AuthorRepo _authorRepo;
 
-        public AuthorController(AuthorFactory authorFactory)
+        public AuthorController(AuthorRepo authorRepo)
         {
-            _authorFactory = authorFactory;
+            _authorRepo = authorRepo;
         }
         [HttpGet("{authorName}")]
         public async Task<IActionResult> GetAuthorByName(string authorName)
         {
-            var author = await _authorFactory.FindAuthorByNameAsync(authorName);
+            var author = await _authorRepo.GetAuthorByName(authorName);
             if (author == null) return NotFound($"No author found with name '{authorName}'.");
 
             return Ok(author);
@@ -32,7 +32,7 @@ namespace CatalogsBooksAPI.Controllers.AuthorController
         [HttpGet]
         public async Task<IActionResult> GetAllAuthors()
         {
-            var authors = await _authorFactory.GetAllAuthorsAsync();
+            var authors = await _authorRepo.GetAllAuthors();
             return Ok(authors);
         }
         [HttpPost]
@@ -41,14 +41,14 @@ namespace CatalogsBooksAPI.Controllers.AuthorController
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _authorFactory.CreateAuthorFromDTOAsync(author);
+            await _authorRepo.AddAuthor(author);
             return CreatedAtAction(nameof(GetAuthorByName), new { authorName = author.AuthorName }, author);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
-            var success = await _authorFactory.DeleteAuthorAsync(id);
+            var success = await _authorRepo.DeleteAuthorAsync(id);
             if (!success) return NotFound($"No author found with ID '{id}'.");
 
             return NoContent();
@@ -57,7 +57,7 @@ namespace CatalogsBooksAPI.Controllers.AuthorController
         [HttpGet("AuthorWithBooks/{authorId}")]
         public async Task<IActionResult> GetAuthorWithBooks(int authorId)
         {
-            var authorWithBooks = await _authorFactory.GetAuthorWithBooksAsync(authorId);
+            var authorWithBooks = await _authorRepo.GetAuthorWithBooksAsync(authorId);
             if (authorWithBooks == null) return NotFound($"No author found with ID '{authorId}'.");
 
             return Ok(authorWithBooks);
@@ -65,7 +65,7 @@ namespace CatalogsBooksAPI.Controllers.AuthorController
         [HttpGet("AllAuthorsWithBooks")]
         public async Task<IActionResult> GetAllAuthorsWithBooks()
         {
-            var authorsWithBooks = await _authorFactory.GetAllAuthorsWithBooksAsync();
+            var authorsWithBooks = await _authorRepo.GetAllAuthorsWithBooksAsync();
             return Ok(authorsWithBooks);
         }
 

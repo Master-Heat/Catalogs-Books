@@ -93,7 +93,6 @@ builder.Services.AddSwaggerGen(options =>
 // 3. Keep your Controller support
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<AuthorFactory>();
 builder.Services.AddScoped<BookFactory>();
 builder.Services.AddScoped<BooksRecsCardListFactory>();
 builder.Services.AddScoped<CategoryFactory>();
@@ -103,7 +102,6 @@ builder.Services.AddScoped<BookDetailsFactory>();
 // builder.Services.AddScoped<ListsFactory>();
 
 builder.Services.AddScoped<Authentication>();
-
 
 builder.Services.AddScoped<AccountRepo>();
 builder.Services.AddScoped<BooksRecsRepo>();
